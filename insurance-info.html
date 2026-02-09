@@ -18,7 +18,7 @@
     <header class="bg-white shadow-sm fixed w-full top-0 z-50">
         <nav class="container mx-auto px-4 py-4">
             <div class="flex justify-between items-center">
-                <div class="text-2xl font-bold text-indigo-600">보험 LOUNGE</div>
+                <a href="index.html" class="text-2xl font-bold text-indigo-600 hover:text-indigo-700">보험 LOUNGE</a>
                 <div class="hidden md:flex space-x-8">
                     <a href="index.html" class="text-gray-700 hover:text-indigo-600">홈</a>
                     <a href="fa-intro.html" class="text-gray-700 hover:text-indigo-600">FA 소개</a>
@@ -45,119 +45,34 @@
         <section class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-16">
             <div class="container mx-auto px-4 text-center">
                 <h1 class="text-4xl md:text-5xl font-bold mb-4">보험 정보</h1>
-                <p class="text-xl opacity-90">최신 보험 뉴스와 정보를 확인하세요</p>
+                <p class="text-xl opacity-90">보험저널 최신 뉴스 (인기순 20개)</p>
             </div>
         </section>
 
         <div class="container mx-auto px-4 mt-12">
-            <!-- Featured News -->
-            <section class="mb-12">
-                <h2 class="text-3xl font-bold mb-6">주요 뉴스</h2>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
-                        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=400&fit=crop" alt="5세대 실손보험" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <span class="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-sm">제도 개편</span>
-                            <h3 class="text-xl font-bold mt-4 mb-2">5세대 실손보험 개정안 발표</h3>
-                            <p class="text-gray-600 mb-4">금융위원회가 5세대 실손보험 개정안을 발표했습니다. 주요 내용과 변경사항을 확인하세요.</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-gray-500">2026.02.05</span>
-                                <a href="https://www.fsc.go.kr/no010101/84272" target="_blank" class="text-indigo-600 hover:text-indigo-700 font-semibold">자세히 보기 →</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
-                        <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=400&fit=crop" alt="보험업법" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm">법령</span>
-                            <h3 class="text-xl font-bold mt-4 mb-2">보험업법 시행령 개정 입법예고</h3>
-                            <p class="text-gray-600 mb-4">보험업법 시행령 개정안이 입법 예고되었습니다. 보험 소비자와 설계사에게 미치는 영향을 알아보세요.</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-gray-500">2026.01.15</span>
-                                <a href="https://www.korea.kr/briefing/pressReleaseView.do?newsId=156739845" target="_blank" class="text-indigo-600 hover:text-indigo-700 font-semibold">자세히 보기 →</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <!-- Loading State -->
+            <div id="loading-state" class="text-center py-16">
+                <i class="fas fa-spinner fa-spin text-indigo-600 text-5xl mb-4"></i>
+                <p class="text-gray-600">뉴스를 불러오는 중...</p>
+            </div>
 
-            <!-- Info Categories -->
-            <section class="grid md:grid-cols-3 gap-6 mb-12">
-                <!-- Category 1 -->
-                <div class="bg-white rounded-xl shadow-md p-6">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-indigo-100 p-3 rounded-lg">
-                            <i class="fas fa-gavel text-indigo-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold ml-4">제도 개편</h3>
-                    </div>
-                    <ul class="space-y-3">
-                        <li>
-                            <a href="https://www.fsc.go.kr" target="_blank" class="text-gray-700 hover:text-indigo-600 flex justify-between items-center">
-                                <span>실손보험 보험료 안정화 방안</span>
-                                <i class="fas fa-arrow-right text-sm"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://www.fsc.go.kr" target="_blank" class="text-gray-700 hover:text-indigo-600 flex justify-between items-center">
-                                <span>노후 실손보험 출시</span>
-                                <i class="fas fa-arrow-right text-sm"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+            <!-- News Grid -->
+            <div id="news-container" class="hidden grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- News will be loaded here -->
+            </div>
 
-                <!-- Category 2 -->
-                <div class="bg-white rounded-xl shadow-md p-6">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-emerald-100 p-3 rounded-lg">
-                            <i class="fas fa-shield-alt text-emerald-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold ml-4">소비자 보호</h3>
-                    </div>
-                    <ul class="space-y-3">
-                        <li>
-                            <a href="https://www.fss.or.kr" target="_blank" class="text-gray-700 hover:text-indigo-600 flex justify-between items-center">
-                                <span>보험금 지급 가이드라인</span>
-                                <i class="fas fa-arrow-right text-sm"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://www.fss.or.kr" target="_blank" class="text-gray-700 hover:text-indigo-600 flex justify-between items-center">
-                                <span>불완전판매 방지 대책</span>
-                                <i class="fas fa-arrow-right text-sm"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Category 3 -->
-                <div class="bg-white rounded-xl shadow-md p-6">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-teal-100 p-3 rounded-lg">
-                            <i class="fas fa-file-alt text-teal-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold ml-4">상품 정보</h3>
-                    </div>
-                    <ul class="space-y-3">
-                        <li>
-                            <a href="https://www.kidi.or.kr" target="_blank" class="text-gray-700 hover:text-indigo-600 flex justify-between items-center">
-                                <span>신규 보험 상품 출시</span>
-                                <i class="fas fa-arrow-right text-sm"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://www.kiri.or.kr" target="_blank" class="text-gray-700 hover:text-indigo-600 flex justify-between items-center">
-                                <span>보험 상품 비교 가이드</span>
-                                <i class="fas fa-arrow-right text-sm"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </section>
+            <!-- Error State -->
+            <div id="error-state" class="hidden text-center py-16">
+                <i class="fas fa-exclamation-triangle text-red-500 text-5xl mb-4"></i>
+                <h3 class="text-2xl font-bold text-gray-700 mb-2">뉴스를 불러올 수 없습니다</h3>
+                <p class="text-gray-500 mb-6">보험저널 사이트를 직접 방문해주세요</p>
+                <a href="http://www.insjournal.co.kr" target="_blank" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 font-semibold">
+                    보험저널 바로가기
+                </a>
+            </div>
 
             <!-- Useful Links -->
-            <section class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl p-8 mb-12">
+            <section class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl p-8 mt-12">
                 <h2 class="text-3xl font-bold mb-6 text-center">유용한 링크</h2>
                 <div class="grid md:grid-cols-4 gap-4">
                     <a href="https://www.fsc.go.kr" target="_blank" class="bg-white bg-opacity-20 rounded-lg p-4 hover:bg-opacity-30 transition text-center">
@@ -170,29 +85,16 @@
                         <div class="font-semibold">금융감독원</div>
                         <div class="text-sm opacity-80">FSS</div>
                     </a>
-                    <a href="https://www.kidi.or.kr" target="_blank" class="bg-white bg-opacity-20 rounded-lg p-4 hover:bg-opacity-30 transition text-center">
-                        <i class="fas fa-chart-line text-3xl mb-2"></i>
-                        <div class="font-semibold">보험개발원</div>
-                        <div class="text-sm opacity-80">KIDI</div>
+                    <a href="http://www.insjournal.co.kr" target="_blank" class="bg-white bg-opacity-20 rounded-lg p-4 hover:bg-opacity-30 transition text-center">
+                        <i class="fas fa-newspaper text-3xl mb-2"></i>
+                        <div class="font-semibold">보험저널</div>
+                        <div class="text-sm opacity-80">Insurance Journal</div>
                     </a>
                     <a href="https://www.kiri.or.kr" target="_blank" class="bg-white bg-opacity-20 rounded-lg p-4 hover:bg-opacity-30 transition text-center">
                         <i class="fas fa-book text-3xl mb-2"></i>
                         <div class="font-semibold">보험연구원</div>
                         <div class="text-sm opacity-80">KIRI</div>
                     </a>
-                </div>
-            </section>
-
-            <!-- Newsletter Subscription -->
-            <section class="bg-white rounded-xl shadow-md p-8">
-                <div class="text-center max-w-2xl mx-auto">
-                    <h2 class="text-3xl font-bold mb-4">뉴스레터 구독</h2>
-                    <p class="text-gray-600 mb-6">최신 보험 뉴스와 정보를 이메일로 받아보세요</p>
-                    <form id="newsletter-form" class="flex gap-4">
-                        <input type="email" placeholder="이메일 주소" class="flex-1 border border-gray-300 rounded-lg px-4 py-3" required>
-                        <button type="submit" class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 font-semibold">구독하기</button>
-                    </form>
-                    <p class="text-sm text-gray-500 mt-4">* 본 서비스는 추후 제공 예정입니다</p>
                 </div>
             </section>
         </div>
@@ -226,17 +128,65 @@
     </footer>
 
     <script>
-        // Mobile menu toggle
+        // Load insurance news from RSS2JSON API
+        async function loadInsuranceNews() {
+            const loadingState = document.getElementById('loading-state');
+            const newsContainer = document.getElementById('news-container');
+            const errorState = document.getElementById('error-state');
+
+            try {
+                // RSS2JSON API를 사용해서 보험저널 RSS 가져오기
+                const rssUrl = 'http://www.insjournal.co.kr/rss/allArticle.xml';
+                const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}&count=20&order_by=pubDate`;
+                
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (data.status !== 'ok' || !data.items || data.items.length === 0) {
+                    throw new Error('RSS 로드 실패');
+                }
+
+                loadingState.classList.add('hidden');
+                newsContainer.classList.remove('hidden');
+
+                // 최대 20개 뉴스만 표시
+                const newsItems = data.items.slice(0, 20);
+
+                newsContainer.innerHTML = newsItems.map((item, index) => {
+                    const date = new Date(item.pubDate).toLocaleDateString('ko-KR');
+                    const description = item.description ? item.description.replace(/<[^>]*>/g, '').substring(0, 100) + '...' : '내용 없음';
+                    
+                    return `
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
+                            <div class="p-6">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-xs font-semibold">인기 ${index + 1}위</span>
+                                    <span class="text-xs text-gray-500">${date}</span>
+                                </div>
+                                <h3 class="text-lg font-bold mb-2 line-clamp-2">${item.title}</h3>
+                                <p class="text-gray-600 text-sm mb-4 line-clamp-3">${description}</p>
+                                <a href="${item.link}" target="_blank" class="text-indigo-600 hover:text-indigo-700 font-semibold text-sm">
+                                    자세히 보기 →
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('뉴스 로드 에러:', error);
+                loadingState.classList.add('hidden');
+                errorState.classList.remove('hidden');
+            }
+        }
+
+        // Mobile menu
         document.getElementById('mobile-menu-btn').addEventListener('click', () => {
             document.getElementById('mobile-menu').classList.toggle('hidden');
         });
 
-        // Newsletter form
-        document.getElementById('newsletter-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('감사합니다! 뉴스레터 구독이 완료되었습니다.\n(본 기능은 추후 구현 예정입니다)');
-            e.target.reset();
-        });
+        // Initialize
+        loadInsuranceNews();
     </script>
 </body>
 </html>
