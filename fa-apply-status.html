@@ -1,0 +1,254 @@
+Copy<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>신청 상태 확인 - 보험 LOUNGE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm fixed w-full top-0 z-50">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-2xl font-bold text-indigo-600">보험 LOUNGE</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-indigo-600">홈</a>
+                    <a href="fa-intro.html" class="text-gray-700 hover:text-indigo-600">FA 소개</a>
+                    <a href="claim-cases.html" class="text-gray-700 hover:text-indigo-600">청구 사례</a>
+                    <a href="insurance-info.html" class="text-gray-700 hover:text-indigo-600">보험 정보</a>
+                    <a href="fa-apply.html" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">FA 신청</a>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="index.html" class="block py-2 text-gray-700">홈</a>
+                <a href="fa-intro.html" class="block py-2 text-gray-700">FA 소개</a>
+                <a href="claim-cases.html" class="block py-2 text-gray-700">청구 사례</a>
+                <a href="insurance-info.html" class="block py-2 text-gray-700">보험 정보</a>
+                <a href="fa-apply.html" class="block py-2 text-indigo-600">FA 신청</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="pt-24 pb-16">
+        <!-- Page Header -->
+        <section class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-16">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">신청 상태 확인</h1>
+                <p class="text-xl opacity-90">신청 번호로 진행 상태를 확인하세요</p>
+            </div>
+        </section>
+
+        <div class="container mx-auto px-4 mt-12 max-w-2xl">
+            <!-- Search Form -->
+            <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+                <h2 class="text-2xl font-bold mb-6">신청 번호 입력</h2>
+                <form id="status-search-form" class="flex gap-4">
+                    <input type="text" id="application-id-input" placeholder="FA1234567890" class="flex-1 border border-gray-300 rounded-lg px-4 py-3" required>
+                    <button type="submit" class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 font-semibold">조회</button>
+                </form>
+            </div>
+
+            <!-- Status Result -->
+            <div id="status-result" class="hidden">
+                <!-- Result will be displayed here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">보험 LOUNGE</h3>
+                    <p class="text-gray-400">인카금융서비스 소속 전문 FA들이 함께합니다</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">빠른 링크</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white">홈</a></li>
+                        <li><a href="fa-intro.html" class="text-gray-400 hover:text-white">FA 소개</a></li>
+                        <li><a href="fa-apply.html" class="text-gray-400 hover:text-white">FA 신청</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">개인정보 처리방침</h4>
+                    <p class="text-sm text-gray-400">FA 신청 시 제공된 정보는 신청 검토 목적으로만 사용됩니다.</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 보험 LOUNGE. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Check URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const applicationId = urlParams.get('id');
+
+        if (applicationId) {
+            document.getElementById('application-id-input').value = applicationId;
+            searchApplication(applicationId);
+        }
+
+        // Search form submission
+        document.getElementById('status-search-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const id = document.getElementById('application-id-input').value;
+            searchApplication(id);
+        });
+
+        function searchApplication(applicationId) {
+            const applications = JSON.parse(localStorage.getItem('fa_applications') || '[]');
+            const application = applications.find(app => app.applicationId === applicationId);
+
+            const resultDiv = document.getElementById('status-result');
+
+            if (!application) {
+                resultDiv.innerHTML = `
+                    <div class="bg-white rounded-xl shadow-md p-8 text-center">
+                        <i class="fas fa-exclamation-circle text-6xl text-gray-400 mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2">신청 내역을 찾을 수 없습니다</h3>
+                        <p class="text-gray-600 mb-6">신청 번호를 다시 확인해주세요</p>
+                        <a href="fa-apply.html" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 font-semibold">FA 신청하기</a>
+                    </div>
+                `;
+                resultDiv.classList.remove('hidden');
+                return;
+            }
+
+            // Status display
+            let statusColor, statusIcon, statusText;
+            if (application.status === 'APPROVED') {
+                statusColor = 'emerald';
+                statusIcon = 'check-circle';
+                statusText = '승인 완료';
+            } else if (application.status === 'REJECTED') {
+                statusColor = 'red';
+                statusIcon = 'times-circle';
+                statusText = '반려';
+            } else {
+                statusColor = 'yellow';
+                statusIcon = 'clock';
+                statusText = '검토 중';
+            }
+
+            resultDiv.innerHTML = `
+                <div class="bg-white rounded-xl shadow-md p-8">
+                    <div class="text-center mb-8">
+                        <i class="fas fa-${statusIcon} text-6xl text-${statusColor}-500 mb-4"></i>
+                        <h3 class="text-3xl font-bold mb-2">${statusText}</h3>
+                        <p class="text-gray-600">신청 번호: ${application.applicationId}</p>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                        <h4 class="font-semibold mb-4">신청 정보</h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <div class="text-sm text-gray-500">이름</div>
+                                <div class="font-semibold">${application.name}</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">휴대폰</div>
+                                <div class="font-semibold">${application.phone}</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">소속 회사</div>
+                                <div class="font-semibold">${application.company}</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">사번</div>
+                                <div class="font-semibold">${application.employeeId}</div>
+                            </div>
+                            ${application.email ? `
+                            <div>
+                                <div class="text-sm text-gray-500">이메일</div>
+                                <div class="font-semibold">${application.email}</div>
+                            </div>
+                            ` : ''}
+                            ${application.branch ? `
+                            <div>
+                                <div class="text-sm text-gray-500">지점</div>
+                                <div class="font-semibold">${application.branch}</div>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                        <h4 class="font-semibold mb-4">진행 상태</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-emerald-500 mr-3"></i>
+                                <div>
+                                    <div class="font-semibold">신청 접수</div>
+                                    <div class="text-sm text-gray-500">${new Date(application.submittedAt).toLocaleString('ko-KR')}</div>
+                                </div>
+                            </div>
+                            ${application.status === 'PENDING' ? `
+                            <div class="flex items-center">
+                                <i class="fas fa-spinner fa-spin text-yellow-500 mr-3"></i>
+                                <div>
+                                    <div class="font-semibold">검토 중</div>
+                                    <div class="text-sm text-gray-500">담당자가 신청 내용을 검토하고 있습니다</div>
+                                </div>
+                            </div>
+                            ` : ''}
+                            ${application.status === 'APPROVED' ? `
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-emerald-500 mr-3"></i>
+                                <div>
+                                    <div class="font-semibold">승인 완료</div>
+                                    <div class="text-sm text-gray-500">${application.reviewedAt ? new Date(application.reviewedAt).toLocaleString('ko-KR') : ''}</div>
+                                </div>
+                            </div>
+                            <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mt-4">
+                                <p class="text-emerald-700">축하합니다! FA 신청이 승인되었습니다. 담당자가 곧 연락드릴 예정입니다.</p>
+                            </div>
+                            ` : ''}
+                            ${application.status === 'REJECTED' ? `
+                            <div class="flex items-center">
+                                <i class="fas fa-times-circle text-red-500 mr-3"></i>
+                                <div>
+                                    <div class="font-semibold">반려</div>
+                                    <div class="text-sm text-gray-500">${application.reviewedAt ? new Date(application.reviewedAt).toLocaleString('ko-KR') : ''}</div>
+                                </div>
+                            </div>
+                            ${application.rejectionReason ? `
+                            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mt-4">
+                                <div class="font-semibold text-red-700 mb-2">반려 사유</div>
+                                <p class="text-red-600">${application.rejectionReason}</p>
+                            </div>
+                            ` : ''}
+                            ` : ''}
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <a href="index.html" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 font-semibold">홈으로 돌아가기</a>
+                    </div>
+                </div>
+            `;
+
+            resultDiv.classList.remove('hidden');
+        }
+
+        // Mobile menu
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
