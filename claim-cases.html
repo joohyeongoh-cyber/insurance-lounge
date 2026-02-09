@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>청구 사례 - 보험 LOUNGE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Noto Sans KR', sans-serif; }
+        .nav-link { position: relative; transition: color 0.3s ease; }
+        .nav-link::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: #667eea; transition: width 0.3s ease; }
+        .nav-link:hover::after { width: 100%; }
+        .case-card { transition: all 0.3s ease; cursor: pointer; }
+        .case-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .filter-btn { transition: all 0.3s ease; }
+        .filter-btn.active { background-color: #667eea; color: white; }
+        .amount-badge { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-md fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-purple-600">
+                        <i class="fas fa-shield-alt mr-2"></i>보험 LOUNGE
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-purple-600 font-medium">홈</a>
+                    <a href="fa-intro.html" class="nav-link text-gray-700 hover:text-purple-600 font-medium">FA 소개</a>
+                    <a href="claim-cases.html" class="nav-link text-purple-600 font-medium">청구 사례</a>
+                    <a href="insurance-info.html" class="nav-link text-gray-700 hover:text-purple-600 font-medium">보험 정보</a>
+                    <a href="fa-apply.html" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition font-medium">FA 신청</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-700">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-700 hover:bg-purple-50 rounded">홈</a>
+                <a href="fa-intro.html" class="block px-3 py-2 text-gray-700 hover:bg-purple-50 rounded">FA 소개</a>
+                <a href="claim-cases.html" class="block px-3 py-2 bg-purple-50 text-purple-600 rounded">청구 사례</a>
+                <a href="insurance-info.html" class="block px-3 py-2 text-gray-700 hover:bg-purple-50 rounded">보험 정보</a>
+                <a href="fa-apply.html" class="block px-3 py-2 bg-purple-600 text-white rounded text-center">FA 신청</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white pt-24 pb-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">보험 청구 사례</h1>
+            <p class="text-xl text-blue-100">실제 청구 사례를 통해 보험의 혜택을 확인하세요</p>
+        </div>
+    </div>
+
+    <section class="bg-white shadow-md py-6 sticky top-16 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">보험사</label>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="filter-btn active px-4 py-2 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium" data-filter="company" data-value="all">전체</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium" data-filter="company" data-value="삼성화재">삼성화재</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium" data-filter="company" data-value="현대해상">현대해상</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium" data-filter="company" data-value="KB손해보험">KB손해보험</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium" data-filter="company" data-value="메리츠화재">메리츠화재</button>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">상품 종류</label>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="filter-btn active px-4 py-2 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium" data-filter="product" data-value="all">전체</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium" data-filter="product" data-value="실손보험">실손보험</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium" data-filter="product" data-value="암보험">암보험</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium" data-filter="product" data-value="종신보험">종신보험</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium" data-filter="product" data-value="상해보험">상해보험</button>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="relative">
+                    <input type="text" id="search-input" placeholder="사례 검색..." class="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div id="cases-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            <div id="no-results" class="hidden text-center py-20">
+                <div class="inline-block p-8 bg-blue-50 rounded-full mb-6">
+                    <i class="fas fa-search text-6xl text-blue-300"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-700 mb-4">검색 결과가 없습니다</h3>
+                <p class="text-gray-600">다른 키워드로 검색해보세요</p>
+            </div>
+        </div>
+    </section>
+
+    <div id="case-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-8">
+                <div class="flex justify-between items-start mb-6">
+                    <h2 id="modal-title" class="text-3xl font-bold text-gray-800"></h2>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                <div id="modal-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-gray-300 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-white text-xl font-bold mb-4"><i class="fas fa-shield-alt mr-2"></i>보험 LOUNGE</h3>
+                    <p class="text-gray-400">인카금융서비스와 함께하는<br>신뢰할 수 있는 보험 플랫폼</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-4">빠른 링크</h4>
+                    <ul class="space-y-2">
+                        <li><a href="fa-intro.html" class="hover:text-white transition">FA 소개</a></li>
+                        <li><a href="claim-cases.html" class="hover:text-white transition">청구 사례</a></li>
+                        <li><a href="insurance-info.html" class="hover:text-white transition">보험 정보</a></li>
+                        <li><a href="fa-apply.html" class="hover:text-white transition">FA 신청</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-4">개인정보 처리방침</h4>
+                    <p class="text-sm text-gray-400">본 사이트는 오픈채팅 링크만 제공하며,<br>별도의 개인정보를 수집하지 않습니다.</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 보험 LOUNGE. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const claimCases = [
+            { id: 1, company: '삼성화재', product: '실손보험', title: '교통사고 입원 치료', claimAmount: 3500000, paidAmount: 3200000, date: '2026.01.15', description: '교통사고로 인한 골절 수술 및 입원 치료', details: '신호 대기 중 추돌 사고로 다리 골절 발생. 수술 및 2주간 입원 치료를 받았으며, 실손보험으로 치료비의 90% 이상을 보장받았습니다.' },
+            { id: 2, company: '현대해상', product: '암보험', title: '갑상선암 진단', claimAmount: 15000000, paidAmount: 15000000, date: '2026.01.10', description: '조기 발견된 갑상선암 진단 및 치료', details: '정기 건강검진에서 갑상선암이 발견되어 즉시 수술을 받았습니다. 암 진단비 1,500만원을 전액 지급받아 치료비와 요양 기간 동안의 생활비로 사용할 수 있었습니다.' },
+            { id: 3, company: 'KB손해보험', product: '실손보험', title: '급성 맹장염 수술', claimAmount: 2800000, paidAmount: 2500000, date: '2026.01.05', description: '응급 맹장 수술 및 회복 치료', details: '갑작스런 복통으로 응급실에 내원하여 급성 맹장염 진단을 받고 즉시 수술을 받았습니다.' },
+            { id: 4, company: '메리츠화재', product: '종신보험', title: '뇌졸중 진단', claimAmount: 50000000, paidAmount: 50000000, date: '2025.12.28', description: '뇌졸중 진단 및 중환자실 치료', details: '갑자스런 뇌졸중으로 중환자실 치료를 받았습니다. 종신보험의 특약으로 진단비 5,000만원을 받아 장기 치료와 재활에 큰 도움이 되었습니다.' },
+            { id: 5, company: '삼성화재', product: '상해보험', title: '스키 사고 골절', claimAmount: 4200000, paidAmount: 3800000, date: '2025.12.20', description: '스키 활동 중 발생한 다리 골절', details: '스키장에서 넘어지며 다리가 골절되어 수술 및 깁스 치료를 받았습니다.' },
+            { id: 6, company: '현대해상', product: '실손보험', title: '위내시경 용종 제거', claimAmount: 1200000, paidAmount: 1100000, date: '2025.12.15', description: '위 용종 내시경 절제술', details: '건강검진에서 발견된 위 용종을 내시경으로 제거했습니다.' },
+            { id: 7, company: 'KB손해보험', product: '암보험', title: '유방암 치료', claimAmount: 30000000, paidAmount: 30000000, date: '2025.12.10', description: '유방암 진단 및 항암 치료', details: '유방 검진에서 암이 발견되어 수술과 항암 치료를 받았습니다.' },
+            { id: 8, company: '메리츠화재', product: '실손보험', title: '허리 디스크 수술', claimAmount: 5600000, paidAmount: 5100000, date: '2025.12.05', description: '척추 디스크 수술 및 재활 치료', details: '만성 허리 통증으로 MRI 검사 결과 디스크가 발견되어 수술을 받았습니다.' },
+            { id: 9, company: '삼성화재', product: '암보험', title: '대장암 진단', claimAmount: 20000000, paidAmount: 20000000, date: '2025.11.28', description: '대장암 조기 발견 및 수술', details: '대장 내시경 검사에서 암이 발견되어 즉시 수술을 받았습니다.' }
+        ];
+
+        let currentFilter = { company: 'all', product: 'all' };
+
+        function loadCases(filteredCases = claimCases) {
+            const container = document.getElementById('cases-container');
+            const noResults = document.getElementById('no-results');
+            
+            if (filteredCases.length === 0) {
+                container.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+            
+            noResults.classList.add('hidden');
+            container.innerHTML = '';
+            
+            filteredCases.forEach(caseItem => {
+                const caseHTML = `
+                    <div class="case-card bg-white rounded-xl shadow-lg overflow-hidden" data-case-id="${caseItem.id}">
+                        <div class="p-6">
+                            <div class="flex items-start justify-between mb-4">
+                                <div>
+                                    <span class="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold mb-2">${caseItem.company}</span>
+                                    <span class="inline-block bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-semibold mb-2 ml-2">${caseItem.product}</span>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">${caseItem.title}</h3>
+                            <p class="text-gray-600 mb-4">${caseItem.description}</p>
+                            <div class="space-y-2 mb-4">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-600">청구 금액:</span>
+                                    <span class="font-semibold text-gray-800">${caseItem.claimAmount.toLocaleString()}원</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-600">지급 금액:</span>
+                                    <span class="font-bold text-blue-600">${caseItem.paidAmount.toLocaleString()}원</span>
+                                </div>
+                            </div>
+                            <div class="amount-badge text-white px-4 py-3 rounded-lg text-center">
+                                <div class="text-sm opacity-90">지급률</div>
+                                <div class="text-2xl font-bold">${Math.round((caseItem.paidAmount / caseItem.claimAmount) * 100)}%</div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t flex justify-between items-center">
+                                <span class="text-sm text-gray-500">${caseItem.date}</span>
+                                <button class="text-blue-600 hover:text-blue-700 font-semibold text-sm">자세히 보기 <i class="fas fa-arrow-right ml-1"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', caseHTML);
+            });
+            
+            document.querySelectorAll('.case-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const caseId = parseInt(this.dataset.caseId);
+                    showCaseDetail(caseId);
+                });
+            });
+        }
+
+        function filterCases() {
+            let filtered = claimCases;
+            if (currentFilter.company !== 'all') filtered = filtered.filter(c => c.company === currentFilter.company);
+            if (currentFilter.product !== 'all') filtered = filtered.filter(c => c.product === currentFilter.product);
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            if (searchTerm) {
+                filtered = filtered.filter(c => 
+                    c.title.toLowerCase().includes(searchTerm) ||
+                    c.description.toLowerCase().includes(searchTerm) ||
+                    c.details.toLowerCase().includes(searchTerm)
+                );
+            }
+            loadCases(filtered);
+        }
+
+        function showCaseDetail(caseId) {
+            const caseItem = claimCases.find(c => c.id === caseId);
+            if (!caseItem) return;
+            
+            const modal = document.getElementById('case-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalContent = document.getElementById('modal-content');
+            
+            modalTitle.textContent = caseItem.title;
+            modalContent.innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex gap-2">
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">${caseItem.company}</span>
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-semibold">${caseItem.product}</span>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <div class="text-sm text-gray-600 mb-1">청구 금액</div>
+                                <div class="text-2xl font-bold text-gray-800">${caseItem.claimAmount.toLocaleString()}원</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-600 mb-1">지급 금액</div>
+                                <div class="text-2xl font-bold text-blue-600">${caseItem.paidAmount.toLocaleString()}원</div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-200">
+                            <div class="text-sm text-gray-600 mb-1">지급률</div>
+                            <div class="text-3xl font-bold text-purple-600">${Math.round((caseItem.paidAmount / caseItem.claimAmount) * 100)}%</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800 mb-2">상세 내용</h4>
+                        <p class="text-gray-700 leading-relaxed">${caseItem.details}</p>
+                    </div>
+                    <div class="text-sm text-gray-500 pt-4 border-t">청구 일자: ${caseItem.date}</div>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCases();
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const filterType = this.dataset.filter;
+                    const filterValue = this.dataset.value;
+                    document.querySelectorAll(`[data-filter="${filterType}"]`).forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    currentFilter[filterType] = filterValue;
+                    filterCases();
+                });
+            });
+            document.getElementById('search-input').addEventListener('input', filterCases);
+            document.getElementById('close-modal').addEventListener('click', function() {
+                document.getElementById('case-modal').classList.add('hidden');
+            });
+            document.getElementById('case-modal').addEventListener('click', function(e) {
+                if (e.target === this) this.classList.add('hidden');
+            });
+            document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+                const menu = document.getElementById('mobile-menu');
+                menu.classList.toggle('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
