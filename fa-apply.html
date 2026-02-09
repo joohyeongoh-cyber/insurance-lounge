@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FA 신청 - 보험 LOUNGE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm fixed w-full top-0 z-50">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-2xl font-bold text-indigo-600">보험 LOUNGE</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-indigo-600">홈</a>
+                    <a href="fa-intro.html" class="text-gray-700 hover:text-indigo-600">FA 소개</a>
+                    <a href="claim-cases.html" class="text-gray-700 hover:text-indigo-600">청구 사례</a>
+                    <a href="insurance-info.html" class="text-gray-700 hover:text-indigo-600">보험 정보</a>
+                    <a href="fa-apply.html" class="text-indigo-600 font-semibold">FA 신청</a>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="index.html" class="block py-2 text-gray-700">홈</a>
+                <a href="fa-intro.html" class="block py-2 text-gray-700">FA 소개</a>
+                <a href="claim-cases.html" class="block py-2 text-gray-700">청구 사례</a>
+                <a href="insurance-info.html" class="block py-2 text-gray-700">보험 정보</a>
+                <a href="fa-apply.html" class="block py-2 text-indigo-600 font-semibold">FA 신청</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="pt-24 pb-16">
+        <!-- Page Header -->
+        <section class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-16">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">FA 신청</h1>
+                <p class="text-xl opacity-90">보험 LOUNGE와 함께 성장하세요</p>
+            </div>
+        </section>
+
+        <div class="container mx-auto px-4 mt-12 max-w-3xl">
+            <!-- Progress Steps -->
+            <div class="mb-12">
+                <div class="flex justify-between items-center">
+                    <div class="flex flex-col items-center flex-1">
+                        <div id="step1-circle" class="w-12 h-12 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold mb-2">1</div>
+                        <div class="text-sm font-semibold">기본 정보</div>
+                    </div>
+                    <div class="flex-1 h-1 bg-gray-300 mx-2">
+                        <div id="progress1" class="h-1 bg-indigo-600 w-0 transition-all duration-300"></div>
+                    </div>
+                    <div class="flex flex-col items-center flex-1">
+                        <div id="step2-circle" class="w-12 h-12 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center font-bold mb-2">2</div>
+                        <div class="text-sm">추가 정보</div>
+                    </div>
+                    <div class="flex-1 h-1 bg-gray-300 mx-2">
+                        <div id="progress2" class="h-1 bg-indigo-600 w-0 transition-all duration-300"></div>
+                    </div>
+                    <div class="flex flex-col items-center flex-1">
+                        <div id="step3-circle" class="w-12 h-12 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center font-bold mb-2">3</div>
+                        <div class="text-sm">동의 및 제출</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Application Form -->
+            <form id="fa-application-form" class="bg-white rounded-xl shadow-md p-8">
+                <!-- Step 1: Basic Info -->
+                <div id="step1" class="step-content">
+                    <h2 class="text-2xl font-bold mb-6">기본 정보</h2>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">이름 <span class="text-red-500">*</span></label>
+                        <input type="text" name="name" required class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="홍길동">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">휴대폰 번호 <span class="text-red-500">*</span></label>
+                        <input type="tel" name="phone" required class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="010-1234-5678">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">소속 회사 <span class="text-red-500">*</span></label>
+                        <input type="text" name="company" required class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="인카금융서비스">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">사번 <span class="text-red-500">*</span></label>
+                        <input type="text" name="employeeId" required class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="EMP12345">
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="button" onclick="nextStep(2)" class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 font-semibold">다음</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Additional Info -->
+                <div id="step2" class="step-content hidden">
+                    <h2 class="text-2xl font-bold mb-6">추가 정보</h2>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">이메일 (선택)</label>
+                        <input type="email" name="email" class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="example@email.com">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">지점 (선택)</label>
+                        <select name="branch" class="w-full border border-gray-300 rounded-lg px-4 py-3">
+                            <option value="">선택하세요</option>
+                            <option value="서울">서울</option>
+                            <option value="경기">경기</option>
+                            <option value="인천">인천</option>
+                            <option value="부산">부산</option>
+                            <option value="대구">대구</option>
+                            <option value="대전">대전</option>
+                            <option value="광주">광주</option>
+                            <option value="울산">울산</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">주민등록번호 앞자리 <span class="text-red-500">*</span></label>
+                        <input type="text" name="rrnFront" required maxlength="6" class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="123456">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">주민등록번호 뒷자리 <span class="text-red-500">*</span></label>
+                        <input type="password" name="rrnBack" required maxlength="7" class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="•••••••">
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button type="button" onclick="prevStep(1)" class="bg-gray-300 text-gray-700 px-8 py-3 rounded-lg hover:bg-gray-400 font-semibold">이전</button>
+                        <button type="button" onclick="nextStep(3)" class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 font-semibold">다음</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Consent & Submit -->
+                <div id="step3" class="step-content hidden">
+                    <h2 class="text-2xl font-bold mb-6">동의 및 제출</h2>
+
+                    <div class="bg-gray-50 rounded-lg p-6 mb-6 max-h-64 overflow-y-auto">
+                        <h3 class="font-semibold mb-4">개인정보 수집 및 이용 동의</h3>
+                        <p class="text-sm text-gray-700 mb-4">
+                            보험 LOUNGE(이하 '회사')는 FA 신청을 위해 아래와 같이 개인정보를 수집 및 이용합니다.
+                        </p>
+                        <ul class="text-sm text-gray-700 space-y-2 list-disc pl-5">
+                            <li><strong>수집 항목:</strong> 이름, 휴대폰 번호, 이메일, 소속 회사, 사번, 지점, 주민등록번호</li>
+                            <li><strong>수집 목적:</strong> FA 신청 검토 및 승인 처리</li>
+                            <li><strong>보유 기간:</strong> 신청 처리 완료 후 3년</li>
+                            <li><strong>거부 권리:</strong> 귀하는 개인정보 제공을 거부할 권리가 있으며, 거부 시 신청이 제한될 수 있습니다.</li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="privacyAgree" required class="w-5 h-5 text-indigo-600">
+                            <span class="ml-3 text-sm">개인정보 수집 및 이용에 동의합니다 <span class="text-red-500">*</span></span>
+                        </label>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button type="button" onclick="prevStep(2)" class="bg-gray-300 text-gray-700 px-8 py-3 rounded-lg hover:bg-gray-400 font-semibold">이전</button>
+                        <button type="submit" class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 font-semibold">신청 완료</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Status Check Link -->
+            <div class="text-center mt-8">
+                <a href="fa-apply-status.html" class="text-indigo-600 hover:text-indigo-700 font-semibold">신청 상태 확인하기 →</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">보험 LOUNGE</h3>
+                    <p class="text-gray-400">인카금융서비스 소속 전문 FA들이 함께합니다</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">빠른 링크</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white">홈</a></li>
+                        <li><a href="fa-intro.html" class="text-gray-400 hover:text-white">FA 소개</a></li>
+                        <li><a href="fa-apply.html" class="text-gray-400 hover:text-white">FA 신청</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">개인정보 처리방침</h4>
+                    <p class="text-sm text-gray-400">FA 신청 시 제공된 정보는 신청 검토 목적으로만 사용됩니다.</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 보험 LOUNGE. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let currentStep = 1;
+
+        function nextStep(step) {
+            // Validate current step
+            const currentStepEl = document.getElementById(`step${currentStep}`);
+            const inputs = currentStepEl.querySelectorAll('input[required], select[required]');
+            let valid = true;
+
+            inputs.forEach(input => {
+                if (!input.value) {
+                    valid = false;
+                    input.classList.add('border-red-500');
+                } else {
+                    input.classList.remove('border-red-500');
+                }
+            });
+
+            if (!valid) {
+                alert('필수 항목을 모두 입력해주세요.');
+                return;
+            }
+
+            // Hide current step
+            document.getElementById(`step${currentStep}`).classList.add('hidden');
+            
+            // Show next step
+            document.getElementById(`step${step}`).classList.remove('hidden');
+            
+            // Update progress
+            updateProgress(step);
+            
+            currentStep = step;
+        }
+
+        function prevStep(step) {
+            document.getElementById(`step${currentStep}`).classList.add('hidden');
+            document.getElementById(`step${step}`).classList.remove('hidden');
+            updateProgress(step);
+            currentStep = step;
+        }
+
+        function updateProgress(step) {
+            // Update circles
+            for (let i = 1; i <= 3; i++) {
+                const circle = document.getElementById(`step${i}-circle`);
+                if (i <= step) {
+                    circle.classList.remove('bg-gray-300', 'text-gray-600');
+                    circle.classList.add('bg-indigo-600', 'text-white');
+                } else {
+                    circle.classList.remove('bg-indigo-600', 'text-white');
+                    circle.classList.add('bg-gray-300', 'text-gray-600');
+                }
+            }
+
+            // Update progress bars
+            if (step >= 2) {
+                document.getElementById('progress1').style.width = '100%';
+            } else {
+                document.getElementById('progress1').style.width = '0%';
+            }
+
+            if (step >= 3) {
+                document.getElementById('progress2').style.width = '100%';
+            } else {
+                document.getElementById('progress2').style.width = '0%';
+            }
+        }
+
+        // Form submission
+        document.getElementById('fa-application-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Collect form data
+            const formData = new FormData(e.target);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            // Generate application ID
+            const applicationId = 'FA' + Date.now();
+            data.applicationId = applicationId;
+            data.status = 'PENDING';
+            data.submittedAt = new Date().toISOString();
+
+            // Save to localStorage
+            let applications = JSON.parse(localStorage.getItem('fa_applications') || '[]');
+            applications.push(data);
+            localStorage.setItem('fa_applications', JSON.stringify(applications));
+
+            // Redirect to status page
+            alert(`신청이 완료되었습니다!\n신청 번호: ${applicationId}\n\n신청 상태는 신청 번호로 확인하실 수 있습니다.`);
+            window.location.href = `fa-apply-status.html?id=${applicationId}`;
+        });
+
+        // Mobile menu
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
