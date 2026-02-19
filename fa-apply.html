@@ -92,7 +92,7 @@
 
                     <div class="mb-4">
                         <label class="block text-sm font-medium mb-2">소속 회사 <span class="text-red-500">*</span></label>
-                        <input type="text" name="company" required class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="인카금융서비스">
+                        <input type="text" name="company" required class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="예: 삼성화재, KB손해보험 등">
                     </div>
 
                     <div class="mb-4">
@@ -106,8 +106,8 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-sm font-medium mb-2">지점 (선택)</label>
-                        <select name="branch" class="w-full border border-gray-300 rounded-lg px-4 py-3">
+                        <label class="block text-sm font-medium mb-2">활동 지역 <span class="text-red-500">*</span></label>
+                        <select name="region" id="region-select" required class="w-full border border-gray-300 rounded-lg px-4 py-3" onchange="updateBranches()">
                             <option value="">선택하세요</option>
                             <option value="서울">서울</option>
                             <option value="경기">경기</option>
@@ -117,6 +117,22 @@
                             <option value="대전">대전</option>
                             <option value="광주">광주</option>
                             <option value="울산">울산</option>
+                            <option value="세종">세종</option>
+                            <option value="강원">강원</option>
+                            <option value="충북">충북</option>
+                            <option value="충남">충남</option>
+                            <option value="전북">전북</option>
+                            <option value="전남">전남</option>
+                            <option value="경북">경북</option>
+                            <option value="경남">경남</option>
+                            <option value="제주">제주</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">지점 (선택)</label>
+                        <select name="branch" id="branch-select" class="w-full border border-gray-300 rounded-lg px-4 py-3">
+                            <option value="">활동 지역을 먼저 선택하세요</option>
                         </select>
                     </div>
 
@@ -222,7 +238,7 @@
             <div class="grid md:grid-cols-3 gap-8">
                 <div>
                     <h3 class="text-xl font-bold mb-4">보험 LOUNGE</h3>
-                    <p class="text-gray-400">인카금융서비스 소속 전문 보험 전문가들이 함께합니다</p>
+                    <p class="text-gray-400">신뢰할 수 있는 보험 전문가 플랫폼</p>
                 </div>
                 <div>
                     <h4 class="font-semibold mb-4">빠른 링크</h4>
@@ -312,6 +328,46 @@
             }
         }
 
+        // Branch data by region
+        const branchData = {
+            "서울": ["강남지점", "강북지점", "강서지점", "강동지점", "송파지점", "마포지점", "영등포지점", "종로지점", "서초지점", "용산지점"],
+            "경기": ["수원지점", "성남지점", "고양지점", "용인지점", "부천지점", "안산지점", "화성지점", "남양주지점", "평택지점", "의정부지점"],
+            "인천": ["부평지점", "남동지점", "연수지점", "계양지점", "서구지점"],
+            "부산": ["해운대지점", "부산진지점", "동래지점", "남구지점", "사상지점", "북구지점"],
+            "대구": ["수성지점", "달서지점", "북구지점", "동구지점", "중구지점"],
+            "대전": ["서구지점", "유성지점", "중구지점", "동구지점", "대덕지점"],
+            "광주": ["광산지점", "서구지점", "남구지점", "북구지점", "동구지점"],
+            "울산": ["남구지점", "북구지점", "중구지점", "울주지점"],
+            "세종": ["세종시지점"],
+            "강원": ["춘천지점", "원주지점", "강릉지점", "동해지점", "속초지점"],
+            "충북": ["청주지점", "충주지점", "제천지점"],
+            "충남": ["천안지점", "아산지점", "당진지점", "서산지점", "보령지점"],
+            "전북": ["전주지점", "익산지점", "군산지점", "정읍지점"],
+            "전남": ["목포지점", "여수지점", "순천지점", "나주지점", "광양지점"],
+            "경북": ["포항지점", "경주지점", "구미지점", "안동지점"],
+            "경남": ["창원지점", "김해지점", "진주지점", "양산지점", "거제지점"],
+            "제주": ["제주시지점", "서귀포지점"]
+        };
+
+        function updateBranches() {
+            const region = document.getElementById('region-select').value;
+            const branchSelect = document.getElementById('branch-select');
+            
+            // Clear existing options
+            branchSelect.innerHTML = '<option value="">선택하세요</option>';
+            
+            if (region && branchData[region]) {
+                branchData[region].forEach(branch => {
+                    const option = document.createElement('option');
+                    option.value = branch;
+                    option.textContent = branch;
+                    branchSelect.appendChild(option);
+                });
+            } else {
+                branchSelect.innerHTML = '<option value="">활동 지역을 먼저 선택하세요</option>';
+            }
+        }
+
         // Form submission
         document.getElementById('fa-application-form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -359,6 +415,11 @@
         // Mobile menu
         document.getElementById('mobile-menu-btn').addEventListener('click', () => {
             document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
+
         });
     </script>
 </body>

@@ -13,16 +13,16 @@
         }
         
         .hero-gradient {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0891b2 0%, #06b6d4 50%, #0e7490 100%);
         }
         
         .card-hover {
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
         }
         
         .nav-link {
@@ -37,12 +37,33 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: #667eea;
+            background: linear-gradient(90deg, #06b6d4, #0891b2);
             transition: width 0.3s ease;
         }
         
         .nav-link:hover::after {
             width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu {
+                animation: slideDown 0.3s ease-out;
+            }
+            
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        }
+        
+        .backdrop-blur-sm {
+            backdrop-filter: blur(8px);
         }
     </style>
 </head>
@@ -52,18 +73,18 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <a href="index.html" class="text-2xl font-bold text-purple-600">
+                    <a href="index.html" class="text-2xl font-bold text-cyan-600">
                         <i class="fas fa-shield-alt mr-2"></i>보험 LOUNGE
                     </a>
                 </div>
                 <div class="hidden md:flex space-x-8">
-                    <a href="index.html" class="nav-link text-gray-700 hover:text-purple-600 font-medium">홈</a>
-                    <a href="fa-intro.html" class="nav-link text-gray-700 hover:text-purple-600 font-medium">보험 전문가 소개</a>
-                    <a href="contract-cases.html" class="nav-link text-gray-700 hover:text-purple-600 font-medium">계약 사례</a>
-                    <a href="claim-cases.html" class="nav-link text-gray-700 hover:text-purple-600 font-medium">청구 사례</a>
-                    <a href="insurance-info.html" class="nav-link text-gray-700 hover:text-purple-600 font-medium">보험 정보</a>
-                    <a href="sales-issues.html" class="nav-link text-gray-700 hover:text-purple-600 font-medium">이달의 영업 이슈</a>
-                    <a href="fa-apply.html" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition font-medium">보험 전문가 신청</a>
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-cyan-600 font-medium">홈</a>
+                    <a href="fa-intro.html" class="nav-link text-gray-700 hover:text-cyan-600 font-medium">보험 전문가 소개</a>
+                    <a href="contract-cases.html" class="nav-link text-gray-700 hover:text-cyan-600 font-medium">계약 사례</a>
+                    <a href="claim-cases.html" class="nav-link text-gray-700 hover:text-cyan-600 font-medium">청구 사례</a>
+                    <a href="insurance-info.html" class="nav-link text-gray-700 hover:text-cyan-600 font-medium">보험 정보</a>
+                    <a href="sales-issues.html" class="nav-link text-gray-700 hover:text-cyan-600 font-medium">이달의 영업 이슈</a>
+                    <a href="fa-apply.html" class="bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 transition font-medium">보험 전문가 신청</a>
                 </div>
                 <div class="md:hidden">
                     <button id="mobile-menu-btn" class="text-gray-700">
@@ -74,146 +95,289 @@
         </div>
         
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t mobile-menu shadow-lg">
             <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="index.html" class="block px-3 py-2 text-gray-700 hover:bg-purple-50 rounded">홈</a>
-                <a href="fa-intro.html" class="block px-3 py-2 text-gray-700 hover:bg-purple-50 rounded">보험 전문가 소개</a>
-                <a href="contract-cases.html" class="block px-3 py-2 text-gray-700 hover:bg-purple-50 rounded">계약 사례</a>
-                <a href="claim-cases.html" class="block px-3 py-2 text-gray-700 hover:bg-purple-50 rounded">청구 사례</a>
-                <a href="insurance-info.html" class="block px-3 py-2 text-gray-700 hover:bg-purple-50 rounded">보험 정보</a>
-                <a href="sales-issues.html" class="block px-3 py-2 text-gray-700 hover:bg-purple-50 rounded">이달의 영업 이슈</a>
-                <a href="fa-apply.html" class="block px-3 py-2 bg-purple-600 text-white rounded text-center">보험 전문가 신청</a>
+                <a href="index.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded-lg font-medium">홈</a>
+                <a href="fa-intro.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded-lg font-medium">보험 전문가 소개</a>
+                <a href="contract-cases.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded-lg font-medium">계약 사례</a>
+                <a href="claim-cases.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded-lg font-medium">청구 사례</a>
+                <a href="insurance-info.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded-lg font-medium">보험 정보</a>
+                <a href="sales-issues.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded-lg font-medium">이달의 영업 이슈</a>
+                <a href="fa-apply.html" class="block px-3 py-3 mt-2 bg-cyan-600 text-white rounded-lg text-center font-semibold hover:bg-cyan-700">보험 전문가 신청</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero-gradient text-white pt-24 pb-20 mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h1 class="text-4xl md:text-6xl font-bold mb-6">
+    <section class="relative hero-gradient text-white pt-32 pb-24 mt-16 overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=1920&q=80" 
+                 alt="Professional Insurance Team" 
+                 class="w-full h-full object-cover opacity-20">
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="mb-6 inline-block">
+                    <div class="bg-white bg-opacity-20 backdrop-blur-sm px-6 py-3 rounded-full border border-white border-opacity-30">
+                        <span class="text-sm md:text-base font-medium"><i class="fas fa-shield-alt mr-2"></i>신뢰할 수 있는 보험 플랫폼</span>
+                    </div>
+                </div>
+                
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
                     당신의 보험, 더 쉽고 편하게
                 </h1>
-                <p class="text-xl md:text-2xl mb-8 text-purple-100">
-                    전문 보험 전문가들이 함께합니다
+                
+                <p class="text-lg md:text-2xl mb-10 text-cyan-50 max-w-3xl mx-auto leading-relaxed">
+                    전문 보험 전문가들이 맞춤형 상담부터 청구까지 함께합니다
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="fa-intro.html" class="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-purple-50 transition shadow-lg">
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="fa-intro.html" class="w-full sm:w-auto bg-white text-cyan-600 px-10 py-4 rounded-lg font-semibold text-lg hover:bg-cyan-50 transition shadow-2xl flex items-center justify-center gap-2">
+                        <i class="fas fa-users"></i>
                         보험 전문가 만나기
                     </a>
-                    <a href="fa-apply.html" class="bg-purple-700 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-purple-800 transition shadow-lg border-2 border-white">
+                    <a href="fa-apply.html" class="w-full sm:w-auto bg-transparent text-white px-10 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-cyan-600 transition shadow-2xl border-2 border-white flex items-center justify-center gap-2">
+                        <i class="fas fa-user-plus"></i>
                         보험 전문가 지원하기
                     </a>
                 </div>
+                
+                <!-- Stats -->
+                <div class="mt-16 grid grid-cols-3 gap-4 md:gap-8 max-w-2xl mx-auto">
+                    <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-4 md:p-6 border border-white border-opacity-20">
+                        <div class="text-2xl md:text-4xl font-bold mb-1">100+</div>
+                        <div class="text-xs md:text-sm text-cyan-100">전문가</div>
+                    </div>
+                    <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-4 md:p-6 border border-white border-opacity-20">
+                        <div class="text-2xl md:text-4xl font-bold mb-1">1,000+</div>
+                        <div class="text-xs md:text-sm text-cyan-100">상담 건수</div>
+                    </div>
+                    <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-4 md:p-6 border border-white border-opacity-20">
+                        <div class="text-2xl md:text-4xl font-bold mb-1">98%</div>
+                        <div class="text-xs md:text-sm text-cyan-100">만족도</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
             </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section class="py-20">
+    <section class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-4">
                     보험 LOUNGE만의 특별함
                 </h2>
-                <p class="text-gray-600 text-lg">
+                <p class="text-gray-600 text-lg md:text-xl">
                     전문성과 신뢰를 바탕으로 최고의 보험 서비스를 제공합니다
                 </p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
                 <!-- Feature 1 -->
-                <div class="card-hover bg-white p-8 rounded-xl shadow-lg text-center">
-                    <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-user-tie text-purple-600 text-2xl"></i>
+                <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden group">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1573496799652-408c2ac9fe98?auto=format&fit=crop&w=800&q=80" 
+                             alt="보험 전문가" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-cyan-600 to-transparent opacity-70"></div>
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mb-2">
+                                <i class="fas fa-user-tie text-cyan-600 text-xl"></i>
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">전문 보험 전문가 소개</h3>
-                    <p class="text-gray-600">
-                        경력과 전문성을 갖춘 보험 전문가들의 상세한 프로필을 확인하세요
-                    </p>
-                    <a href="fa-intro.html" class="inline-block mt-6 text-purple-600 font-semibold hover:text-purple-700">
-                        자세히 보기 <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">전문 보험 전문가</h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            경력과 전문성을 갖춘 보험 전문가 프로필 확인
+                        </p>
+                        <a href="fa-intro.html" class="inline-flex items-center text-cyan-600 font-semibold hover:text-cyan-700 text-sm">
+                            자세히 보기 <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Feature 2 -->
-                <div class="card-hover bg-white p-8 rounded-xl shadow-lg text-center">
-                    <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-file-contract text-purple-600 text-2xl"></i>
+                <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden group">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80" 
+                             alt="계약 사례" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-blue-600 to-transparent opacity-70"></div>
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mb-2">
+                                <i class="fas fa-file-contract text-blue-600 text-xl"></i>
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">계약 사례</h3>
-                    <p class="text-gray-600">
-                        전문가들의 실제 계약 사례를 통해 나에게 맞는 보험 플랜을 확인하세요
-                    </p>
-                    <a href="contract-cases.html" class="inline-block mt-6 text-purple-600 font-semibold hover:text-purple-700">
-                        사례 보기 <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">계약 사례</h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            전문가들의 실제 계약 사례 및 성공 스토리
+                        </p>
+                        <a href="contract-cases.html" class="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700 text-sm">
+                            사례 보기 <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Feature 3 -->
-                <div class="card-hover bg-white p-8 rounded-xl shadow-lg text-center">
-                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-file-invoice-dollar text-blue-600 text-2xl"></i>
+                <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden group">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80" 
+                             alt="청구 사례" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-emerald-600 to-transparent opacity-70"></div>
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mb-2">
+                                <i class="fas fa-file-invoice-dollar text-emerald-600 text-xl"></i>
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">청구 사례</h3>
-                    <p class="text-gray-600">
-                        보험사별, 상품별 실제 청구 사례를 통해 보험의 실제 혜택을 확인하세요
-                    </p>
-                    <a href="claim-cases.html" class="inline-block mt-6 text-blue-600 font-semibold hover:text-blue-700">
-                        사례 보기 <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">청구 사례</h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            보험사별 실제 청구 사례 및 보험금 지급 사례
+                        </p>
+                        <a href="claim-cases.html" class="inline-flex items-center text-emerald-600 font-semibold hover:text-emerald-700 text-sm">
+                            사례 보기 <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Feature 4 -->
-                <div class="card-hover bg-white p-8 rounded-xl shadow-lg text-center">
-                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-newspaper text-green-600 text-2xl"></i>
+                <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden group">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80" 
+                             alt="보험 정보" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-teal-600 to-transparent opacity-70"></div>
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mb-2">
+                                <i class="fas fa-newspaper text-teal-600 text-xl"></i>
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">보험 정보</h3>
-                    <p class="text-gray-600">
-                        실손보험 개정, 새로운 상품 등 최신 보험 뉴스와 정보를 빠르게 받아보세요
-                    </p>
-                    <a href="insurance-info.html" class="inline-block mt-6 text-green-600 font-semibold hover:text-green-700">
-                        정보 확인 <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">보험 정보</h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            실손보험 개정 등 최신 보험 뉴스와 정보
+                        </p>
+                        <a href="insurance-info.html" class="inline-flex items-center text-teal-600 font-semibold hover:text-teal-700 text-sm">
+                            정보 확인 <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Feature 5 - 이달의 영업 이슈 -->
-                <div class="card-hover bg-white p-8 rounded-xl shadow-lg text-center">
-                    <div class="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-lightbulb text-orange-600 text-2xl"></i>
+                <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden group">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80" 
+                             alt="이달의 영업 이슈" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-orange-600 to-transparent opacity-70"></div>
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mb-2">
+                                <i class="fas fa-lightbulb text-orange-600 text-xl"></i>
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">이달의 영업 이슈</h3>
-                    <p class="text-gray-600">
-                        매달 고객의 needs를 자극할 수 있는 영업 이슈와 플랜을 확인하세요
-                    </p>
-                    <a href="sales-issues.html" class="inline-block mt-6 text-orange-600 font-semibold hover:text-orange-700">
-                        이슈 보기 <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">이달의 영업 이슈</h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            매달 고객 needs를 자극할 수 있는 영업 플랜
+                        </p>
+                        <a href="sales-issues.html" class="inline-flex items-center text-orange-600 font-semibold hover:text-orange-700 text-sm">
+                            이슈 보기 <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- CTA Section -->
-    <section class="bg-purple-600 text-white py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold mb-6">
-                인카금융서비스 보험 전문가로 함께하세요
+    <section class="relative bg-gradient-to-r from-cyan-600 to-cyan-700 text-white py-20 overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"1\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+        </div>
+        
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <div class="inline-block mb-4">
+                <div class="bg-white bg-opacity-20 backdrop-blur-sm px-4 py-2 rounded-full border border-white border-opacity-30">
+                    <span class="text-sm font-medium"><i class="fas fa-star mr-2"></i>함께 성장하는 보험 전문가 커뮤니티</span>
+                </div>
+            </div>
+            
+            <h2 class="text-3xl md:text-5xl font-bold mb-6">
+                보험 전문가로 함께하세요
             </h2>
-            <p class="text-xl mb-8 text-purple-100">
+            
+            <p class="text-lg md:text-xl mb-10 text-cyan-50 max-w-3xl mx-auto">
                 전문적인 교육과 지원 시스템으로 성공적인 보험 전문가 생활을 시작하세요
             </p>
-            <a href="fa-apply.html" class="inline-block bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-purple-50 transition shadow-lg">
-                보험 전문가 신청하기 <i class="fas fa-arrow-right ml-2"></i>
-            </a>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="fa-apply.html" class="w-full sm:w-auto bg-white text-cyan-600 px-10 py-4 rounded-lg font-semibold text-lg hover:bg-cyan-50 transition shadow-2xl flex items-center justify-center gap-2">
+                    <i class="fas fa-edit"></i>
+                    보험 전문가 신청하기
+                </a>
+                <a href="fa-intro.html" class="w-full sm:w-auto bg-transparent text-white px-10 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-cyan-600 transition shadow-2xl border-2 border-white flex items-center justify-center gap-2">
+                    <i class="fas fa-users"></i>
+                    전문가 프로필 보기
+                </a>
+            </div>
+            
+            <!-- Benefits -->
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
+                    <div class="flex items-start gap-4">
+                        <div class="bg-white rounded-lg p-3">
+                            <i class="fas fa-graduation-cap text-cyan-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold mb-2">전문 교육</h4>
+                            <p class="text-sm text-cyan-100">체계적인 교육 시스템</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
+                    <div class="flex items-start gap-4">
+                        <div class="bg-white rounded-lg p-3">
+                            <i class="fas fa-handshake text-cyan-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold mb-2">지원 시스템</h4>
+                            <p class="text-sm text-cyan-100">영업부터 정산까지</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
+                    <div class="flex items-start gap-4">
+                        <div class="bg-white rounded-lg p-3">
+                            <i class="fas fa-chart-line text-cyan-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold mb-2">성장 기회</h4>
+                            <p class="text-sm text-cyan-100">커리어 발전 지원</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-gray-300 py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
                     <h3 class="text-white text-xl font-bold mb-4">
                         <i class="fas fa-shield-alt mr-2"></i>보험 LOUNGE
@@ -226,10 +390,22 @@
                     <h4 class="text-white font-semibold mb-4">빠른 링크</h4>
                     <ul class="space-y-2">
                         <li><a href="fa-intro.html" class="hover:text-white transition">보험 전문가 소개</a></li>
+                        <li><a href="contract-cases.html" class="hover:text-white transition">계약 사례</a></li>
                         <li><a href="claim-cases.html" class="hover:text-white transition">청구 사례</a></li>
                         <li><a href="insurance-info.html" class="hover:text-white transition">보험 정보</a></li>
                         <li><a href="sales-issues.html" class="hover:text-white transition">이달의 영업 이슈</a></li>
                         <li><a href="fa-apply.html" class="hover:text-white transition">보험 전문가 신청</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-4">관리자/전문가</h4>
+                    <ul class="space-y-2">
+                        <li><a href="admin-login.html" class="hover:text-white transition text-cyan-400">
+                            <i class="fas fa-user-shield mr-1"></i>관리자 로그인
+                        </a></li>
+                        <li><a href="fa-login.html" class="hover:text-white transition text-emerald-400">
+                            <i class="fas fa-user-tie mr-1"></i>전문가 로그인
+                        </a></li>
                     </ul>
                 </div>
                 <div>
