@@ -69,22 +69,28 @@
     </div>
 
     <script>
-        // Admin credentials
-        const ADMIN_CREDENTIALS = {
-            id: 'hyeong20320@naver.com',
-            password: 'admin2024!!'
-        };
+        // Admin credentials - 여러 관리자 계정 지원
+        const ADMIN_ACCOUNTS = [
+            { id: 'hyeong20320@naver.com', password: 'admin2024!!' },
+            { id: 'hyeong20320@naver.com', password: '유호성1!!!' },
+            { id: 'admin', password: 'admin2024!!' },
+            { id: 'admin', password: '유호성1!!!' }
+        ];
 
         document.getElementById('login-form').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const adminId = document.getElementById('admin-id').value;
+            const adminId = document.getElementById('admin-id').value.trim();
             const adminPassword = document.getElementById('admin-password').value;
             const errorMessage = document.getElementById('error-message');
             const errorText = document.getElementById('error-text');
 
             // Validate credentials
-            if (adminId === ADMIN_CREDENTIALS.id && adminPassword === ADMIN_CREDENTIALS.password) {
+            const isValid = ADMIN_ACCOUNTS.some(account => 
+                account.id === adminId && account.password === adminPassword
+            );
+
+            if (isValid) {
                 // Set admin session
                 sessionStorage.setItem('admin_logged_in', 'true');
                 sessionStorage.setItem('admin_id', adminId);
@@ -99,6 +105,10 @@
                 
                 // Clear password field
                 document.getElementById('admin-password').value = '';
+                
+                // Debug info (제거 가능)
+                console.log('입력된 ID:', adminId);
+                console.log('입력된 PW 길이:', adminPassword.length);
             }
         });
     </script>

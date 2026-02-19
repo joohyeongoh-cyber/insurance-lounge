@@ -3,22 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>보험 정보 - 보험 LOUNGE</title>
+    <title>보험사 상품공시실 - 보험 LOUNGE</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        body {
+        * {
             font-family: 'Noto Sans KR', sans-serif;
+        }
+        
+        .company-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .company-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Header -->
-    <header class="bg-white shadow-sm fixed w-full top-0 z-50">
-        <nav class="container mx-auto px-4 py-4">
-            <div class="flex justify-between items-center">
-                <a href="index.html" class="flex items-center gap-3 group">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center gap-3 group">
                         <div class="relative">
                             <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl rotate-12 group-hover:rotate-0 transition-transform duration-300 shadow-lg"></div>
                             <div class="absolute inset-0 flex items-center justify-center">
@@ -29,241 +39,348 @@
                         </div>
                         <span class="text-2xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">보험 LOUNGE</span>
                     </a>
+                </div>
                 <div class="hidden md:flex space-x-6">
                     <a href="index.html" class="text-gray-700 hover:text-cyan-600 font-medium transition">홈</a>
                     <a href="fa-intro.html" class="text-gray-700 hover:text-cyan-600 font-medium transition">보험 전문가</a>
                     <a href="contract-cases.html" class="text-gray-700 hover:text-cyan-600 font-medium transition">계약 사례</a>
                     <a href="claim-cases.html" class="text-gray-700 hover:text-cyan-600 font-medium transition">청구 사례</a>
-                    <a href="insurance-info.html" class="text-gray-700 hover:text-cyan-600 font-medium transition">보험 정보</a>
+                    <a href="insurance-info.html" class="text-cyan-600 font-medium transition border-b-2 border-cyan-600">보험 정보</a>
                     <a href="inquiries.html" class="text-gray-700 hover:text-cyan-600 font-medium transition">보험 문의</a>
                     <a href="fa-apply.html" class="bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 transition font-medium">전문가 신청</a>
                 </div>
-                <button id="mobile-menu-btn" class="md:hidden">
-                    <i class="fas fa-bars text-2xl"></i>
-                </button>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-700">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
             </div>
-            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
-                <a href="index.html" class="block py-2 text-gray-700">홈</a>
-                <a href="fa-intro.html" class="block py-2 text-gray-700">보험 전문가 소개</a>
-                <a href="claim-cases.html" class="block py-2 text-gray-700">청구 사례</a>
-                <a href="insurance-info.html" class="block py-2 text-indigo-600 font-semibold">보험 정보</a>
-                <a href="fa-apply.html" class="block py-2 text-indigo-600">보험 전문가 신청</a>
-            </div>
-        </nav>
-    </header>
-
-    <main class="pt-24 pb-16">
-        <!-- Page Header -->
-        <section class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-16">
-            <div class="container mx-auto px-4 text-center">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4">보험 정보</h1>
-                <p class="text-xl opacity-90">최신 보험 뉴스와 정보</p>
-            </div>
-        </section>
-
-        <div class="container mx-auto px-4 mt-12">
-            <!-- Featured News Section -->
-            <section class="mb-12">
-                <h2 class="text-3xl font-bold mb-6">주요 보험 뉴스</h2>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- News 1 -->
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
-                        <div class="p-6">
-                            <div class="flex items-center gap-2 mb-3">
-                                <span class="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-xs font-semibold">보험저널</span>
-                                <span class="text-xs text-gray-500">최신 뉴스</span>
-                            </div>
-                            <h3 class="text-lg font-bold mb-2">보험저널에서 최신 보험 뉴스를 확인하세요</h3>
-                            <p class="text-gray-600 text-sm mb-4">보험업계의 주요 이슈와 정책 변화를 실시간으로 확인할 수 있습니다.</p>
-                            <a href="http://www.insjournal.co.kr" target="_blank" class="text-indigo-600 hover:text-indigo-700 font-semibold text-sm">
-                                보험저널 바로가기 →
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- News 2 -->
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
-                        <div class="p-6">
-                            <div class="flex items-center gap-2 mb-3">
-                                <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-xs font-semibold">금융위원회</span>
-                                <span class="text-xs text-gray-500">정책</span>
-                            </div>
-                            <h3 class="text-lg font-bold mb-2">금융위원회 보험 관련 정책</h3>
-                            <p class="text-gray-600 text-sm mb-4">보험 제도 개선과 소비자 보호를 위한 정책 정보를 확인하세요.</p>
-                            <a href="https://www.fsc.go.kr" target="_blank" class="text-indigo-600 hover:text-indigo-700 font-semibold text-sm">
-                                금융위원회 바로가기 →
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- News 3 -->
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
-                        <div class="p-6">
-                            <div class="flex items-center gap-2 mb-3">
-                                <span class="bg-teal-100 text-teal-600 px-3 py-1 rounded-full text-xs font-semibold">금융감독원</span>
-                                <span class="text-xs text-gray-500">공지</span>
-                            </div>
-                            <h3 class="text-lg font-bold mb-2">금융감독원 보험 소비자 정보</h3>
-                            <p class="text-gray-600 text-sm mb-4">보험 상품 비교와 소비자 권익 보호 정보를 확인하세요.</p>
-                            <a href="https://www.fss.or.kr" target="_blank" class="text-indigo-600 hover:text-indigo-700 font-semibold text-sm">
-                                금융감독원 바로가기 →
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- News 4 -->
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
-                        <div class="p-6">
-                            <div class="flex items-center gap-2 mb-3">
-                                <span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-xs font-semibold">보험연구원</span>
-                                <span class="text-xs text-gray-500">연구</span>
-                            </div>
-                            <h3 class="text-lg font-bold mb-2">보험연구원 연구 자료</h3>
-                            <p class="text-gray-600 text-sm mb-4">보험 산업 동향과 분석 자료를 확인하세요.</p>
-                            <a href="https://www.kiri.or.kr" target="_blank" class="text-indigo-600 hover:text-indigo-700 font-semibold text-sm">
-                                보험연구원 바로가기 →
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- News 5 -->
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
-                        <div class="p-6">
-                            <div class="flex items-center gap-2 mb-3">
-                                <span class="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-xs font-semibold">보험개발원</span>
-                                <span class="text-xs text-gray-500">통계</span>
-                            </div>
-                            <h3 class="text-lg font-bold mb-2">보험개발원 통계 정보</h3>
-                            <p class="text-gray-600 text-sm mb-4">보험 통계와 상품 정보를 확인하세요.</p>
-                            <a href="https://www.kidi.or.kr" target="_blank" class="text-indigo-600 hover:text-indigo-700 font-semibold text-sm">
-                                보험개발원 바로가기 →
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- News 6 -->
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
-                        <div class="p-6">
-                            <div class="flex items-center gap-2 mb-3">
-                                <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-semibold">생명보험협회</span>
-                                <span class="text-xs text-gray-500">협회</span>
-                            </div>
-                            <h3 class="text-lg font-bold mb-2">생명보험협회 공지사항</h3>
-                            <p class="text-gray-600 text-sm mb-4">생명보험 업계의 주요 공지와 정보를 확인하세요.</p>
-                            <a href="https://www.klia.or.kr" target="_blank" class="text-indigo-600 hover:text-indigo-700 font-semibold text-sm">
-                                생명보험협회 바로가기 →
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Insurance Companies Links -->
-            <section class="mt-16">
-                <h2 class="text-3xl font-bold mb-8 text-center">제휴 보험사 (상품 및 약관)</h2>
-                
-                <!-- 손해보험사 -->
-                <div class="bg-white rounded-xl shadow-md p-6 mb-8">
-                    <h3 class="text-xl font-bold mb-4 flex items-center">
-                        <i class="fas fa-shield-alt text-indigo-600 mr-2"></i>
-                        손해보험사 (13개)
-                    </h3>
-                    <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-3">
-                        <a href="https://www.meritzfire.com" target="_blank" class="p-3 border rounded-lg hover:bg-indigo-50 hover:border-indigo-600 transition text-center">메리츠화재</a>
-                        <a href="https://www.hwgeneralins.com" target="_blank" class="p-3 border rounded-lg hover:bg-indigo-50 hover:border-indigo-600 transition text-center">한화손해보험</a>
-                        <a href="https://www.lotteins.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-indigo-50 hover:border-indigo-600 transition text-center">롯데손해보험</a>
-                        <a href="https://www.mginsurance.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-indigo-50 hover:border-indigo-600 transition text-center">MG손해보험</a>
-                        <a href="https://www.heungkukfire.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-indigo-50 hover:border-indigo-600 transition text-center">흥국화재</a>
-                        <a href="https://www.samsungfire.com" target="_blank" class="p-3 border rounded-lg hover:bg-indigo-50 hover:border-indigo-600 transition text-center">삼성화재</a>
-                        <a href="https://www.aig.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-indigo-50 hover:border-indigo-600 transition text-center">AIG손보</a>
-                        <a href="https://www.hi.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-indigo-50 hover:border-indigo-600 transition text-center">현대해상</a>
-                        <a href="https://www.kbinsure.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-indigo-50 hover:border-indigo-600 transition text-center">KB손해보험</a>
-                        <a href="https://www.idbins.com" target="_blank" class="p-3 border rounded-lg hover:bg-indigo-50 hover:border-indigo-600 transition text-center">DB손해보험</a>
-                        <a href="https://www.hanainsure.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-indigo-50 hover:border-indigo-600 transition text-center">하나손해보험</a>
-                        <a href="https://www.nhfire.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-indigo-50 hover:border-indigo-600 transition text-center">NH농협손해보험</a>
-                        <a href="https://www.korealina.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-indigo-50 hover:border-indigo-600 transition text-center">라이나손보</a>
-                    </div>
-                </div>
-
-                <!-- 생명보험사 -->
-                <div class="bg-white rounded-xl shadow-md p-6">
-                    <h3 class="text-xl font-bold mb-4 flex items-center">
-                        <i class="fas fa-heartbeat text-emerald-600 mr-2"></i>
-                        생명보험사 (20개)
-                    </h3>
-                    <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-3">
-                        <a href="https://www.samsunglife.com" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">삼성생명</a>
-                        <a href="https://www.hanwhalife.com" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">한화생명</a>
-                        <a href="https://www.kyobo.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">교보생명</a>
-                        <a href="https://www.kblife.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">KB라이프생명</a>
-                        <a href="https://www.shinhanlife.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">신한라이프생명</a>
-                        <a href="https://www.miraeassetlife.com" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">미래에셋생명</a>
-                        <a href="https://www.hanalife.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">하나생명</a>
-                        <a href="https://www.dgbfnlife.com" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">DGB생명</a>
-                        <a href="https://www.orangelife.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">오렌지라이프생명</a>
-                        <a href="https://www.idblife.com" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">DB생명</a>
-                        <a href="https://www.kdblife.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">KDB생명</a>
-                        <a href="https://www.abllife.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">ABL생명</a>
-                        <a href="https://www.bnpparibascardifslife.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">BNP파리바카디프생명</a>
-                        <a href="https://www.fubonhyundai.com" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">푸본현대생명</a>
-                        <a href="https://www.nhlife.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">NH농협생명</a>
-                        <a href="https://www.chubblife.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">처브라이프생명</a>
-                        <a href="https://www.metlife.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">메트라이프생명</a>
-                        <a href="https://www.aia.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">AIA생명</a>
-                        <a href="https://www.prudential.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">푸르덴셜생명</a>
-                        <a href="https://www.lina.co.kr" target="_blank" class="p-3 border rounded-lg hover:bg-emerald-50 hover:border-emerald-600 transition text-center">라이나생명</a>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Useful Links -->
-            <section class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl p-8 mt-12">
-                <h2 class="text-3xl font-bold mb-6 text-center">유용한 링크</h2>
-                <div class="grid md:grid-cols-4 gap-4">
-                    <a href="https://www.fsc.go.kr" target="_blank" class="bg-white bg-opacity-20 rounded-lg p-4 hover:bg-opacity-30 transition text-center">
-                        <i class="fas fa-landmark text-3xl mb-2"></i>
-                        <div class="font-semibold">금융위원회</div>
-                        <div class="text-sm opacity-80">FSC</div>
-                    </a>
-                    <a href="https://www.fss.or.kr" target="_blank" class="bg-white bg-opacity-20 rounded-lg p-4 hover:bg-opacity-30 transition text-center">
-                        <i class="fas fa-university text-3xl mb-2"></i>
-                        <div class="font-semibold">금융감독원</div>
-                        <div class="text-sm opacity-80">FSS</div>
-                    </a>
-                    <a href="http://www.insjournal.co.kr" target="_blank" class="bg-white bg-opacity-20 rounded-lg p-4 hover:bg-opacity-30 transition text-center">
-                        <i class="fas fa-newspaper text-3xl mb-2"></i>
-                        <div class="font-semibold">보험저널</div>
-                        <div class="text-sm opacity-80">Insurance Journal</div>
-                    </a>
-                    <a href="https://www.kiri.or.kr" target="_blank" class="bg-white bg-opacity-20 rounded-lg p-4 hover:bg-opacity-30 transition text-center">
-                        <i class="fas fa-book text-3xl mb-2"></i>
-                        <div class="font-semibold">보험연구원</div>
-                        <div class="text-sm opacity-80">KIRI</div>
-                    </a>
-                </div>
-            </section>
         </div>
-    </main>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">홈</a>
+                <a href="fa-intro.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">보험 전문가</a>
+                <a href="contract-cases.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">계약 사례</a>
+                <a href="claim-cases.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">청구 사례</a>
+                <a href="insurance-info.html" class="block px-3 py-2 bg-cyan-50 text-cyan-600 rounded">보험 정보</a>
+                <a href="inquiries.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">보험 문의</a>
+                <a href="fa-apply.html" class="block px-3 py-2 bg-cyan-600 text-white rounded text-center">전문가 신청</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-cyan-600 to-blue-600 text-white pt-24 pb-16 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="mb-4">
+                <i class="fas fa-file-contract text-6xl mb-4 opacity-90"></i>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">보험사 상품공시실</h1>
+            <p class="text-xl text-cyan-50 max-w-3xl mx-auto">
+                각 보험사의 상품공시실에서 보험상품 약관을 직접 확인하실 수 있습니다
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- 손해보험사 -->
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold mb-8 text-gray-800">
+                    <i class="fas fa-car text-cyan-600 mr-3"></i>손해보험사
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 삼성화재 -->
+                    <a href="https://www.samsungfire.com/product/product_list.html" target="_blank" class="company-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">삼성화재</h3>
+                            <i class="fas fa-external-link-alt text-cyan-600"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">상품공시실 - 보험상품 약관</p>
+                        <div class="flex items-center text-cyan-600 font-semibold text-sm">
+                            상품공시실 바로가기 <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </a>
+
+                    <!-- 현대해상 -->
+                    <a href="https://www.hi.co.kr/insu/CPTCBC0001.do" target="_blank" class="company-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">현대해상</h3>
+                            <i class="fas fa-external-link-alt text-cyan-600"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">상품공시실 - 보험상품 약관</p>
+                        <div class="flex items-center text-cyan-600 font-semibold text-sm">
+                            상품공시실 바로가기 <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </a>
+
+                    <!-- DB손해보험 -->
+                    <a href="https://www.idbins.com/prodt/prodt-intro.do" target="_blank" class="company-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">DB손해보험</h3>
+                            <i class="fas fa-external-link-alt text-cyan-600"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">상품공시실 - 보험상품 약관</p>
+                        <div class="flex items-center text-cyan-600 font-semibold text-sm">
+                            상품공시실 바로가기 <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </a>
+
+                    <!-- KB손해보험 -->
+                    <a href="https://www.kbinsure.co.kr/CG302120001.ec" target="_blank" class="company-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">KB손해보험</h3>
+                            <i class="fas fa-external-link-alt text-cyan-600"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">상품공시실 - 보험상품 약관</p>
+                        <div class="flex items-center text-cyan-600 font-semibold text-sm">
+                            상품공시실 바로가기 <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </a>
+
+                    <!-- 메리츠화재 -->
+                    <a href="https://www.meritzfire.com/disclosure/product-announcement/product-list.do#!/" target="_blank" class="company-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">메리츠화재</h3>
+                            <i class="fas fa-external-link-alt text-cyan-600"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">상품공시실 - 보험상품 약관</p>
+                        <div class="flex items-center text-cyan-600 font-semibold text-sm">
+                            상품공시실 바로가기 <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </a>
+
+                    <!-- 한화손해보험 -->
+                    <a href="https://www.hwgeneralins.com/main/etc/product/product.do" target="_blank" class="company-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">한화손해보험</h3>
+                            <i class="fas fa-external-link-alt text-cyan-600"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">상품공시실 - 보험상품 약관</p>
+                        <div class="flex items-center text-cyan-600 font-semibold text-sm">
+                            상품공시실 바로가기 <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </a>
+
+                    <!-- 롯데손해보험 -->
+                    <a href="https://www.lotteins.co.kr/pblc/CPLC0001.do" target="_blank" class="company-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">롯데손해보험</h3>
+                            <i class="fas fa-external-link-alt text-cyan-600"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">상품공시실 - 보험상품 약관</p>
+                        <div class="flex items-center text-cyan-600 font-semibold text-sm">
+                            상품공시실 바로가기 <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </a>
+
+                    <!-- MG손해보험 -->
+                    <a href="https://www.mginsurance.co.kr/pc/productInfo/productInfo.do" target="_blank" class="company-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">MG손해보험</h3>
+                            <i class="fas fa-external-link-alt text-cyan-600"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">상품공시실 - 보험상품 약관</p>
+                        <div class="flex items-center text-cyan-600 font-semibold text-sm">
+                            상품공시실 바로가기 <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </a>
+
+                    <!-- AXA손해보험 -->
+                    <a href="https://www.axa.co.kr/product-terms" target="_blank" class="company-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">AXA손해보험</h3>
+                            <i class="fas fa-external-link-alt text-cyan-600"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">상품공시실 - 보험상품 약관</p>
+                        <div class="flex items-center text-cyan-600 font-semibold text-sm">
+                            상품공시실 바로가기 <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 생명보험사 -->
+            <div>
+                <h2 class="text-3xl font-bold mb-8 text-gray-800">
+                    <i class="fas fa-heartbeat text-cyan-600 mr-3"></i>생명보험사
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 삼성생명 -->
+                    <a href="https://www.samsunglife.com/personal/product/product/PI_PDTO_0005.html" target="_blank" class="company-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">삼성생명</h3>
+                            <i class="fas fa-external-link-alt text-cyan-600"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">상품공시실 - 보험상품 약관</p>
+                        <div class="flex items-center text-cyan-600 font-semibold text-sm">
+                            상품공시실 바로가기 <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </a>
+
+                    <!-- 한화생명 -->
+                    <a href="https://www.hanwhalife.com/customer/customercenter/product/product_terms.do" target="_blank" class="company-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">한화생명</h3>
+                            <i class="fas fa-external-link-alt text-cyan-600"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">상품공시실 - 보험상품 약관</p>
+                        <div class="flex items-center text-cyan-600 font-semibold text-sm">
+                            상품공시실 바로가기 <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </a>
+
+                    <!-- 교보생명 -->
+                    <a href="https://www.kyobo.co.kr/smbs/smbs0301.do" target="_blank" class="company-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">교보생명</h3>
+                            <i class="fas fa-external-link-alt text-cyan-600"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">상품공시실 - 보험상품 약관</p>
+                        <div class="flex items-center text-cyan-600 font-semibold text-sm">
+                            상품공시실 바로가기 <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </a>
+
+                    <!-- 신한라이프 -->
+                    <a href="https://www.shinhanlife.co.kr/hp/customer/gd01/cm_0103.do" target="_blank" class="company-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">신한라이프</h3>
+                            <i class="fas fa-external-link-alt text-cyan-600"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">상품공시실 - 보험상품 약관</p>
+                        <div class="flex items-center text-cyan-600 font-semibold text-sm">
+                            상품공시실 바로가기 <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </a>
+
+                    <!-- KB라이프생명 -->
+                    <a href="https://www.kbli.co.kr/CG30250001.ec" target="_blank" class="company-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">KB라이프생명</h3>
+                            <i class="fas fa-external-link-alt text-cyan-600"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">상품공시실 - 보험상품 약관</p>
+                        <div class="flex items-center text-cyan-600 font-semibold text-sm">
+                            상품공시실 바로가기 <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </a>
+
+                    <!-- 푸르덴셜생명 -->
+                    <a href="https://www.prudential.co.kr/kr/cscenter/disclosure.html" target="_blank" class="company-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">푸르덴셜생명</h3>
+                            <i class="fas fa-external-link-alt text-cyan-600"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">상품공시실 - 보험상품 약관</p>
+                        <div class="flex items-center text-cyan-600 font-semibold text-sm">
+                            상품공시실 바로가기 <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </a>
+
+                    <!-- 미래에셋생명 -->
+                    <a href="https://life.miraeasset.com/customer/disclosure/product.do" target="_blank" class="company-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">미래에셋생명</h3>
+                            <i class="fas fa-external-link-alt text-cyan-600"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">상품공시실 - 보험상품 약관</p>
+                        <div class="flex items-center text-cyan-600 font-semibold text-sm">
+                            상품공시실 바로가기 <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </a>
+
+                    <!-- 동양생명 -->
+                    <a href="https://www.myangel.co.kr/customer/product/product01.asp" target="_blank" class="company-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">동양생명</h3>
+                            <i class="fas fa-external-link-alt text-cyan-600"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">상품공시실 - 보험상품 약관</p>
+                        <div class="flex items-center text-cyan-600 font-semibold text-sm">
+                            상품공시실 바로가기 <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </a>
+
+                    <!-- DGB생명 -->
+                    <a href="https://www.dgbfnlife.com/customer/product/disclosure.do" target="_blank" class="company-card bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">DGB생명</h3>
+                            <i class="fas fa-external-link-alt text-cyan-600"></i>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">상품공시실 - 보험상품 약관</p>
+                        <div class="flex items-center text-cyan-600 font-semibold text-sm">
+                            상품공시실 바로가기 <i class="fas fa-arrow-right ml-2"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 안내 문구 -->
+            <div class="mt-16 bg-blue-50 border border-blue-200 rounded-xl p-6">
+                <div class="flex items-start gap-4">
+                    <i class="fas fa-info-circle text-blue-600 text-2xl mt-1"></i>
+                    <div>
+                        <h3 class="font-bold text-blue-900 mb-2">보험약관 확인 안내</h3>
+                        <ul class="text-sm text-blue-800 space-y-1">
+                            <li>• 각 보험사 홈페이지에서 상품별 약관, 상품설명서, 보험료 등을 확인하실 수 있습니다.</li>
+                            <li>• 약관은 가입 전 반드시 확인하시기 바랍니다.</li>
+                            <li>• 보험 가입 시 불명확한 사항은 보험 전문가에게 문의하세요.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-3 gap-8">
+    <footer class="bg-gray-800 text-gray-300 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
-                    <h3 class="text-xl font-bold mb-4">보험 LOUNGE</h3>
-                    <p class="text-gray-400">신뢰할 수 있는 보험 전문가 플랫폼</p>
+                    <h3 class="text-white text-xl font-bold mb-4">
+                        <span class="font-black bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">보험 LOUNGE</span>
+                    </h3>
+                    <p class="text-gray-400">
+                        신뢰할 수 있는 보험 플랫폼
+                    </p>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">빠른 링크</h4>
+                    <h4 class="text-white font-semibold mb-4">빠른 링크</h4>
                     <ul class="space-y-2">
-                        <li><a href="index.html" class="text-gray-400 hover:text-white">홈</a></li>
-                        <li><a href="fa-intro.html" class="text-gray-400 hover:text-white">보험 전문가 소개</a></li>
-                        <li><a href="fa-apply.html" class="text-gray-400 hover:text-white">보험 전문가 신청</a></li>
+                        <li><a href="fa-intro.html" class="hover:text-white transition">보험 전문가 소개</a></li>
+                        <li><a href="contract-cases.html" class="hover:text-white transition">계약 사례</a></li>
+                        <li><a href="claim-cases.html" class="hover:text-white transition">청구 사례</a></li>
+                        <li><a href="insurance-info.html" class="hover:text-white transition">보험 정보</a></li>
+                        <li><a href="inquiries.html" class="hover:text-white transition">보험 문의</a></li>
+                        <li><a href="fa-apply.html" class="hover:text-white transition">보험 전문가 신청</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">개인정보 처리방침</h4>
-                    <p class="text-sm text-gray-400">보험 전문가 신청 시 제공된 정보는 신청 검토 목적으로만 사용됩니다.</p>
+                    <h4 class="text-white font-semibold mb-4">관리자/전문가</h4>
+                    <ul class="space-y-2">
+                        <li><a href="admin-login.html" class="hover:text-white transition text-cyan-400">
+                            <i class="fas fa-user-shield mr-1"></i>관리자 로그인
+                        </a></li>
+                        <li><a href="fa-login.html" class="hover:text-white transition text-emerald-400">
+                            <i class="fas fa-user-tie mr-1"></i>전문가 로그인
+                        </a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-4">개인정보 처리방침</h4>
+                    <p class="text-sm text-gray-400 mb-4">
+                        본 사이트는 오픈채팅 링크만 제공하며,<br>
+                        별도의 개인정보를 수집하지 않습니다.
+                    </p>
+                    <p class="text-sm text-gray-400">
+                        전문가 신청 시 제공된 정보는<br>
+                        신청 검토 목적으로만 사용됩니다.
+                    </p>
                 </div>
             </div>
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
@@ -273,11 +390,11 @@
     </footer>
 
     <script>
-        // Mobile menu
-        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
         });
     </script>
 </body>
 </html>
-
