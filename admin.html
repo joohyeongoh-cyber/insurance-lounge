@@ -47,6 +47,9 @@
                 <button onclick="showTab('claims')" id="tab-claims" class="tab-btn flex-1 py-4 px-6 font-semibold border-b-2 border-indigo-600 text-indigo-600 whitespace-nowrap">
                     <i class="fas fa-file-medical mr-2"></i>청구사례 관리
                 </button>
+                <button onclick="showTab('inquiries')" id="tab-inquiries" class="tab-btn flex-1 py-4 px-6 font-semibold text-gray-600 hover:text-indigo-600 whitespace-nowrap">
+                    <i class="fas fa-question-circle mr-2"></i>보험문의 관리
+                </button>
                 <button onclick="showTab('sales-issues')" id="tab-sales-issues" class="tab-btn flex-1 py-4 px-6 font-semibold text-gray-600 hover:text-indigo-600 whitespace-nowrap">
                     <i class="fas fa-lightbulb mr-2"></i>이달의 영업 이슈
                 </button>
@@ -64,6 +67,21 @@
                 </div>
                 <div id="claims-list" class="space-y-4">
                     <!-- Claims will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Inquiries Tab -->
+        <div id="content-inquiries" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">보험문의 관리</h2>
+                    <div class="text-gray-600">
+                        총 <span id="inquiries-count" class="font-bold text-indigo-600">0</span>건
+                    </div>
+                </div>
+                <div id="inquiries-list" class="space-y-4">
+                    <!-- Inquiries will be loaded here -->
                 </div>
             </div>
         </div>
@@ -260,6 +278,8 @@
             // Load data for the tab
             if (tabName === 'claims') {
                 loadClaims();
+            } else if (tabName === 'inquiries') {
+                loadInquiries();
             } else if (tabName === 'sales-issues') {
                 loadSalesIssues();
             }
@@ -377,6 +397,59 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        // Inquiries Management
+        function loadInquiries() {
+            const inquiries = JSON.parse(localStorage.getItem('inquiries') || '[]');
+            const listDiv = document.getElementById('inquiries-list');
+            const countEl = document.getElementById('inquiries-count');
+            
+            countEl.textContent = inquiries.length;
+
+            if (inquiries.length === 0) {
+                listDiv.innerHTML = '<div class="text-center py-8 text-gray-500">등록된 보험문의가 없습니다</div>';
+                return;
+            }
+
+            listDiv.innerHTML = inquiries.map(inquiry => `
+                <div class="border rounded-lg p-4 hover:shadow-md transition">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="font-bold text-lg">${inquiry.title}</h3>
+                                ${inquiry.visibility === 'private' ? '<span class="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded-full"><i class="fas fa-lock mr-1"></i>비공개</span>' : ''}
+                                ${inquiry.status === 'ANSWERED' ? '<span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full"><i class="fas fa-check mr-1"></i>답변완료</span>' : '<span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full"><i class="fas fa-clock mr-1"></i>대기중</span>'}
+                            </div>
+                            <p class="text-gray-600 text-sm mb-2">${inquiry.content.substring(0, 100)}${inquiry.content.length > 100 ? '...' : ''}</p>
+                            <div class="flex items-center gap-4 text-sm text-gray-500">
+                                <span><i class="fas fa-user mr-1"></i>${inquiry.authorName}</span>
+                                <span><i class="fas fa-phone mr-1"></i>${inquiry.authorPhone}</span>
+                                <span><i class="fas fa-calendar mr-1"></i>${new Date(inquiry.createdAt).toLocaleDateString('ko-KR')}</span>
+                                ${inquiry.replies.length > 0 ? `<span class="text-cyan-600"><i class="fas fa-comment-dots mr-1"></i>답변 ${inquiry.replies.length}개</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <a href="inquiries.html" target="_blank" class="text-cyan-600 hover:text-cyan-700 px-3 py-1 border border-cyan-600 rounded">
+                                <i class="fas fa-eye mr-1"></i>보기
+                            </a>
+                            <button onclick="deleteInquiry(${inquiry.id})" class="text-red-600 hover:text-red-700 px-3 py-1 border border-red-600 rounded">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    ${inquiry.imageUrl ? `<img src="${inquiry.imageUrl}" class="w-32 h-32 object-cover rounded mt-2" />` : ''}
+                </div>
+            `).join('');
+        }
+
+        function deleteInquiry(id) {
+            if (!confirm('이 문의를 삭제하시겠습니까?')) return;
+            
+            let inquiries = JSON.parse(localStorage.getItem('inquiries') || '[]');
+            inquiries = inquiries.filter(i => i.id !== id);
+            localStorage.setItem('inquiries', JSON.stringify(inquiries));
+            loadInquiries();
         }
 
         function showAddSalesIssueModal() {
