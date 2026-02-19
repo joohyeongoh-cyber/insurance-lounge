@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FA 소개 - 보험 LOUNGE</title>
+    <title>보험 전문가 소개 - 보험 LOUNGE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -21,10 +21,11 @@
                 <a href="index.html" class="text-2xl font-bold text-indigo-600 hover:text-indigo-700">보험 LOUNGE</a>
                 <div class="hidden md:flex space-x-8">
                     <a href="index.html" class="text-gray-700 hover:text-indigo-600">홈</a>
-                    <a href="fa-intro.html" class="text-indigo-600 font-semibold">FA 소개</a>
+                    <a href="fa-intro.html" class="text-indigo-600 font-semibold">보험 전문가 소개</a>
                     <a href="claim-cases.html" class="text-gray-700 hover:text-indigo-600">청구 사례</a>
                     <a href="insurance-info.html" class="text-gray-700 hover:text-indigo-600">보험 정보</a>
-                    <a href="fa-apply.html" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">FA 신청</a>
+                    <a href="sales-issues.html" class="text-gray-700 hover:text-indigo-600">이달의 영업 이슈</a>
+                    <a href="fa-apply.html" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">보험 전문가 신청</a>
                 </div>
                 <button id="mobile-menu-btn" class="md:hidden">
                     <i class="fas fa-bars text-2xl"></i>
@@ -32,10 +33,10 @@
             </div>
             <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
                 <a href="index.html" class="block py-2 text-gray-700">홈</a>
-                <a href="fa-intro.html" class="block py-2 text-indigo-600 font-semibold">FA 소개</a>
+                <a href="fa-intro.html" class="block py-2 text-indigo-600 font-semibold">보험 전문가 소개</a>
                 <a href="claim-cases.html" class="block py-2 text-gray-700">청구 사례</a>
                 <a href="insurance-info.html" class="block py-2 text-gray-700">보험 정보</a>
-                <a href="fa-apply.html" class="block py-2 text-indigo-600">FA 신청</a>
+                <a href="fa-apply.html" class="block py-2 text-indigo-600">보험 전문가 신청</a>
             </div>
         </nav>
     </header>
@@ -44,23 +45,23 @@
         <!-- Page Header -->
         <section class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-16">
             <div class="container mx-auto px-4 text-center">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4">전문 FA 소개</h1>
-                <p class="text-xl opacity-90">인카금융서비스 소속 전문가들을 만나보세요</p>
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">전문 보험 전문가 소개</h1>
+                <p class="text-xl opacity-90">전문 보험 전문가들을 만나보세요</p>
             </div>
         </section>
 
         <div class="container mx-auto px-4 mt-12">
-            <!-- FA Profiles Grid -->
+            <!-- 보험 전문가 Profiles Grid -->
             <div id="fa-profiles-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-                <!-- FA profiles will be loaded here -->
+                <!-- 보험 전문가 profiles will be loaded here -->
             </div>
 
             <!-- Empty State -->
             <div id="empty-state" class="text-center py-16">
                 <i class="fas fa-users text-gray-300 text-6xl mb-4"></i>
-                <h3 class="text-2xl font-bold text-gray-700 mb-2">등록된 FA가 없습니다</h3>
-                <p class="text-gray-500 mb-6">첫 번째 FA가 되어보세요!</p>
-                <a href="fa-apply.html" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 font-semibold">FA 신청하기</a>
+                <h3 class="text-2xl font-bold text-gray-700 mb-2">등록된 보험 전문가가 없습니다</h3>
+                <p class="text-gray-500 mb-6">첫 번째 보험 전문가가 되어보세요!</p>
+                <a href="fa-apply.html" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 font-semibold">보험 전문가 신청하기</a>
             </div>
 
             <!-- Customer Reviews Section -->
@@ -82,9 +83,9 @@
                     <h3 class="text-xl font-bold mb-4">리뷰 작성하기</h3>
                     <form id="review-form" class="space-y-4">
                         <div>
-                            <label class="block text-sm font-medium mb-2">FA 선택 <span class="text-red-500">*</span></label>
+                            <label class="block text-sm font-medium mb-2">보험 전문가 선택 <span class="text-red-500">*</span></label>
                             <select id="review-fa-select" name="faId" required class="w-full border border-gray-300 rounded-lg px-4 py-2">
-                                <option value="">FA를 선택하세요</option>
+                                <option value="">보험 전문가를 선택하세요</option>
                             </select>
                         </div>
                         <div>
@@ -125,19 +126,19 @@
             <div class="grid md:grid-cols-3 gap-8">
                 <div>
                     <h3 class="text-xl font-bold mb-4">보험 LOUNGE</h3>
-                    <p class="text-gray-400">인카금융서비스 소속 전문 FA들이 함께합니다</p>
+                    <p class="text-gray-400">인카금융서비스 소속 전문 보험 전문가들이 함께합니다</p>
                 </div>
                 <div>
                     <h4 class="font-semibold mb-4">빠른 링크</h4>
                     <ul class="space-y-2">
                         <li><a href="index.html" class="text-gray-400 hover:text-white">홈</a></li>
-                        <li><a href="fa-intro.html" class="text-gray-400 hover:text-white">FA 소개</a></li>
-                        <li><a href="fa-apply.html" class="text-gray-400 hover:text-white">FA 신청</a></li>
+                        <li><a href="fa-intro.html" class="text-gray-400 hover:text-white">보험 전문가 소개</a></li>
+                        <li><a href="fa-apply.html" class="text-gray-400 hover:text-white">보험 전문가 신청</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="font-semibold mb-4">개인정보 처리방침</h4>
-                    <p class="text-sm text-gray-400">FA 신청 시 제공된 정보는 신청 검토 목적으로만 사용됩니다.</p>
+                    <p class="text-sm text-gray-400">보험 전문가 신청 시 제공된 정보는 신청 검토 목적으로만 사용됩니다.</p>
                 </div>
             </div>
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
@@ -147,8 +148,8 @@
     </footer>
 
     <script>
-        // Load FA profiles
-        function loadFAProfiles() {
+        // Load 보험 전문가 profiles
+        function load보험 전문가Profiles() {
             const profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
             const container = document.getElementById('fa-profiles-container');
             const emptyState = document.getElementById('empty-state');
@@ -163,8 +164,8 @@
             container.classList.remove('hidden');
             emptyState.classList.add('hidden');
 
-            // Populate FA select dropdown
-            reviewSelect.innerHTML = '<option value="">FA를 선택하세요</option>';
+            // Populate 보험 전문가 select dropdown
+            reviewSelect.innerHTML = '<option value="">보험 전문가를 선택하세요</option>';
             profiles.forEach(profile => {
                 const option = document.createElement('option');
                 option.value = profile.id;
@@ -174,7 +175,7 @@
 
             container.innerHTML = profiles.map(profile => `
                 <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
-                    <img src="${profile.photoUrl || 'https://via.placeholder.com/400x300?text=FA+프로필'}" alt="${profile.name}" class="w-full h-48 object-cover">
+                    <img src="${profile.photoUrl || 'https://via.placeholder.com/400x300?text=보험 전문가+프로필'}" alt="${profile.name}" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2">${profile.name}</h3>
                         <p class="text-gray-600 mb-4">${profile.introduction || '안녕하세요!'}</p>
@@ -220,7 +221,7 @@
                         <div class="flex justify-between items-start mb-2">
                             <div>
                                 <span class="font-semibold">${review.author}</span>
-                                <span class="text-gray-500 text-sm ml-2">→ ${profile ? profile.name : 'FA'}</span>
+                                <span class="text-gray-500 text-sm ml-2">→ ${profile ? profile.name : '보험 전문가'}</span>
                             </div>
                             <div class="text-sm">${stars}</div>
                         </div>
@@ -260,7 +261,7 @@
         });
 
         // Initialize
-        loadFAProfiles();
+        load보험 전문가Profiles();
         loadReviews();
     </script>
 </body>

@@ -33,20 +33,23 @@
     <div class="container mx-auto px-4 py-8">
         <!-- Tabs -->
         <div class="bg-white rounded-lg shadow-md mb-6">
-            <div class="flex border-b">
-                <button onclick="showTab('applications')" id="tab-applications" class="tab-btn flex-1 py-4 px-6 font-semibold border-b-2 border-indigo-600 text-indigo-600">
-                    <i class="fas fa-user-plus mr-2"></i>FA 신청 관리
+            <div class="flex border-b overflow-x-auto">
+                <button onclick="showTab('applications')" id="tab-applications" class="tab-btn flex-1 py-4 px-6 font-semibold border-b-2 border-indigo-600 text-indigo-600 whitespace-nowrap">
+                    <i class="fas fa-user-plus mr-2"></i>보험 전문가 신청 관리
                 </button>
-                <button onclick="showTab('claims')" id="tab-claims" class="tab-btn flex-1 py-4 px-6 font-semibold text-gray-600 hover:text-indigo-600">
+                <button onclick="showTab('claims')" id="tab-claims" class="tab-btn flex-1 py-4 px-6 font-semibold text-gray-600 hover:text-indigo-600 whitespace-nowrap">
                     <i class="fas fa-file-medical mr-2"></i>청구사례 관리
                 </button>
-                <button onclick="showTab('dashboard')" id="tab-dashboard" class="tab-btn flex-1 py-4 px-6 font-semibold text-gray-600 hover:text-indigo-600">
+                <button onclick="showTab('sales-issues')" id="tab-sales-issues" class="tab-btn flex-1 py-4 px-6 font-semibold text-gray-600 hover:text-indigo-600 whitespace-nowrap">
+                    <i class="fas fa-lightbulb mr-2"></i>이달의 영업 이슈
+                </button>
+                <button onclick="showTab('dashboard')" id="tab-dashboard" class="tab-btn flex-1 py-4 px-6 font-semibold text-gray-600 hover:text-indigo-600 whitespace-nowrap">
                     <i class="fas fa-chart-bar mr-2"></i>대시보드
                 </button>
             </div>
         </div>
 
-        <!-- FA Applications Tab -->
+        <!-- 보험 전문가 Applications Tab -->
         <div id="content-applications" class="tab-content">
             <!-- Statistics -->
             <div class="grid md:grid-cols-4 gap-6 mb-6">
@@ -82,7 +85,7 @@
 
             <!-- Applications List -->
             <div class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-bold mb-6">FA 신청 목록</h2>
+                <h2 class="text-2xl font-bold mb-6">보험 전문가 신청 목록</h2>
                 <div id="applications-list">
                     <!-- Applications will be loaded here -->
                 </div>
@@ -104,6 +107,21 @@
             </div>
         </div>
 
+        <!-- Sales Issues Tab -->
+        <div id="content-sales-issues" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">이달의 영업 이슈 관리</h2>
+                    <button onclick="showAddSalesIssueModal()" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 font-semibold">
+                        <i class="fas fa-plus mr-2"></i>새 이슈 추가
+                    </button>
+                </div>
+                <div id="sales-issues-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Sales issues will be loaded here -->
+                </div>
+            </div>
+        </div>
+
         <!-- Dashboard Tab -->
         <div id="content-dashboard" class="tab-content hidden">
             <div class="grid md:grid-cols-2 gap-6">
@@ -117,11 +135,11 @@
                     <h3 class="text-xl font-bold mb-4">시스템 정보</h3>
                     <div class="space-y-3">
                         <div class="flex justify-between">
-                            <span class="text-gray-600">저장된 FA 신청</span>
+                            <span class="text-gray-600">저장된 보험 전문가 신청</span>
                             <span id="info-applications" class="font-semibold">0건</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-600">등록된 FA 프로필</span>
+                            <span class="text-gray-600">등록된 보험 전문가 프로필</span>
                             <span id="info-profiles" class="font-semibold">0건</span>
                         </div>
                         <div class="flex justify-between">
@@ -257,6 +275,47 @@
         </div>
     </div>
 
+    <!-- Add Sales Issue Modal -->
+    <div id="add-sales-issue-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-6">
+                    <h3 class="text-2xl font-bold">새 영업 이슈 추가</h3>
+                    <button onclick="closeAddSalesIssueModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                <form id="add-sales-issue-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">제목 <span class="text-red-500">*</span></label>
+                        <input type="text" name="title" required class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="어린이집 개강 시즌 대비 독감 플랜">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">설명 <span class="text-red-500">*</span></label>
+                        <textarea name="description" required rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="2월 어린이집 개강을 앞두고 독감 및 호흡기 질환 보험 플랜 제안"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">카드뉴스 이미지 URL <span class="text-red-500">*</span></label>
+                        <input type="url" name="imageUrl" required class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="https://example.com/image.jpg">
+                        <p class="text-xs text-gray-500 mt-1">이미지 URL을 입력하세요 (imgur, Google Drive 등에 업로드 후 링크 복사)</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">적용 월 <span class="text-red-500">*</span></label>
+                        <input type="month" name="month" required class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">타겟 고객층</label>
+                        <input type="text" name="targetCustomer" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="어린이 자녀를 둔 30-40대 부모">
+                    </div>
+                    <div class="flex justify-end gap-4">
+                        <button type="button" onclick="closeAddSalesIssueModal()" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 font-semibold">취소</button>
+                        <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 font-semibold">추가</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
         let currentApplicationId = null;
 
@@ -280,12 +339,14 @@
                 loadApplications();
             } else if (tabName === 'claims') {
                 loadClaims();
+            } else if (tabName === 'sales-issues') {
+                loadSalesIssues();
             } else if (tabName === 'dashboard') {
                 loadDashboard();
             }
         }
 
-        // Load FA Applications
+        // Load 보험 전문가 Applications
         function loadApplications() {
             const applications = JSON.parse(localStorage.getItem('fa_applications') || '[]');
             
@@ -492,7 +553,7 @@
         }
 
         function approveApplication() {
-            if (!confirm('이 신청을 승인하시겠습니까?\n승인 시 FA 소개 페이지에 프로필이 자동으로 등록됩니다.')) return;
+            if (!confirm('이 신청을 승인하시겠습니까?\n승인 시 보험 전문가 소개 페이지에 프로필이 자동으로 등록됩니다.')) return;
 
             const applications = JSON.parse(localStorage.getItem('fa_applications') || '[]');
             const index = applications.findIndex(a => a.applicationId === currentApplicationId);
@@ -505,7 +566,7 @@
                 applications[index].reviewedAt = new Date().toISOString();
                 localStorage.setItem('fa_applications', JSON.stringify(applications));
                 
-                // Create FA profile
+                // Create 보험 전문가 profile
                 let profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
                 const newProfile = {
                     id: Date.now(),
@@ -524,7 +585,7 @@
                 profiles.push(newProfile);
                 localStorage.setItem('fa_profiles', JSON.stringify(profiles));
                 
-                alert('승인되었습니다!\nFA 소개 페이지에 프로필이 등록되었습니다.');
+                alert('승인되었습니다!\n보험 전문가 소개 페이지에 프로필이 등록되었습니다.');
                 closeApplicationModal();
                 loadApplications();
             }
@@ -641,6 +702,85 @@
             loadClaims();
         }
 
+        // Sales Issues Management
+        function loadSalesIssues() {
+            const issues = JSON.parse(localStorage.getItem('sales_issues') || '[]');
+            const listDiv = document.getElementById('sales-issues-list');
+
+            if (issues.length === 0) {
+                listDiv.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500">등록된 영업 이슈가 없습니다</div>';
+                return;
+            }
+
+            listDiv.innerHTML = issues.map(issue => `
+                <div class="bg-white border rounded-lg overflow-hidden hover:shadow-lg transition">
+                    <img src="${issue.imageUrl}" alt="${issue.title}" class="w-full h-48 object-cover" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg">${issue.title}</h3>
+                            <button onclick="deleteSalesIssue(${issue.id})" class="text-red-600 hover:text-red-700">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">${issue.description}</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="bg-indigo-100 text-indigo-600 px-2 py-1 rounded text-xs">${issue.month}</span>
+                            ${issue.targetCustomer ? `<span class="bg-emerald-100 text-emerald-600 px-2 py-1 rounded text-xs">${issue.targetCustomer}</span>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showAddSalesIssueModal() {
+            // Set current month as default
+            const today = new Date();
+            const monthInput = document.querySelector('#add-sales-issue-form input[name="month"]');
+            monthInput.value = today.toISOString().substring(0, 7);
+            
+            document.getElementById('add-sales-issue-modal').classList.remove('hidden');
+        }
+
+        function closeAddSalesIssueModal() {
+            document.getElementById('add-sales-issue-modal').classList.add('hidden');
+            document.getElementById('add-sales-issue-form').reset();
+        }
+
+        // Add sales issue form submission
+        document.getElementById('add-sales-issue-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const newIssue = {
+                id: Date.now(),
+                title: formData.get('title'),
+                description: formData.get('description'),
+                imageUrl: formData.get('imageUrl'),
+                month: formData.get('month'),
+                targetCustomer: formData.get('targetCustomer') || '',
+                createdAt: new Date().toISOString()
+            };
+
+            let issues = JSON.parse(localStorage.getItem('sales_issues') || '[]');
+            issues.unshift(newIssue); // Add to beginning
+            localStorage.setItem('sales_issues', JSON.stringify(issues));
+
+            alert('영업 이슈가 추가되었습니다!');
+            closeAddSalesIssueModal();
+            loadSalesIssues();
+        });
+
+        function deleteSalesIssue(id) {
+            if (!confirm('이 영업 이슈를 삭제하시겠습니까?')) return;
+
+            let issues = JSON.parse(localStorage.getItem('sales_issues') || '[]');
+            issues = issues.filter(i => i.id !== id);
+            localStorage.setItem('sales_issues', JSON.stringify(issues));
+
+            alert('삭제되었습니다');
+            loadSalesIssues();
+        }
+
         // Dashboard
         function loadDashboard() {
             const applications = JSON.parse(localStorage.getItem('fa_applications') || '[]');
@@ -673,7 +813,7 @@
                         <div class="flex items-center text-sm">
                             <i class="fas fa-user mr-3 ${statusColor}"></i>
                             <div class="flex-1">
-                                <span class="font-semibold">${app.name}</span>님이 FA 신청
+                                <span class="font-semibold">${app.name}</span>님이 보험 전문가 신청
                             </div>
                             <div class="text-xs text-gray-500">${new Date(app.submittedAt).toLocaleDateString('ko-KR')}</div>
                         </div>

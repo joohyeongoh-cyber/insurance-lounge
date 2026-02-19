@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이달의 영업 이슈 - 보험 LOUNGE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm fixed w-full top-0 z-50">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="index.html" class="text-2xl font-bold text-indigo-600 hover:text-indigo-700">보험 LOUNGE</a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-indigo-600">홈</a>
+                    <a href="fa-intro.html" class="text-gray-700 hover:text-indigo-600">보험 전문가 소개</a>
+                    <a href="claim-cases.html" class="text-gray-700 hover:text-indigo-600">청구 사례</a>
+                    <a href="insurance-info.html" class="text-gray-700 hover:text-indigo-600">보험 정보</a>
+                    <a href="sales-issues.html" class="text-indigo-600 font-semibold">이달의 영업 이슈</a>
+                    <a href="fa-apply.html" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">전문가 신청</a>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="index.html" class="block py-2 text-gray-700">홈</a>
+                <a href="fa-intro.html" class="block py-2 text-gray-700">보험 전문가 소개</a>
+                <a href="claim-cases.html" class="block py-2 text-gray-700">청구 사례</a>
+                <a href="insurance-info.html" class="block py-2 text-gray-700">보험 정보</a>
+                <a href="sales-issues.html" class="block py-2 text-indigo-600 font-semibold">이달의 영업 이슈</a>
+                <a href="fa-apply.html" class="block py-2 text-indigo-600">전문가 신청</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="pt-24 pb-16">
+        <!-- Page Header -->
+        <section class="bg-gradient-to-r from-orange-500 to-amber-600 text-white py-16">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">이달의 영업 이슈</h1>
+                <p class="text-xl opacity-90">매달 고객의 needs를 자극할 수 있는 영업 플랜을 확인하세요</p>
+            </div>
+        </section>
+
+        <div class="container mx-auto px-4 mt-12">
+            <!-- Filter by Month -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                <div class="flex items-center gap-4">
+                    <label class="font-semibold">월별 필터:</label>
+                    <select id="month-filter" class="border border-gray-300 rounded-lg px-4 py-2">
+                        <option value="">전체</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Issues Grid -->
+            <div id="issues-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Issues will be loaded here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="text-center py-16 hidden">
+                <i class="fas fa-lightbulb text-gray-300 text-6xl mb-4"></i>
+                <h3 class="text-2xl font-bold text-gray-700 mb-2">등록된 영업 이슈가 없습니다</h3>
+                <p class="text-gray-500">관리자 페이지에서 영업 이슈를 추가해주세요</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Issue Detail Modal -->
+    <div id="issue-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 id="modal-title" class="text-2xl font-bold"></h3>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                <div id="modal-content">
+                    <!-- Content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">보험 LOUNGE</h3>
+                    <p class="text-gray-400">전문 보험 전문가들이 함께합니다</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">빠른 링크</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white">홈</a></li>
+                        <li><a href="fa-intro.html" class="text-gray-400 hover:text-white">보험 전문가 소개</a></li>
+                        <li><a href="fa-apply.html" class="text-gray-400 hover:text-white">전문가 신청</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">개인정보 처리방침</h4>
+                    <p class="text-sm text-gray-400">전문가 신청 시 제공된 정보는 신청 검토 목적으로만 사용됩니다.</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 보험 LOUNGE. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Load sales issues
+        function loadIssues() {
+            const issues = JSON.parse(localStorage.getItem('sales_issues') || '[]');
+            const container = document.getElementById('issues-container');
+            const emptyState = document.getElementById('empty-state');
+            const monthFilter = document.getElementById('month-filter').value;
+
+            // Filter by month
+            const filteredIssues = monthFilter 
+                ? issues.filter(i => i.month === monthFilter)
+                : issues;
+
+            // Populate month filter options
+            const uniqueMonths = [...new Set(issues.map(i => i.month))].sort().reverse();
+            const monthSelect = document.getElementById('month-filter');
+            const currentMonth = monthSelect.value;
+            monthSelect.innerHTML = '<option value="">전체</option>' + 
+                uniqueMonths.map(m => `<option value="${m}" ${m === currentMonth ? 'selected' : ''}>${m}</option>`).join('');
+
+            if (filteredIssues.length === 0) {
+                container.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            container.innerHTML = filteredIssues.map(issue => `
+                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition cursor-pointer" onclick="showIssueDetail(${issue.id})">
+                    <img src="${issue.imageUrl}" alt="${issue.title}" class="w-full h-48 object-cover" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+                    <div class="p-6">
+                        <div class="flex gap-2 mb-3">
+                            <span class="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-sm">${issue.month}</span>
+                            ${issue.targetCustomer ? `<span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm">${issue.targetCustomer}</span>` : ''}
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">${issue.title}</h3>
+                        <p class="text-gray-600">${issue.description}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Show issue detail
+        function showIssueDetail(id) {
+            const issues = JSON.parse(localStorage.getItem('sales_issues') || '[]');
+            const issue = issues.find(i => i.id === id);
+            if (!issue) return;
+
+            const modal = document.getElementById('issue-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalContent = document.getElementById('modal-content');
+
+            modalTitle.textContent = issue.title;
+            modalContent.innerHTML = `
+                <div class="mb-4">
+                    <img src="${issue.imageUrl}" alt="${issue.title}" class="w-full rounded-lg" onerror="this.src='https://via.placeholder.com/800x600?text=No+Image'">
+                </div>
+                <div class="space-y-4">
+                    <div class="flex gap-2">
+                        <span class="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-sm">${issue.month}</span>
+                        ${issue.targetCustomer ? `<span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm">${issue.targetCustomer}</span>` : ''}
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-2">설명</h4>
+                        <p class="text-gray-700">${issue.description}</p>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        등록일: ${new Date(issue.createdAt).toLocaleDateString('ko-KR')}
+                    </div>
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+        }
+
+        // Close modal
+        document.getElementById('close-modal').addEventListener('click', () => {
+            document.getElementById('issue-modal').classList.add('hidden');
+        });
+
+        document.getElementById('issue-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'issue-modal') {
+                document.getElementById('issue-modal').classList.add('hidden');
+            }
+        });
+
+        // Event listeners
+        document.getElementById('month-filter').addEventListener('change', loadIssues);
+
+        // Mobile menu
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Initial load
+        loadIssues();
+    </script>
+</body>
+</html>
