@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>보험 문의 - 보험 LOUNGE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #0891b2 0%, #06b6d4 50%, #0e7490 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-cyan-600">
+                        <i class="fas fa-shield-alt mr-2"></i>보험 LOUNGE
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-cyan-600 font-medium">홈</a>
+                    <a href="fa-intro.html" class="text-gray-700 hover:text-cyan-600 font-medium">보험 전문가 소개</a>
+                    <a href="contract-cases.html" class="text-gray-700 hover:text-cyan-600 font-medium">계약 사례</a>
+                    <a href="claim-cases.html" class="text-gray-700 hover:text-cyan-600 font-medium">청구 사례</a>
+                    <a href="insurance-info.html" class="text-gray-700 hover:text-cyan-600 font-medium">보험 정보</a>
+                    <a href="inquiries.html" class="text-cyan-600 font-medium border-b-2 border-cyan-600">보험 문의</a>
+                    <a href="fa-apply.html" class="bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 transition font-medium">보험 전문가 신청</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-700">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">홈</a>
+                <a href="fa-intro.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">보험 전문가 소개</a>
+                <a href="contract-cases.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">계약 사례</a>
+                <a href="claim-cases.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">청구 사례</a>
+                <a href="insurance-info.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">보험 정보</a>
+                <a href="inquiries.html" class="block px-3 py-2 bg-cyan-50 text-cyan-600 rounded">보험 문의</a>
+                <a href="fa-apply.html" class="block px-3 py-2 bg-cyan-600 text-white rounded text-center">보험 전문가 신청</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white pt-24 pb-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">보험 문의</h1>
+            <p class="text-xl text-cyan-50">궁금한 사항을 문의하시면 전문가가 답변해드립니다</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Write Inquiry Button -->
+            <div class="mb-8 flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-gray-800">
+                    <i class="fas fa-question-circle text-cyan-600 mr-2"></i>전체 문의 <span id="inquiry-count" class="text-cyan-600">0</span>건
+                </h2>
+                <button onclick="showInquiryModal()" class="bg-cyan-600 text-white px-6 py-3 rounded-lg hover:bg-cyan-700 transition font-semibold">
+                    <i class="fas fa-pen mr-2"></i>문의하기
+                </button>
+            </div>
+
+            <!-- Inquiries List -->
+            <div id="inquiries-list" class="space-y-4">
+                <!-- Inquiries will be loaded here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden text-center py-16">
+                <i class="fas fa-inbox text-gray-300 text-6xl mb-4"></i>
+                <p class="text-gray-500 text-lg">아직 등록된 문의가 없습니다.</p>
+                <button onclick="showInquiryModal()" class="mt-6 bg-cyan-600 text-white px-6 py-3 rounded-lg hover:bg-cyan-700 transition font-semibold">
+                    첫 문의 등록하기
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Write Inquiry Modal -->
+    <div id="inquiry-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b sticky top-0 bg-white">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-2xl font-bold text-gray-800">
+                        <i class="fas fa-pen-to-square text-cyan-600 mr-2"></i>보험 문의하기
+                    </h3>
+                    <button onclick="closeInquiryModal()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <form id="inquiry-form" class="p-6">
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold mb-2">제목 <span class="text-red-500">*</span></label>
+                    <input type="text" name="title" required class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="문의 제목을 입력하세요">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold mb-2">내용 <span class="text-red-500">*</span></label>
+                    <textarea name="content" required rows="6" class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="문의 내용을 자세히 입력해주세요"></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold mb-2">사진 첨부 (선택)</label>
+                    <input type="url" name="imageUrl" class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="이미지 URL (Imgur, Google Drive 등)">
+                    <p class="text-xs text-gray-500 mt-1">
+                        <i class="fas fa-info-circle mr-1"></i>이미지는 외부 서비스(Imgur, Google Drive 등)에 업로드 후 링크를 입력하세요
+                    </p>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold mb-2">공개 설정 <span class="text-red-500">*</span></label>
+                    <div class="space-y-3">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="visibility" value="public" checked class="mr-3" onchange="togglePasswordField()">
+                            <div>
+                                <div class="font-medium text-gray-800">공개</div>
+                                <div class="text-xs text-gray-500">누구나 문의 내용과 답변을 볼 수 있습니다</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="visibility" value="private" class="mr-3" onchange="togglePasswordField()">
+                            <div>
+                                <div class="font-medium text-gray-800">비공개</div>
+                                <div class="text-xs text-gray-500">4자리 비밀번호로 보호됩니다</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="password-field" class="mb-6 hidden">
+                    <label class="block text-sm font-semibold mb-2">비밀번호 (4자리) <span class="text-red-500">*</span></label>
+                    <input type="text" name="password" pattern="[0-9]{4}" maxlength="4" class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="숫자 4자리 입력">
+                    <p class="text-xs text-gray-500 mt-1">
+                        <i class="fas fa-lock mr-1"></i>문의 확인 시 필요한 4자리 숫자를 입력하세요
+                    </p>
+                </div>
+
+                <div class="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h4 class="font-semibold text-blue-800 mb-2">
+                        <i class="fas fa-user-circle mr-2"></i>작성자 정보
+                    </h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">이름 <span class="text-red-500">*</span></label>
+                            <input type="text" name="authorName" required class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="홍길동">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">연락처 <span class="text-red-500">*</span></label>
+                            <input type="tel" name="authorPhone" required class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="010-1234-5678">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">이메일 (선택)</label>
+                            <input type="email" name="authorEmail" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="example@email.com">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <button type="button" onclick="closeInquiryModal()" class="flex-1 bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition font-semibold">
+                        취소
+                    </button>
+                    <button type="submit" class="flex-1 bg-cyan-600 text-white px-6 py-3 rounded-lg hover:bg-cyan-700 transition font-semibold">
+                        <i class="fas fa-paper-plane mr-2"></i>문의 등록
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Inquiry Detail Modal -->
+    <div id="detail-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b sticky top-0 bg-white">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-2xl font-bold text-gray-800">문의 상세</h3>
+                    <button onclick="closeDetailModal()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="detail-content" class="p-6">
+                <!-- Detail will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Password Check Modal -->
+    <div id="password-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-lock text-cyan-600 mr-2"></i>비공개 문의
+            </h3>
+            <p class="text-gray-600 mb-4">이 문의는 비공개로 설정되어 있습니다. 비밀번호를 입력해주세요.</p>
+            
+            <input type="text" id="password-input" pattern="[0-9]{4}" maxlength="4" class="w-full border border-gray-300 rounded-lg px-4 py-3 mb-4" placeholder="4자리 숫자 입력">
+            
+            <div class="flex gap-3">
+                <button onclick="closePasswordModal()" class="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300">
+                    취소
+                </button>
+                <button onclick="checkPassword()" class="flex-1 bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700">
+                    확인
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentInquiryId = null;
+
+        // Toggle password field
+        function togglePasswordField() {
+            const visibility = document.querySelector('input[name="visibility"]:checked').value;
+            const passwordField = document.getElementById('password-field');
+            const passwordInput = document.querySelector('input[name="password"]');
+            
+            if (visibility === 'private') {
+                passwordField.classList.remove('hidden');
+                passwordInput.required = true;
+            } else {
+                passwordField.classList.add('hidden');
+                passwordInput.required = false;
+                passwordInput.value = '';
+            }
+        }
+
+        // Show inquiry modal
+        function showInquiryModal() {
+            document.getElementById('inquiry-modal').classList.remove('hidden');
+        }
+
+        // Close inquiry modal
+        function closeInquiryModal() {
+            document.getElementById('inquiry-modal').classList.add('hidden');
+            document.getElementById('inquiry-form').reset();
+            togglePasswordField();
+        }
+
+        // Submit inquiry
+        document.getElementById('inquiry-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const inquiry = {
+                id: Date.now(),
+                title: formData.get('title'),
+                content: formData.get('content'),
+                imageUrl: formData.get('imageUrl') || null,
+                visibility: formData.get('visibility'),
+                password: formData.get('password') || null,
+                authorName: formData.get('authorName'),
+                authorPhone: formData.get('authorPhone'),
+                authorEmail: formData.get('authorEmail') || null,
+                createdAt: new Date().toISOString(),
+                status: 'PENDING',
+                replies: []
+            };
+            
+            // Save to localStorage
+            const inquiries = JSON.parse(localStorage.getItem('inquiries') || '[]');
+            inquiries.unshift(inquiry);
+            localStorage.setItem('inquiries', JSON.stringify(inquiries));
+            
+            alert('문의가 등록되었습니다.');
+            closeInquiryModal();
+            loadInquiries();
+        });
+
+        // Load inquiries
+        function loadInquiries() {
+            const inquiries = JSON.parse(localStorage.getItem('inquiries') || '[]');
+            const list = document.getElementById('inquiries-list');
+            const emptyState = document.getElementById('empty-state');
+            const countEl = document.getElementById('inquiry-count');
+            
+            countEl.textContent = inquiries.length;
+            
+            if (inquiries.length === 0) {
+                list.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            
+            list.innerHTML = inquiries.map(inquiry => `
+                <div class="card-hover bg-white rounded-xl shadow-md p-6 cursor-pointer" onclick="viewInquiry(${inquiry.id})">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="text-lg font-bold text-gray-800">${inquiry.title}</h3>
+                                ${inquiry.visibility === 'private' ? '<span class="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded-full"><i class="fas fa-lock mr-1"></i>비공개</span>' : ''}
+                                ${inquiry.status === 'ANSWERED' ? '<span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full"><i class="fas fa-check mr-1"></i>답변완료</span>' : '<span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full"><i class="fas fa-clock mr-1"></i>대기중</span>'}
+                            </div>
+                            <p class="text-gray-600 text-sm line-clamp-2">${inquiry.content}</p>
+                        </div>
+                        ${inquiry.imageUrl ? '<div class="ml-4"><img src="' + inquiry.imageUrl + '" class="w-20 h-20 object-cover rounded-lg"></div>' : ''}
+                    </div>
+                    <div class="flex items-center justify-between text-sm text-gray-500">
+                        <div>
+                            <i class="fas fa-user mr-1"></i>${inquiry.authorName}
+                        </div>
+                        <div>
+                            <i class="fas fa-calendar mr-1"></i>${new Date(inquiry.createdAt).toLocaleDateString('ko-KR')}
+                        </div>
+                    </div>
+                    ${inquiry.replies.length > 0 ? `<div class="mt-3 pt-3 border-t text-sm text-gray-600"><i class="fas fa-comment-dots mr-1 text-cyan-600"></i>답변 ${inquiry.replies.length}개</div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        // View inquiry
+        function viewInquiry(id) {
+            const inquiries = JSON.parse(localStorage.getItem('inquiries') || '[]');
+            const inquiry = inquiries.find(i => i.id === id);
+            
+            if (!inquiry) return;
+            
+            if (inquiry.visibility === 'private') {
+                currentInquiryId = id;
+                document.getElementById('password-modal').classList.remove('hidden');
+                document.getElementById('password-input').value = '';
+                return;
+            }
+            
+            showInquiryDetail(inquiry);
+        }
+
+        // Check password
+        function checkPassword() {
+            const password = document.getElementById('password-input').value;
+            const inquiries = JSON.parse(localStorage.getItem('inquiries') || '[]');
+            const inquiry = inquiries.find(i => i.id === currentInquiryId);
+            
+            if (!inquiry) return;
+            
+            if (inquiry.password === password) {
+                closePasswordModal();
+                showInquiryDetail(inquiry);
+            } else {
+                alert('비밀번호가 일치하지 않습니다.');
+            }
+        }
+
+        function closePasswordModal() {
+            document.getElementById('password-modal').classList.add('hidden');
+            currentInquiryId = null;
+        }
+
+        // Show inquiry detail
+        function showInquiryDetail(inquiry) {
+            const detailContent = document.getElementById('detail-content');
+            
+            const isExpert = sessionStorage.getItem('fa_session');
+            
+            detailContent.innerHTML = `
+                <div class="mb-6">
+                    <div class="flex items-center gap-2 mb-3">
+                        <h2 class="text-2xl font-bold text-gray-800">${inquiry.title}</h2>
+                        ${inquiry.visibility === 'private' ? '<span class="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded-full"><i class="fas fa-lock mr-1"></i>비공개</span>' : ''}
+                    </div>
+                    <div class="flex items-center gap-4 text-sm text-gray-500 mb-4">
+                        <span><i class="fas fa-user mr-1"></i>${inquiry.authorName}</span>
+                        <span><i class="fas fa-phone mr-1"></i>${inquiry.authorPhone}</span>
+                        ${inquiry.authorEmail ? `<span><i class="fas fa-envelope mr-1"></i>${inquiry.authorEmail}</span>` : ''}
+                        <span><i class="fas fa-calendar mr-1"></i>${new Date(inquiry.createdAt).toLocaleString('ko-KR')}</span>
+                    </div>
+                    ${inquiry.imageUrl ? `<img src="${inquiry.imageUrl}" class="w-full max-h-96 object-contain rounded-lg mb-4 bg-gray-100">` : ''}
+                    <div class="bg-gray-50 rounded-lg p-6 whitespace-pre-wrap">${inquiry.content}</div>
+                </div>
+
+                ${inquiry.replies.length > 0 ? `
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4"><i class="fas fa-comments text-cyan-600 mr-2"></i>답변 (${inquiry.replies.length})</h3>
+                        <div class="space-y-4">
+                            ${inquiry.replies.map(reply => `
+                                <div class="bg-cyan-50 rounded-lg p-4 border-l-4 border-cyan-600">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="font-semibold text-cyan-900">
+                                            <i class="fas fa-user-tie mr-2"></i>${reply.expertName}
+                                            <span class="ml-2 px-2 py-1 bg-cyan-600 text-white text-xs rounded-full">전문가</span>
+                                        </div>
+                                        <span class="text-sm text-cyan-700">${new Date(reply.createdAt).toLocaleString('ko-KR')}</span>
+                                    </div>
+                                    <div class="text-gray-700 whitespace-pre-wrap">${reply.content}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+
+                ${isExpert ? `
+                    <div class="border-t pt-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">
+                            <i class="fas fa-pen text-cyan-600 mr-2"></i>답변 작성
+                        </h3>
+                        <form id="reply-form" onsubmit="submitReply(event, ${inquiry.id})">
+                            <textarea name="replyContent" required rows="4" class="w-full border border-gray-300 rounded-lg px-4 py-3 mb-3" placeholder="답변을 입력하세요..."></textarea>
+                            <button type="submit" class="bg-cyan-600 text-white px-6 py-3 rounded-lg hover:bg-cyan-700 transition font-semibold">
+                                <i class="fas fa-paper-plane mr-2"></i>답변 등록
+                            </button>
+                        </form>
+                    </div>
+                ` : '<div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center"><i class="fas fa-info-circle text-yellow-600 mr-2"></i>전문가만 답변을 작성할 수 있습니다.</div>'}
+            `;
+            
+            document.getElementById('detail-modal').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detail-modal').classList.add('hidden');
+        }
+
+        // Submit reply (expert only)
+        function submitReply(e, inquiryId) {
+            e.preventDefault();
+            
+            const session = JSON.parse(sessionStorage.getItem('fa_session') || '{}');
+            if (!session.email) {
+                alert('전문가 로그인이 필요합니다.');
+                return;
+            }
+            
+            const formData = new FormData(e.target);
+            const reply = {
+                id: Date.now(),
+                expertEmail: session.email,
+                expertName: session.name || '보험 전문가',
+                content: formData.get('replyContent'),
+                createdAt: new Date().toISOString()
+            };
+            
+            const inquiries = JSON.parse(localStorage.getItem('inquiries') || '[]');
+            const inquiry = inquiries.find(i => i.id === inquiryId);
+            
+            if (inquiry) {
+                inquiry.replies.push(reply);
+                inquiry.status = 'ANSWERED';
+                localStorage.setItem('inquiries', JSON.stringify(inquiries));
+                
+                alert('답변이 등록되었습니다.');
+                closeDetailModal();
+                loadInquiries();
+            }
+        }
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Load on page load
+        window.addEventListener('DOMContentLoaded', loadInquiries);
+    </script>
+</body>
+</html>
