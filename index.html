@@ -400,6 +400,13 @@
         // 페이지 로드 시 통계 로드
         window.addEventListener('DOMContentLoaded', loadStats);
         
+        // localStorage 변경 감지하여 자동 업데이트
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'fa_profiles' || e.key === 'contract_cases' || e.key === 'claim_cases') {
+                loadStats();
+            }
+        });
+        
         // Mobile menu toggle
         document.getElementById('mobile-menu-btn').addEventListener('click', function() {
             const menu = document.getElementById('mobile-menu');

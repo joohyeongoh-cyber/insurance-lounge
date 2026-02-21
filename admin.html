@@ -504,6 +504,7 @@
                 specialties: app.specialties,
                 kakaoLink: app.kakaoLink,
                 photoUrl: app.photoUrl || '',
+                password: app.password,  // 비밀번호 포함!
                 approvedAt: app.approvedAt
             });
             localStorage.setItem('fa_profiles', JSON.stringify(profiles));
