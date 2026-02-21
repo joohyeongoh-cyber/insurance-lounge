@@ -195,18 +195,77 @@
             });
 
             console.log('✅ 전문가 카드 생성 중...');
-            container.innerHTML = profiles.map(profile => `
+            
+            // Load reviews for filtering
+            const allReviews = JSON.parse(localStorage.getItem('fa_reviews') || '[]');
+            
+            container.innerHTML = profiles.map(profile => {
+                // Get reviews for this specific FA
+                const profileReviews = allReviews.filter(r => r.faId === profile.id);
+                const avgRating = profileReviews.length > 0 
+                    ? (profileReviews.reduce((sum, r) => sum + r.rating, 0) / profileReviews.length).toFixed(1)
+                    : 0;
+                
+                return `
                 <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
-                    <img src="${profile.photoUrl || 'https://via.placeholder.com/400x300?text=보험 전문가+프로필'}" alt="${profile.name}" class="w-full h-48 object-cover">
+                    ${profile.photoUrl ? 
+                        `<img src="${profile.photoUrl}" alt="${profile.name}" class="w-full h-48 object-cover">` :
+                        `<div class="w-full h-48 bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
+                            <i class="fas fa-user text-6xl text-indigo-300"></i>
+                        </div>`
+                    }
                     <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">${profile.name}</h3>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">${profile.name}</h3>
+                            ${profileReviews.length > 0 ? `
+                                <div class="text-sm">
+                                    <span class="text-yellow-500">⭐</span>
+                                    <span class="font-semibold">${avgRating}</span>
+                                    <span class="text-gray-500">(${profileReviews.length})</span>
+                                </div>
+                            ` : ''}
+                        </div>
                         <p class="text-gray-600 mb-4">${profile.introduction || '안녕하세요!'}</p>
+                        
+                        ${profile.company ? `
+                        <div class="text-sm text-gray-500 mb-2">
+                            <i class="fas fa-building mr-1"></i>${profile.company}
+                        </div>
+                        ` : ''}
+                        
+                        ${profile.region ? `
+                        <div class="text-sm text-gray-500 mb-4">
+                            <i class="fas fa-map-marker-alt mr-1"></i>${profile.region}${profile.branch ? ' ' + profile.branch : ''}
+                        </div>
+                        ` : ''}
+                        
                         <div class="mb-4">
                             <div class="text-sm font-semibold mb-2">전문 분야</div>
                             <div class="flex flex-wrap gap-2">
-                                ${profile.specialties ? profile.specialties.split(',').map(s => `<span class="bg-indigo-100 text-indigo-600 px-2 py-1 rounded text-sm">${s.trim()}</span>`).join('') : ''}
+                                ${profile.specialties ? profile.specialties.split(',').map(s => `<span class="bg-indigo-100 text-indigo-600 px-2 py-1 rounded text-sm">${s.trim()}</span>`).join('') : '<span class="text-gray-400 text-sm">전문 분야 미등록</span>'}
                             </div>
                         </div>
+                        
+                        ${profileReviews.length > 0 ? `
+                        <div class="mb-4 border-t pt-4">
+                            <div class="text-sm font-semibold mb-3">고객 리뷰 (${profileReviews.length}건)</div>
+                            <div class="space-y-2 max-h-40 overflow-y-auto">
+                                ${profileReviews.slice(0, 3).map(review => `
+                                    <div class="bg-gray-50 rounded p-2 text-sm">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="font-medium">${review.author}</span>
+                                            <span class="text-yellow-500">${'⭐'.repeat(review.rating)}</span>
+                                        </div>
+                                        <p class="text-gray-600 text-xs line-clamp-2">${review.content}</p>
+                                    </div>
+                                `).join('')}
+                                ${profileReviews.length > 3 ? `
+                                    <div class="text-xs text-center text-gray-500">+${profileReviews.length - 3}개 더보기</div>
+                                ` : ''}
+                            </div>
+                        </div>
+                        ` : ''}
+                        
                         ${profile.kakaoLink ? `
                         <a href="${profile.kakaoLink}" target="_blank" class="block w-full bg-yellow-400 text-gray-800 px-4 py-2 rounded-lg hover:bg-yellow-500 font-semibold text-center">
                             <i class="fas fa-comment mr-2"></i>카카오톡 상담
@@ -214,7 +273,8 @@
                         ` : ''}
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
         }
 
         // Load reviews
