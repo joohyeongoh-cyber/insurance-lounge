@@ -492,7 +492,11 @@
             // Add to FA profiles (for display on fa-intro.html)
             let profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
             const app = applications[appIndex];
-            profiles.push({
+            
+            console.log('승인할 신청 정보:', app);
+            console.log('비밀번호 확인:', app.password);
+            
+            const newProfile = {
                 id: Date.now(),
                 name: app.name,
                 email: app.email,
@@ -506,7 +510,11 @@
                 photoUrl: app.photoUrl || '',
                 password: app.password,  // 비밀번호 포함!
                 approvedAt: app.approvedAt
-            });
+            };
+            
+            console.log('생성된 프로필:', newProfile);
+            
+            profiles.push(newProfile);
             localStorage.setItem('fa_profiles', JSON.stringify(profiles));
 
             alert('승인되었습니다!');

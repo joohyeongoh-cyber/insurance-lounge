@@ -83,14 +83,23 @@
             // Get FA profiles from localStorage
             const profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
             
+            console.log('전체 프로필:', profiles);
+            console.log('입력한 이메일:', faId);
+            console.log('입력한 비밀번호:', faPassword);
+            
             // Find FA by email
             const faProfile = profiles.find(p => p.email === faId);
 
             if (!faProfile) {
                 errorText.textContent = '등록되지 않은 이메일입니다. 보험 전문가 신청을 먼저 해주세요.';
                 errorMessage.classList.remove('hidden');
+                console.log('프로필을 찾을 수 없습니다');
                 return;
             }
+
+            console.log('찾은 프로필:', faProfile);
+            console.log('저장된 비밀번호:', faProfile.password);
+            console.log('비밀번호 일치 여부:', faProfile.password === faPassword);
 
             // Check password (stored in profile)
             if (faProfile.password && faProfile.password === faPassword) {
@@ -101,10 +110,12 @@
                 sessionStorage.setItem('fa_name', faProfile.name);
                 sessionStorage.setItem('login_time', new Date().toISOString());
                 
+                console.log('로그인 성공!');
                 // Redirect to FA dashboard
                 window.location.href = 'fa-dashboard.html';
             } else {
-                errorText.textContent = '비밀번호가 올바르지 않습니다.';
+                console.log('비밀번호 불일치!');
+                errorText.textContent = '비밀번호가 올바르지 않습니다. (저장된 비밀번호: ' + (faProfile.password ? '있음' : '없음') + ')';
                 errorMessage.classList.remove('hidden');
                 document.getElementById('fa-password').value = '';
             }
