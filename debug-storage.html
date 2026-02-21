@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalStorage 디버그 - 보험 LOUNGE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-6xl mx-auto">
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h1 class="text-3xl font-bold mb-4">
+                <i class="fas fa-database mr-3 text-indigo-600"></i>
+                LocalStorage 디버그 도구
+            </h1>
+            <p class="text-gray-600 mb-6">
+                전문가 승인 및 로그인 문제를 진단하기 위한 도구입니다.
+            </p>
+            
+            <div class="flex gap-4 mb-6">
+                <button onclick="loadData()" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 font-semibold">
+                    <i class="fas fa-sync-alt mr-2"></i>데이터 새로고침
+                </button>
+                <button onclick="clearAllData()" class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 font-semibold">
+                    <i class="fas fa-trash mr-2"></i>모든 데이터 삭제
+                </button>
+                <a href="admin-login.html" class="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 font-semibold inline-block">
+                    <i class="fas fa-arrow-left mr-2"></i>관리자 페이지로
+                </a>
+            </div>
+        </div>
+
+        <!-- FA Applications -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-2xl font-bold mb-4 text-indigo-600">
+                <i class="fas fa-file-alt mr-2"></i>전문가 신청 내역 (fa_applications)
+            </h2>
+            <div id="applications-data" class="bg-gray-50 p-4 rounded overflow-x-auto">
+                <pre class="text-sm"></pre>
+            </div>
+        </div>
+
+        <!-- FA Profiles -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-2xl font-bold mb-4 text-green-600">
+                <i class="fas fa-users mr-2"></i>등록된 전문가 (fa_profiles)
+            </h2>
+            <div id="profiles-data" class="bg-gray-50 p-4 rounded overflow-x-auto">
+                <pre class="text-sm"></pre>
+            </div>
+        </div>
+
+        <!-- Contract Cases -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-2xl font-bold mb-4 text-blue-600">
+                <i class="fas fa-file-contract mr-2"></i>계약 사례 (contract_cases)
+            </h2>
+            <div id="contracts-data" class="bg-gray-50 p-4 rounded overflow-x-auto">
+                <pre class="text-sm"></pre>
+            </div>
+        </div>
+
+        <!-- Claim Cases -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h2 class="text-2xl font-bold mb-4 text-emerald-600">
+                <i class="fas fa-file-invoice-dollar mr-2"></i>청구 사례 (claim_cases)
+            </h2>
+            <div id="claims-data" class="bg-gray-50 p-4 rounded overflow-x-auto">
+                <pre class="text-sm"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function loadData() {
+            // Load fa_applications
+            const applications = JSON.parse(localStorage.getItem('fa_applications') || '[]');
+            document.querySelector('#applications-data pre').textContent = 
+                `총 ${applications.length}건\n\n` + JSON.stringify(applications, null, 2);
+
+            // Load fa_profiles
+            const profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
+            document.querySelector('#profiles-data pre').textContent = 
+                `총 ${profiles.length}명\n\n` + JSON.stringify(profiles, null, 2);
+
+            // Load contract_cases
+            const contracts = JSON.parse(localStorage.getItem('contract_cases') || '[]');
+            document.querySelector('#contracts-data pre').textContent = 
+                `총 ${contracts.length}건\n\n` + JSON.stringify(contracts, null, 2);
+
+            // Load claim_cases
+            const claims = JSON.parse(localStorage.getItem('claim_cases') || '[]');
+            document.querySelector('#claims-data pre').textContent = 
+                `총 ${claims.length}건\n\n` + JSON.stringify(claims, null, 2);
+        }
+
+        function clearAllData() {
+            if (!confirm('정말로 모든 데이터를 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다!')) return;
+            
+            localStorage.removeItem('fa_applications');
+            localStorage.removeItem('fa_profiles');
+            localStorage.removeItem('contract_cases');
+            localStorage.removeItem('claim_cases');
+            localStorage.removeItem('inquiries');
+            localStorage.removeItem('sales_issues');
+            
+            alert('모든 데이터가 삭제되었습니다!');
+            loadData();
+        }
+
+        // Load data on page load
+        window.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>

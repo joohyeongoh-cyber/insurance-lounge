@@ -170,9 +170,15 @@
             const emptyState = document.getElementById('empty-state');
             const reviewSelect = document.getElementById('review-fa-select');
 
+            console.log('========== 전문가 프로필 로드 ==========');
+            console.log('전체 프로필 수:', profiles.length);
+            console.log('프로필 데이터:', profiles);
+            console.log('======================================');
+
             if (profiles.length === 0) {
                 container.classList.add('hidden');
                 emptyState.classList.remove('hidden');
+                console.log('⚠️ 등록된 전문가가 없습니다');
                 return;
             }
 
@@ -188,6 +194,7 @@
                 reviewSelect.appendChild(option);
             });
 
+            console.log('✅ 전문가 카드 생성 중...');
             container.innerHTML = profiles.map(profile => `
                 <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
                     <img src="${profile.photoUrl || 'https://via.placeholder.com/400x300?text=보험 전문가+프로필'}" alt="${profile.name}" class="w-full h-48 object-cover">

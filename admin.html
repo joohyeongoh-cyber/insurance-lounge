@@ -516,8 +516,11 @@
             
             profiles.push(newProfile);
             localStorage.setItem('fa_profiles', JSON.stringify(profiles));
+            
+            console.log('✅ fa_profiles 저장 완료!');
+            console.log('현재 전체 프로필:', JSON.parse(localStorage.getItem('fa_profiles')));
 
-            alert('승인되었습니다!');
+            alert('승인되었습니다!\n\n전문가 소개 페이지(fa-intro.html)에 표시됩니다.');
             loadApplications();
         }
 
