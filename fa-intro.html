@@ -78,60 +78,6 @@
                 <p class="text-gray-500 mb-6">첫 번째 보험 전문가가 되어보세요!</p>
                 <a href="fa-apply.html" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 font-semibold">보험 신청하기</a>
             </div>
-
-            <!-- Customer Reviews Section -->
-            <section class="mt-16">
-                <h2 class="text-3xl font-bold mb-8 text-center">고객 리뷰</h2>
-                
-                <div id="reviews-container" class="space-y-4 mb-8">
-                    <!-- Reviews will be loaded here -->
-                </div>
-
-                <!-- Empty Reviews State -->
-                <div id="reviews-empty-state" class="text-center py-8 bg-white rounded-xl shadow-md">
-                    <i class="fas fa-comments text-gray-300 text-5xl mb-4"></i>
-                    <p class="text-gray-500">아직 등록된 리뷰가 없습니다</p>
-                </div>
-
-                <!-- Review Form -->
-                <div class="bg-white rounded-xl shadow-md p-6 mt-8">
-                    <h3 class="text-xl font-bold mb-4">리뷰 작성하기</h3>
-                    <form id="review-form" class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium mb-2">보험 전문가 선택 <span class="text-red-500">*</span></label>
-                            <select id="review-fa-select" name="faId" required class="w-full border border-gray-300 rounded-lg px-4 py-2">
-                                <option value="">보험 전문가를 선택하세요</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2">작성자 이름 <span class="text-red-500">*</span></label>
-                            <input type="text" name="author" required class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="홍*동">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2">평점 <span class="text-red-500">*</span></label>
-                            <div class="flex gap-2">
-                                <label class="flex items-center">
-                                    <input type="radio" name="rating" value="5" required class="mr-2">
-                                    <span>⭐⭐⭐⭐⭐</span>
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="radio" name="rating" value="4" class="mr-2">
-                                    <span>⭐⭐⭐⭐</span>
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="radio" name="rating" value="3" class="mr-2">
-                                    <span>⭐⭐⭐</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2">리뷰 내용 <span class="text-red-500">*</span></label>
-                            <textarea name="content" required rows="4" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="상담 경험을 공유해주세요"></textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 font-semibold">리뷰 등록</button>
-                    </form>
-                </div>
-            </section>
         </div>
     </main>
 
@@ -163,12 +109,18 @@
     </footer>
 
     <script>
+        // Mask customer name (홍길동 → 홍**)
+        function maskName(name) {
+            if (!name || name.length === 0) return '익명';
+            if (name.length === 1) return name + '**';
+            return name.charAt(0) + '**';
+        }
+
         // Load FA profiles
         function loadFAProfiles() {
             const profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
             const container = document.getElementById('fa-profiles-container');
             const emptyState = document.getElementById('empty-state');
-            const reviewSelect = document.getElementById('review-fa-select');
 
             console.log('========== 전문가 프로필 로드 ==========');
             console.log('전체 프로필 수:', profiles.length);
@@ -184,15 +136,6 @@
 
             container.classList.remove('hidden');
             emptyState.classList.add('hidden');
-
-            // Populate FA select dropdown
-            reviewSelect.innerHTML = '<option value="">보험 전문가를 선택하세요</option>';
-            profiles.forEach(profile => {
-                const option = document.createElement('option');
-                option.value = profile.id;
-                option.textContent = profile.name;
-                reviewSelect.appendChild(option);
-            });
 
             console.log('✅ 전문가 카드 생성 중...');
             
@@ -253,7 +196,7 @@
                                 ${profileReviews.slice(0, 3).map(review => `
                                     <div class="bg-gray-50 rounded p-2 text-sm">
                                         <div class="flex justify-between mb-1">
-                                            <span class="font-medium">${review.author}</span>
+                                            <span class="font-medium">${maskName(review.author)}</span>
                                             <span class="text-yellow-500">${'⭐'.repeat(review.rating)}</span>
                                         </div>
                                         <p class="text-gray-600 text-xs line-clamp-2">${review.content}</p>
@@ -277,66 +220,6 @@
             }).join('');
         }
 
-        // Load reviews
-        function loadReviews() {
-            const reviews = JSON.parse(localStorage.getItem('fa_reviews') || '[]');
-            const container = document.getElementById('reviews-container');
-            const emptyState = document.getElementById('reviews-empty-state');
-
-            if (reviews.length === 0) {
-                container.classList.add('hidden');
-                emptyState.classList.remove('hidden');
-                return;
-            }
-
-            container.classList.remove('hidden');
-            emptyState.classList.add('hidden');
-
-            const profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
-
-            container.innerHTML = reviews.map(review => {
-                const profile = profiles.find(p => p.id === review.faId);
-                const stars = '⭐'.repeat(review.rating);
-                
-                return `
-                    <div class="bg-white rounded-lg shadow-md p-4">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <span class="font-semibold">${review.author}</span>
-                                <span class="text-gray-500 text-sm ml-2">→ ${profile ? profile.name : '보험 전문가'}</span>
-                            </div>
-                            <div class="text-sm">${stars}</div>
-                        </div>
-                        <p class="text-gray-700">${review.content}</p>
-                        <div class="text-xs text-gray-500 mt-2">${new Date(review.createdAt).toLocaleDateString('ko-KR')}</div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Review form submission
-        document.getElementById('review-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const formData = new FormData(e.target);
-            const review = {
-                id: Date.now(),
-                faId: parseInt(formData.get('faId')),
-                author: formData.get('author'),
-                rating: parseInt(formData.get('rating')),
-                content: formData.get('content'),
-                createdAt: new Date().toISOString()
-            };
-
-            let reviews = JSON.parse(localStorage.getItem('fa_reviews') || '[]');
-            reviews.push(review);
-            localStorage.setItem('fa_reviews', JSON.stringify(reviews));
-
-            alert('리뷰가 등록되었습니다!');
-            e.target.reset();
-            loadReviews();
-        });
-
         // Mobile menu
         document.getElementById('mobile-menu-btn').addEventListener('click', () => {
             document.getElementById('mobile-menu').classList.toggle('hidden');
@@ -344,7 +227,6 @@
 
         // Initialize
         loadFAProfiles();
-        loadReviews();
     </script>
 </body>
 </html>
