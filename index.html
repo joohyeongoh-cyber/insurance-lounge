@@ -388,8 +388,8 @@
             const contractCases = JSON.parse(localStorage.getItem('contract_cases') || '[]');
             const claimCases = JSON.parse(localStorage.getItem('claim_cases') || '[]');
             
-            // 승인된 전문가만 카운트
-            const approvedExperts = faProfiles.filter(fa => fa.status === 'APPROVED').length;
+            // fa_profiles에 있는 전문가는 모두 승인된 전문가
+            const approvedExperts = faProfiles.length;
             
             // 통계 업데이트
             document.getElementById('stat-experts').textContent = approvedExperts;
