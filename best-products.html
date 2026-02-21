@@ -397,23 +397,11 @@
                     }
                 ]
             },
-            feb: {
-                categories: [
-                    {
-                        name: '종신보험',
-                        icon: 'fa-heartbeat',
-                        color: 'cyan',
-                        subcategories: [
-                            {subname: '단기납 종신(원화)', products: [{rank: 1, company: 'NH농협생명', product: '투스텝NH종신보험', highlight: '2단계 보험료 설계', features: ['단기간 고액 납입', 'SmartPay 활용', '사업자 최적화']}, {rank: 2, company: '삼성생명', product: '삼성챔피온종신보험', highlight: '안정적 종신보장', features: ['저렴한 보험료', '평생 보장']}, {rank: 3, company: '교보생명', product: '교보무배당종신보험', highlight: '명확한 구조', features: ['부담 없는 보험료', '평생 보장']}]}
-                        ]
-                    }
-                    // 나머지 카테고리도 동일하게 추가 가능
-                ]
-            }
+
         };
 
-        // 3-12월은 Coming Soon
-        const comingSoonMonths = ['mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+        // 2-12월은 Coming Soon
+        const comingSoonMonths = ['feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
         comingSoonMonths.forEach(month => {
             monthlyRankings[month] = { comingSoon: true };
         });
