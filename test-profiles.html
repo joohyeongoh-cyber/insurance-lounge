@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전문가 프로필 테스트</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6">전문가 프로필 테스트</h1>
+        
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <h2 class="text-xl font-bold mb-4">1. 테스트 데이터 추가</h2>
+            <button onclick="addTestProfile()" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+                테스트 전문가 추가
+            </button>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <h2 class="text-xl font-bold mb-4">2. 현재 프로필 확인</h2>
+            <button onclick="checkProfiles()" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 mb-4">
+                프로필 확인
+            </button>
+            <div id="profiles-result" class="bg-gray-50 p-4 rounded">
+                <pre id="profiles-data" class="text-sm"></pre>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <h2 class="text-xl font-bold mb-4">3. fa-intro.html 테스트</h2>
+            <a href="fa-intro.html" target="_blank" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 inline-block">
+                전문가 소개 페이지 열기
+            </a>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-xl font-bold mb-4">4. 모든 데이터 삭제</h2>
+            <button onclick="clearAll()" class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700">
+                전체 삭제
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function addTestProfile() {
+            const profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
+            
+            const testProfile = {
+                id: Date.now(),
+                name: '테스트전문가' + Math.floor(Math.random() * 100),
+                email: 'test' + Date.now() + '@example.com',
+                phone: '010-1234-5678',
+                company: '테스트보험',
+                region: '서울',
+                branch: '강남지점',
+                introduction: '안녕하세요! 테스트 전문가입니다.',
+                specialties: '실손보험, 암보험',
+                kakaoLink: 'https://open.kakao.com/test',
+                photoUrl: '',
+                password: 'test1234',
+                approvedAt: new Date().toISOString()
+            };
+            
+            profiles.push(testProfile);
+            localStorage.setItem('fa_profiles', JSON.stringify(profiles));
+            
+            alert('테스트 전문가가 추가되었습니다!\n이름: ' + testProfile.name + '\n이메일: ' + testProfile.email);
+            checkProfiles();
+        }
+
+        function checkProfiles() {
+            const profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
+            const dataEl = document.getElementById('profiles-data');
+            
+            dataEl.textContent = '총 ' + profiles.length + '명의 전문가가 등록되어 있습니다.\n\n' + JSON.stringify(profiles, null, 2);
+            
+            console.log('========== 전문가 프로필 확인 ==========');
+            console.log('전체 프로필 수:', profiles.length);
+            console.log('프로필 데이터:', profiles);
+            console.log('======================================');
+        }
+
+        function clearAll() {
+            if (!confirm('정말로 모든 전문가 데이터를 삭제하시겠습니까?')) return;
+            
+            localStorage.removeItem('fa_profiles');
+            alert('모든 데이터가 삭제되었습니다!');
+            checkProfiles();
+        }
+
+        // 페이지 로드 시 자동 확인
+        window.addEventListener('DOMContentLoaded', checkProfiles);
+    </script>
+</body>
+</html>
