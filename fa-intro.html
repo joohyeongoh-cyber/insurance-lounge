@@ -156,9 +156,11 @@
             
             // Load reviews for filtering
             const allReviews = JSON.parse(localStorage.getItem('fa_reviews') || '[]');
+            console.log('전체 리뷰 수:', allReviews.length);
             
             // Create compact cards
-            container.innerHTML = profiles.map(profile => {
+            const cardsHTML = profiles.map((profile, index) => {
+                console.log(`카드 ${index + 1} 생성:`, profile.name);
                 const profileReviews = allReviews.filter(r => r.faId === profile.id);
                 const avgRating = profileReviews.length > 0 
                     ? (profileReviews.reduce((sum, r) => sum + r.rating, 0) / profileReviews.length).toFixed(1)
@@ -190,6 +192,10 @@
                 </div>
                 `;
             }).join('');
+            
+            console.log('생성된 HTML 길이:', cardsHTML.length);
+            container.innerHTML = cardsHTML;
+            console.log('✅ 카드 표시 완료!');
         }
 
         // Open expert modal with full details
