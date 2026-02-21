@@ -108,8 +108,8 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-sm font-medium mb-2">사번 <span class="text-red-500">*</span></label>
-                        <input type="text" name="employeeId" required class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="EMP12345">
+                        <label class="block text-sm font-medium mb-2">사번 (7자리) <span class="text-red-500">*</span></label>
+                        <input type="text" name="employeeId" required pattern="[0-9]{7}" maxlength="7" class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="1234567">
                     </div>
 
                     <div class="mb-4">
