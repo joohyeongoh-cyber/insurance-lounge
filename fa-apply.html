@@ -179,9 +179,12 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-sm font-medium mb-2">프로필 사진 URL (선택)</label>
-                        <input type="url" name="photoUrl" class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="https://example.com/photo.jpg">
-                        <p class="text-xs text-gray-500 mt-1">온라인 이미지 URL을 입력하세요</p>
+                        <label class="block text-sm font-medium mb-2">프로필 사진 (선택)</label>
+                        <input type="file" name="photoFile" accept="image/*" class="w-full border border-gray-300 rounded-lg px-4 py-3" onchange="previewImage(this, 'photo-preview')">
+                        <div id="photo-preview" class="mt-3 hidden">
+                            <img src="" alt="미리보기" class="w-32 h-32 object-cover rounded-lg border-2 border-gray-300">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">이미지 파일을 직접 업로드하세요 (JPG, PNG 등)</p>
                     </div>
 
                     <div class="mb-4">
@@ -359,6 +362,25 @@
             "경남": ["창원지점", "김해지점", "진주지점", "양산지점", "거제지점"],
             "제주": ["제주시지점", "서귀포지점"]
         };
+
+        // 이미지 미리보기 함수
+        function previewImage(input, previewId) {
+            const preview = document.getElementById(previewId);
+            const img = preview.querySelector('img');
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    img.src = e.target.result;
+                    preview.classList.remove('hidden');
+                };
+                
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.classList.add('hidden');
+            }
+        }
 
         function updateBranches() {
             const region = document.getElementById('region-select').value;
