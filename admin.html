@@ -44,7 +44,10 @@
         <!-- Tabs -->
         <div class="bg-white rounded-lg shadow-md mb-6">
             <div class="flex border-b overflow-x-auto">
-                <button onclick="showTab('claims')" id="tab-claims" class="tab-btn flex-1 py-4 px-6 font-semibold border-b-2 border-indigo-600 text-indigo-600 whitespace-nowrap">
+                <button onclick="showTab('applications')" id="tab-applications" class="tab-btn flex-1 py-4 px-6 font-semibold border-b-2 border-indigo-600 text-indigo-600 whitespace-nowrap">
+                    <i class="fas fa-user-check mr-2"></i>전문가 신청 관리
+                </button>
+                <button onclick="showTab('claims')" id="tab-claims" class="tab-btn flex-1 py-4 px-6 font-semibold text-gray-600 hover:text-indigo-600 whitespace-nowrap">
                     <i class="fas fa-file-medical mr-2"></i>청구사례 관리
                 </button>
                 <button onclick="showTab('inquiries')" id="tab-inquiries" class="tab-btn flex-1 py-4 px-6 font-semibold text-gray-600 hover:text-indigo-600 whitespace-nowrap">
@@ -56,8 +59,34 @@
             </div>
         </div>
 
+        <!-- Expert Applications Tab -->
+        <div id="content-applications" class="tab-content">
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">보험 전문가 신청 관리</h2>
+                    <div class="text-gray-600">
+                        총 <span id="applications-count" class="font-bold text-indigo-600">0</span>건 
+                        <span class="mx-2">|</span>
+                        <span class="text-yellow-600">대기 <span id="pending-count" class="font-bold">0</span>건</span>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="mb-4 flex gap-4">
+                    <button onclick="filterApplications('ALL')" id="filter-all" class="px-4 py-2 rounded-lg bg-indigo-600 text-white font-semibold">전체</button>
+                    <button onclick="filterApplications('PENDING')" id="filter-pending" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300">대기중</button>
+                    <button onclick="filterApplications('APPROVED')" id="filter-approved" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300">승인됨</button>
+                    <button onclick="filterApplications('REJECTED')" id="filter-rejected" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300">반려됨</button>
+                </div>
+
+                <div id="applications-list" class="space-y-4">
+                    <!-- Applications will be loaded here -->
+                </div>
+            </div>
+        </div>
+
         <!-- Claim Cases Tab -->
-        <div id="content-claims" class="tab-content">
+        <div id="content-claims" class="tab-content hidden">
             <div class="bg-white rounded-lg shadow-md p-6 mb-6">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-bold">청구사례 관리</h2>
@@ -276,7 +305,9 @@
             tabBtn.classList.add('border-indigo-600', 'text-indigo-600');
 
             // Load data for the tab
-            if (tabName === 'claims') {
+            if (tabName === 'applications') {
+                loadApplications();
+            } else if (tabName === 'claims') {
                 loadClaims();
             } else if (tabName === 'inquiries') {
                 loadInquiries();
@@ -286,6 +317,209 @@
         }
 
         // Load 보험 전문가 Applications
+        let currentFilter = 'ALL';
+        
+        function loadApplications(filter = currentFilter) {
+            const applications = JSON.parse(localStorage.getItem('fa_applications') || '[]');
+            const listDiv = document.getElementById('applications-list');
+            const countEl = document.getElementById('applications-count');
+            const pendingCountEl = document.getElementById('pending-count');
+
+            // Filter applications
+            let filteredApps = applications;
+            if (filter !== 'ALL') {
+                filteredApps = applications.filter(app => app.status === filter);
+            }
+
+            // Update counts
+            countEl.textContent = applications.length;
+            pendingCountEl.textContent = applications.filter(app => app.status === 'PENDING').length;
+
+            if (filteredApps.length === 0) {
+                listDiv.innerHTML = '<p class="text-center text-gray-500 py-8">신청 내역이 없습니다</p>';
+                return;
+            }
+
+            // Sort by date (newest first)
+            filteredApps.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+
+            listDiv.innerHTML = filteredApps.map(app => {
+                let statusBadge = '';
+                let actionButtons = '';
+
+                if (app.status === 'PENDING') {
+                    statusBadge = '<span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm font-semibold"><i class="fas fa-clock mr-1"></i>대기중</span>';
+                    actionButtons = `
+                        <button onclick="approveApplication('${app.applicationId}')" class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 font-semibold">
+                            <i class="fas fa-check mr-1"></i>승인
+                        </button>
+                        <button onclick="rejectApplication('${app.applicationId}')" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 font-semibold">
+                            <i class="fas fa-times mr-1"></i>반려
+                        </button>
+                    `;
+                } else if (app.status === 'APPROVED') {
+                    statusBadge = '<span class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-semibold"><i class="fas fa-check-circle mr-1"></i>승인됨</span>';
+                    actionButtons = `
+                        <span class="text-sm text-gray-500">승인일: ${new Date(app.approvedAt).toLocaleDateString('ko-KR')}</span>
+                        <button onclick="deleteApplication('${app.applicationId}')" class="text-red-600 hover:text-red-700 ml-3">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    `;
+                } else if (app.status === 'REJECTED') {
+                    statusBadge = '<span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-semibold"><i class="fas fa-times-circle mr-1"></i>반려됨</span>';
+                    actionButtons = `
+                        <span class="text-sm text-gray-500">반려일: ${new Date(app.rejectedAt).toLocaleDateString('ko-KR')}</span>
+                        <button onclick="deleteApplication('${app.applicationId}')" class="text-red-600 hover:text-red-700 ml-3">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    `;
+                }
+
+                return `
+                    <div class="border rounded-lg p-6 hover:shadow-md transition ${app.status === 'PENDING' ? 'border-yellow-300 bg-yellow-50' : ''}">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <h3 class="text-xl font-bold">${app.name}</h3>
+                                    ${statusBadge}
+                                </div>
+                                <div class="text-sm text-gray-500 mb-1">신청번호: ${app.applicationId}</div>
+                                <div class="text-sm text-gray-500">신청일: ${new Date(app.submittedAt).toLocaleString('ko-KR')}</div>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <div class="text-sm text-gray-500">휴대폰</div>
+                                <div class="font-medium">${app.phone}</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">이메일</div>
+                                <div class="font-medium">${app.email || '미제공'}</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">소속 회사</div>
+                                <div class="font-medium">${app.company}</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">사번</div>
+                                <div class="font-medium">${app.employeeId}</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">활동 지역</div>
+                                <div class="font-medium">${app.region} ${app.branch ? '- ' + app.branch : ''}</div>
+                            </div>
+                            ${app.specialties ? `
+                            <div>
+                                <div class="text-sm text-gray-500">전문 분야</div>
+                                <div class="font-medium">${app.specialties}</div>
+                            </div>
+                            ` : ''}
+                        </div>
+
+                        ${app.introduction ? `
+                        <div class="mb-4 p-3 bg-gray-50 rounded-lg">
+                            <div class="text-sm text-gray-500 mb-1">자기소개</div>
+                            <div class="text-sm">${app.introduction}</div>
+                        </div>
+                        ` : ''}
+
+                        ${app.kakaoLink ? `
+                        <div class="mb-4">
+                            <a href="${app.kakaoLink}" target="_blank" class="text-cyan-600 hover:text-cyan-700 text-sm">
+                                <i class="fas fa-comment mr-1"></i>카카오톡 오픈채팅
+                            </a>
+                        </div>
+                        ` : ''}
+
+                        <div class="flex gap-3 justify-end pt-4 border-t">
+                            ${actionButtons}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterApplications(filter) {
+            currentFilter = filter;
+            
+            // Update button styles
+            document.querySelectorAll('[id^="filter-"]').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            
+            const activeBtn = document.getElementById(`filter-${filter.toLowerCase()}`);
+            activeBtn.classList.remove('bg-gray-200', 'text-gray-700');
+            activeBtn.classList.add('bg-indigo-600', 'text-white');
+            
+            loadApplications(filter);
+        }
+
+        function approveApplication(applicationId) {
+            if (!confirm('이 신청을 승인하시겠습니까?\n승인 시 보험 전문가로 등록됩니다.')) return;
+
+            let applications = JSON.parse(localStorage.getItem('fa_applications') || '[]');
+            const appIndex = applications.findIndex(app => app.applicationId === applicationId);
+            
+            if (appIndex === -1) return;
+
+            applications[appIndex].status = 'APPROVED';
+            applications[appIndex].approvedAt = new Date().toISOString();
+            localStorage.setItem('fa_applications', JSON.stringify(applications));
+
+            // Add to FA profiles (for display on fa-intro.html)
+            let profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
+            const app = applications[appIndex];
+            profiles.push({
+                id: Date.now(),
+                name: app.name,
+                email: app.email,
+                phone: app.phone,
+                company: app.company,
+                region: app.region,
+                branch: app.branch,
+                introduction: app.introduction,
+                specialties: app.specialties,
+                kakaoLink: app.kakaoLink,
+                photoUrl: app.photoUrl || '',
+                approvedAt: app.approvedAt
+            });
+            localStorage.setItem('fa_profiles', JSON.stringify(profiles));
+
+            alert('승인되었습니다!');
+            loadApplications();
+        }
+
+        function rejectApplication(applicationId) {
+            const reason = prompt('반려 사유를 입력하세요 (선택):');
+            if (reason === null) return; // Cancelled
+
+            let applications = JSON.parse(localStorage.getItem('fa_applications') || '[]');
+            const appIndex = applications.findIndex(app => app.applicationId === applicationId);
+            
+            if (appIndex === -1) return;
+
+            applications[appIndex].status = 'REJECTED';
+            applications[appIndex].rejectedAt = new Date().toISOString();
+            applications[appIndex].rejectReason = reason;
+            localStorage.setItem('fa_applications', JSON.stringify(applications));
+
+            alert('반려되었습니다.');
+            loadApplications();
+        }
+
+        function deleteApplication(applicationId) {
+            if (!confirm('이 신청 내역을 삭제하시겠습니까?\n삭제된 데이터는 복구할 수 없습니다.')) return;
+
+            let applications = JSON.parse(localStorage.getItem('fa_applications') || '[]');
+            applications = applications.filter(app => app.applicationId !== applicationId);
+            localStorage.setItem('fa_applications', JSON.stringify(applications));
+
+            alert('삭제되었습니다.');
+            loadApplications();
+        }
+
         // Claim Cases Management
         function loadClaims() {
             const claims = JSON.parse(localStorage.getItem('claim_cases') || '[]');
@@ -543,7 +777,7 @@
         }
 
         // Initialize
-        showTab('claims');
+        showTab('applications');
     </script>
 </body>
 </html>
