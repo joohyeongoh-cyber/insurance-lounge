@@ -163,8 +163,8 @@
     </footer>
 
     <script>
-        // Load 보험 전문가 profiles
-        function load보험 전문가Profiles() {
+        // Load FA profiles
+        function loadFAProfiles() {
             const profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
             const container = document.getElementById('fa-profiles-container');
             const emptyState = document.getElementById('empty-state');
@@ -185,7 +185,7 @@
             container.classList.remove('hidden');
             emptyState.classList.add('hidden');
 
-            // Populate 보험 전문가 select dropdown
+            // Populate FA select dropdown
             reviewSelect.innerHTML = '<option value="">보험 전문가를 선택하세요</option>';
             profiles.forEach(profile => {
                 const option = document.createElement('option');
@@ -283,7 +283,7 @@
         });
 
         // Initialize
-        load보험 전문가Profiles();
+        loadFAProfiles();
         loadReviews();
     </script>
 </body>
