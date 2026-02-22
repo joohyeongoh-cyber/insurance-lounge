@@ -89,10 +89,22 @@
                 <div class="flex items-center gap-2 bg-white rounded-lg px-4 py-2 shadow-lg">
                     <i class="fas fa-calendar-alt text-cyan-600"></i>
                     <select id="year-select" class="bg-white text-gray-800 font-semibold outline-none cursor-pointer border-r border-gray-300 pr-3 py-1">
-                        <!-- JavaScript로 동적 생성 -->
+                        <option value="2025" selected>2025년</option>
+                        <option value="2026">2026년</option>
                     </select>
                     <select id="month-select" class="bg-white text-gray-800 font-semibold outline-none cursor-pointer pl-2 py-1">
-                        <!-- JavaScript로 동적 생성 -->
+                        <option value="jan" selected>1월</option>
+                        <option value="feb">2월</option>
+                        <option value="mar">3월</option>
+                        <option value="apr">4월</option>
+                        <option value="may">5월</option>
+                        <option value="jun">6월</option>
+                        <option value="jul">7월</option>
+                        <option value="aug">8월</option>
+                        <option value="sep">9월</option>
+                        <option value="oct">10월</option>
+                        <option value="nov">11월</option>
+                        <option value="dec">12월</option>
                     </select>
                 </div>
                 <button id="load-data-btn" class="bg-white text-cyan-600 px-4 py-3 rounded-lg font-semibold hover:bg-cyan-50 transition shadow-lg">
@@ -701,52 +713,33 @@
         let currentYear = 2025;
         let currentMonth = 'jan';
 
-        // 연도/월 드롭다운 초기화
-        function initializeDropdowns() {
+        // 연도 변경 시 월 필터링
+        document.addEventListener('DOMContentLoaded', () => {
             const yearSelect = document.getElementById('year-select');
             const monthSelect = document.getElementById('month-select');
             
-            // 2025년 1월부터 현재까지 연도 생성
-            for (let year = 2025; year <= 2026; year++) {
-                const option = document.createElement('option');
-                option.value = year;
-                option.textContent = year + '년';
-                if (year === 2025) option.selected = true; // 2025년 기본 선택
-                yearSelect.appendChild(option);
-            }
-            
-            // 월 드롭다운 생성
-            const months = [
-                {value: 'jan', label: '1월'},
-                {value: 'feb', label: '2월'},
-                {value: 'mar', label: '3월'},
-                {value: 'apr', label: '4월'},
-                {value: 'may', label: '5월'},
-                {value: 'jun', label: '6월'},
-                {value: 'jul', label: '7월'},
-                {value: 'aug', label: '8월'},
-                {value: 'sep', label: '9월'},
-                {value: 'oct', label: '10월'},
-                {value: 'nov', label: '11월'},
-                {value: 'dec', label: '12월'}
-            ];
-            
-            months.forEach(month => {
-                const option = document.createElement('option');
-                option.value = month.value;
-                option.textContent = month.label;
-                if (month.value === 'jan') option.selected = true; // 1월 기본 선택
-                monthSelect.appendChild(option);
-            });
-            
-            // 연도 변경 시 월 필터링 (2026년은 2월까지만 표시)
             yearSelect.addEventListener('change', function() {
-                updateMonthOptions();
+                const selectedYear = parseInt(this.value);
+                Array.from(monthSelect.options).forEach(option => {
+                    if (selectedYear === 2026 && !['jan', 'feb'].includes(option.value)) {
+                        option.style.display = 'none';
+                    } else {
+                        option.style.display = 'block';
+                    }
+                });
+                
+                // 2026년인데 3월 이상 선택되어 있으면 1월로 초기화
+                if (selectedYear === 2026 && !['jan', 'feb'].includes(monthSelect.value)) {
+                    monthSelect.value = 'jan';
+                }
             });
             
-            // 초기 월 옵션 설정
-            updateMonthOptions();
-        }
+            // 초기 로드
+            loadData();
+            
+            // 조회 버튼 이벤트
+            document.getElementById('load-data-btn').addEventListener('click', loadData);
+        });
 
         // 데이터 조회 (API 호출 포함)
         async function loadData() {
@@ -1059,19 +1052,12 @@
             container.innerHTML = html;
         }
 
-        // 페이지 로드 시 초기화
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeDropdowns();
-            loadData();
-            
-            // 조회 버튼 이벤트
-            document.getElementById('load-data-btn').addEventListener('click', loadData);
-        });
-
         // Mobile menu toggle
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+                const menu = document.getElementById('mobile-menu');
+                menu.classList.toggle('hidden');
+            });
         });
     </script>
 </body>
