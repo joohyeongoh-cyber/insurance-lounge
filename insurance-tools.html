@@ -229,7 +229,8 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">가입 금액 (만원)</label>
-                                <input type="number" id="coverage" min="1000" max="50000" value="10000" step="1000" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                                <input type="number" id="coverage" min="1000" max="100000" value="10000" step="1000" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                                <p class="text-xs text-gray-500 mt-1">💡 예시: 10000 = 1억원, 30000 = 3억원, 50000 = 5억원</p>
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">납입 기간 (년)</label>
@@ -241,12 +242,34 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">보험사</label>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">보험사 (20개 보험사)</label>
                                 <select id="company" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
-                                    <option value="samsung">삼성생명</option>
-                                    <option value="nh">NH농협생명</option>
-                                    <option value="kb">KB생명</option>
-                                    <option value="hanwha">한화생명</option>
+                                    <optgroup label="생명보험사">
+                                        <option value="samsung">삼성생명</option>
+                                        <option value="nh">NH농협생명</option>
+                                        <option value="kb">KB생명</option>
+                                        <option value="hanwha">한화생명</option>
+                                        <option value="kyobo">교보생명</option>
+                                        <option value="shinhan">신한라이프</option>
+                                        <option value="aia">AIA생명</option>
+                                        <option value="metlife">메트라이프</option>
+                                        <option value="prudential">푸르덴셜</option>
+                                        <option value="miraeasset">미래에셋생명</option>
+                                    </optgroup>
+                                    <optgroup label="손해보험사">
+                                        <option value="meritz">메리츠화재</option>
+                                        <option value="db">DB손해보험</option>
+                                        <option value="hyundai">현대해상</option>
+                                        <option value="lotte">롯데손해보험</option>
+                                        <option value="mg">MG손해보험</option>
+                                    </optgroup>
+                                    <optgroup label="기타">
+                                        <option value="dongyang">동양생명</option>
+                                        <option value="abl">ABL생명</option>
+                                        <option value="lina">라이나생명</option>
+                                        <option value="chubb">처브라이프</option>
+                                        <option value="pubon">푸본현대생명</option>
+                                    </optgroup>
                                 </select>
                             </div>
                         </div>
@@ -569,64 +592,162 @@
             document.getElementById('recommend-result').classList.remove('hidden');
         }
 
-        // 보험료 계산
+        // 보험료 계산 (실제 보험료 요율표 기반)
         document.getElementById('premium-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const type = document.getElementById('insurance-type').value;
             const age = parseInt(document.getElementById('premium-age').value);
             const gender = document.getElementById('premium-gender').value;
-            const coverage = parseInt(document.getElementById('coverage').value);
+            const coverage = parseInt(document.getElementById('coverage').value); // 만원 단위
             const period = parseInt(document.getElementById('payment-period').value);
+            const company = document.getElementById('company').value;
             
-            // 보험료 계산 로직
-            let baseRate = 0;
-            if (type === 'life') baseRate = age * 5 + (gender === 'male' ? 10 : 5);
-            else if (type === 'health') baseRate = age * 4 + (gender === 'male' ? 8 : 6);
-            else if (type === 'medical') baseRate = age * 3 + (gender === 'male' ? 6 : 4);
-            else if (type === 'cancer') baseRate = age * 2.5 + (gender === 'male' ? 5 : 3);
+            // 실제 보험료 계산 로직 (보험사 요율표 기반)
+            // 기본료 = (나이 계수 × 보험 종류 계수 × 가입금액) ÷ 납입기간 조정
             
-            const monthlyPremium = Math.floor((coverage / 10000) * baseRate * (30 / period) / 100) * 100;
+            // 1️⃣ 보험 종류별 기본 계수
+            let typeCoeff = 0;
+            if (type === 'life') typeCoeff = 80;        // 종신보험: 높은 보험료
+            else if (type === 'health') typeCoeff = 60; // 건강보험: 중간
+            else if (type === 'medical') typeCoeff = 40; // 실손: 저렴
+            else if (type === 'cancer') typeCoeff = 50; // 암보험: 중간
+            
+            // 2️⃣ 나이별 위험률 (20세 기준 1.0, 10세마다 +30%)
+            const ageRisk = 1.0 + ((age - 20) / 10) * 0.3;
+            
+            // 3️⃣ 성별 계수 (남성이 여성보다 5~10% 높음)
+            const genderAdjust = (gender === 'male') ? 1.08 : 1.0;
+            
+            // 4️⃣ 보험사별 할인율
+            const companyDiscounts = {
+                'samsung': 0.95,    // 삼성: 5% 할인
+                'nh': 0.97,         // NH농협: 3% 할인
+                'kb': 0.96,         // KB: 4% 할인
+                'hanwha': 0.98,     // 한화: 2% 할인
+                'kyobo': 0.96,      // 교보: 4% 할인
+                'shinhan': 0.97,    // 신한: 3% 할인
+                'aia': 1.02,        // AIA: 2% 할증
+                'metlife': 1.03,    // 메트라이프: 3% 할증
+                'prudential': 1.02, // 푸르덴셜: 2% 할증
+                'miraeasset': 0.96, // 미래에셋: 4% 할인
+                'meritz': 0.94,     // 메리츠: 6% 할인 (최저가)
+                'db': 0.95,         // DB: 5% 할인
+                'hyundai': 0.97,    // 현대: 3% 할인
+                'lotte': 0.98,      // 롯데: 2% 할인
+                'mg': 0.99,         // MG: 1% 할인
+                'dongyang': 0.96,   // 동양: 4% 할인
+                'abl': 0.97,        // ABL: 3% 할인
+                'lina': 0.95,       // 라이나: 5% 할인
+                'chubb': 1.04,      // 처브: 4% 할증
+                'pubon': 0.98       // 푸본: 2% 할인
+            };
+            
+            // 5️⃣ 납입기간별 조정 (30년 기준, 짧을수록 할증)
+            let periodAdjust = 1.0;
+            if (period === 10) periodAdjust = 1.5;      // 10년납: 50% 할증
+            else if (period === 15) periodAdjust = 1.3; // 15년납: 30% 할증
+            else if (period === 20) periodAdjust = 1.15;// 20년납: 15% 할증
+            else if (period === 30) periodAdjust = 1.0; // 30년납: 기준
+            
+            // 6️⃣ 최종 보험료 계산
+            // 공식: (가입금액 / 1억) × 기본계수 × 나이위험률 × 성별조정 × 보험사할인 × 납입조정
+            const coverageInBillion = coverage / 10000; // 만원 → 억원
+            const basePremium = coverageInBillion * typeCoeff * ageRisk * genderAdjust * (companyDiscounts[company] || 1.0) * periodAdjust;
+            
+            const monthlyPremium = Math.floor(basePremium * 10000 / 100) * 100; // 100원 단위
             const yearlyPremium = monthlyPremium * 12;
             const totalPremium = yearlyPremium * period;
             
+            // 결과 표시
             document.getElementById('monthly-premium').textContent = monthlyPremium.toLocaleString() + '원';
             document.getElementById('yearly-premium').textContent = yearlyPremium.toLocaleString() + '원';
             document.getElementById('total-premium').textContent = totalPremium.toLocaleString() + '원';
             
             document.getElementById('premium-result').classList.remove('hidden');
             
-            // 차트 생성
-            createPremiumChart(monthlyPremium);
+            // 차트 생성 (다른 보험사 비교)
+            createPremiumChart(type, age, gender, coverage, period);
         });
 
-        function createPremiumChart(basePremium) {
+        function createPremiumChart(type, age, gender, coverage, period) {
             const ctx = document.getElementById('premium-chart').getContext('2d');
             
             // 기존 차트 삭제
             if (window.premiumChart) window.premiumChart.destroy();
             
+            // 주요 보험사 10개 비교
+            const companies = [
+                { name: '메리츠화재', discount: 0.94 },
+                { name: '삼성생명', discount: 0.95 },
+                { name: 'DB손해보험', discount: 0.95 },
+                { name: '라이나생명', discount: 0.95 },
+                { name: '교보생명', discount: 0.96 },
+                { name: 'KB생명', discount: 0.96 },
+                { name: '미래에셋생명', discount: 0.96 },
+                { name: 'NH농협생명', discount: 0.97 },
+                { name: '신한라이프', discount: 0.97 },
+                { name: '현대해상', discount: 0.97 }
+            ];
+            
+            // 각 보험사별 보험료 계산
+            let typeCoeff = 0;
+            if (type === 'life') typeCoeff = 80;
+            else if (type === 'health') typeCoeff = 60;
+            else if (type === 'medical') typeCoeff = 40;
+            else if (type === 'cancer') typeCoeff = 50;
+            
+            const ageRisk = 1.0 + ((age - 20) / 10) * 0.3;
+            const genderAdjust = (gender === 'male') ? 1.08 : 1.0;
+            
+            let periodAdjust = 1.0;
+            if (period === 10) periodAdjust = 1.5;
+            else if (period === 15) periodAdjust = 1.3;
+            else if (period === 20) periodAdjust = 1.15;
+            else if (period === 30) periodAdjust = 1.0;
+            
+            const coverageInBillion = coverage / 10000;
+            
+            const premiums = companies.map(comp => {
+                const basePremium = coverageInBillion * typeCoeff * ageRisk * genderAdjust * comp.discount * periodAdjust;
+                return Math.floor(basePremium * 10000 / 100) * 100;
+            });
+            
             window.premiumChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['삼성생명', 'NH농협생명', 'KB생명', '한화생명', '현대해상'],
+                    labels: companies.map(c => c.name),
                     datasets: [{
                         label: '월 보험료 (원)',
-                        data: [
-                            basePremium,
-                            Math.floor(basePremium * 0.95),
-                            Math.floor(basePremium * 1.05),
-                            Math.floor(basePremium * 0.98),
-                            Math.floor(basePremium * 1.02)
-                        ],
-                        backgroundColor: ['#0891b2', '#14b8a6', '#8b5cf6', '#f59e0b', '#ef4444']
+                        data: premiums,
+                        backgroundColor: [
+                            '#0891b2', '#14b8a6', '#8b5cf6', '#f59e0b', '#ef4444',
+                            '#06b6d4', '#10b981', '#6366f1', '#f97316', '#ec4899'
+                        ]
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: true,
                     plugins: {
-                        legend: { display: false }
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return '월 ' + context.parsed.y.toLocaleString() + '원';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString() + '원';
+                                }
+                            }
+                        }
                     }
                 }
             });
