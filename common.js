@@ -45,8 +45,24 @@ function initMobileMenu() {
     const menu = document.getElementById('mobile-menu');
     
     if (btn && menu) {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation(); // 이벤트 전파 중지
             menu.classList.toggle('hidden');
+        });
+        
+        // 메뉴 외부 클릭 시 닫기
+        document.addEventListener('click', (e) => {
+            if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+        
+        // 메뉴 링크 클릭 시 메뉴 닫기
+        const menuLinks = menu.querySelectorAll('a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
         });
     }
 }
