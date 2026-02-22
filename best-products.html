@@ -86,16 +86,16 @@
             
             <!-- 연도/월 선택 드롭다운 -->
             <div class="flex justify-center items-center gap-3 mt-6 mb-4">
-                <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2">
-                    <i class="fas fa-calendar-alt text-cyan-100"></i>
-                    <select id="year-select" class="bg-transparent text-white font-semibold outline-none cursor-pointer border-r border-white/30 pr-3">
+                <div class="flex items-center gap-2 bg-white rounded-lg px-4 py-2 shadow-lg">
+                    <i class="fas fa-calendar-alt text-cyan-600"></i>
+                    <select id="year-select" class="bg-white text-gray-800 font-semibold outline-none cursor-pointer border-r border-gray-300 pr-3 py-1">
                         <!-- JavaScript로 동적 생성 -->
                     </select>
-                    <select id="month-select" class="bg-transparent text-white font-semibold outline-none cursor-pointer pl-2">
+                    <select id="month-select" class="bg-white text-gray-800 font-semibold outline-none cursor-pointer pl-2 py-1">
                         <!-- JavaScript로 동적 생성 -->
                     </select>
                 </div>
-                <button id="load-data-btn" class="bg-white text-cyan-600 px-4 py-2 rounded-lg font-semibold hover:bg-cyan-50 transition shadow-lg">
+                <button id="load-data-btn" class="bg-white text-cyan-600 px-4 py-3 rounded-lg font-semibold hover:bg-cyan-50 transition shadow-lg">
                     <i class="fas fa-sync-alt mr-2"></i>조회
                 </button>
             </div>
@@ -228,7 +228,7 @@
         // 공공데이터 API 키
         const API_KEY = '4b5c77bf08fd7db79ad9754d135838715e778724d0ff9800c2c2682513f72d32';
 
-        // API에서 실시간 데이터 가져오기
+        // API에서 실시간 데이터 가져오기 (3개 API 통합: 생명보험 + 손해보험 + 실손보험)
         async function fetchInsuranceData(year, month) {
             const monthMap = {
                 'jan': '01', 'feb': '02', 'mar': '03', 'apr': '04',
@@ -237,20 +237,50 @@
             };
             
             const baseYm = `${year}${monthMap[month]}`;
+            const results = { life: null, general: null, medical: null };
             
             try {
-                // 생명보험사 일반현황 조회
-                const url = `https://apis.data.go.kr/1160100/service/GetLifeInsuCompInfoService/getLifeInsuCompGeneInfo?serviceKey=${API_KEY}&numOfRows=100&pageNo=1&resultType=json&basYm=${baseYm}`;
+                // 1️⃣ 생명보험사 일반현황 조회
+                const lifeUrl = `https://apis.data.go.kr/1160100/service/GetLifeInsuCompInfoService/getLifeInsuCompGeneInfo?serviceKey=${API_KEY}&numOfRows=100&pageNo=1&resultType=json&basYm=${baseYm}`;
                 
-                const response = await fetch(url);
-                const data = await response.json();
+                const lifeResponse = await fetch(lifeUrl);
+                const lifeData = await lifeResponse.json();
                 
-                console.log('API 응답:', data);
+                console.log('생명보험 API 응답:', lifeData);
                 
-                if (data.response?.header?.resultCode === '00' && data.response?.body?.items) {
-                    return processAPIData(data.response.body.items.item);
+                if (lifeData.response?.header?.resultCode === '00' && lifeData.response?.body?.items) {
+                    results.life = lifeData.response.body.items.item;
+                }
+                
+                // 2️⃣ 손해보험사 정보 조회
+                const generalUrl = `https://apis.data.go.kr/1160100/service/GetGeneInsuInfoService/getGeneInsuInfo?serviceKey=${API_KEY}&numOfRows=100&pageNo=1&resultType=json&basYm=${baseYm}`;
+                
+                const generalResponse = await fetch(generalUrl);
+                const generalData = await generalResponse.json();
+                
+                console.log('손해보험 API 응답:', generalData);
+                
+                if (generalData.response?.header?.resultCode === '00' && generalData.response?.body?.items) {
+                    results.general = generalData.response.body.items.item;
+                }
+                
+                // 3️⃣ 실손보험 정보 조회
+                const medicalUrl = `https://apis.data.go.kr/1160100/service/GetIndinaInsuranceInfoService/getIndInsuGenInfoList?serviceKey=${API_KEY}&numOfRows=100&pageNo=1&resultType=json&basYm=${baseYm}`;
+                
+                const medicalResponse = await fetch(medicalUrl);
+                const medicalData = await medicalResponse.json();
+                
+                console.log('실손보험 API 응답:', medicalData);
+                
+                if (medicalData.response?.header?.resultCode === '00' && medicalData.response?.body?.items) {
+                    results.medical = medicalData.response.body.items.item;
+                }
+                
+                // 데이터가 하나라도 있으면 처리
+                if (results.life || results.general || results.medical) {
+                    return processAllAPIData(results, year, month);
                 } else {
-                    console.error('API 오류:', data.response?.header?.resultMsg);
+                    console.error('모든 API에서 데이터를 가져오지 못했습니다');
                     return null;
                 }
             } catch (error) {
@@ -259,7 +289,151 @@
             }
         }
 
-        // API 데이터를 화면에 표시할 형식으로 변환
+        // 3개 API 데이터를 모두 처리하여 화면에 표시할 형식으로 변환
+        function processAllAPIData(results, year, month) {
+            const categories = [];
+            
+            // 1️⃣ 생명보험사 데이터 처리
+            if (results.life) {
+                const lifeCompanies = {};
+                const lifeItems = Array.isArray(results.life) ? results.life : [results.life];
+                
+                lifeItems.forEach(item => {
+                    if (!lifeCompanies[item.fncoNm]) {
+                        lifeCompanies[item.fncoNm] = {
+                            name: item.fncoNm,
+                            code: item.fncoCd,
+                            employees: 0,
+                            agents: 0
+                        };
+                    }
+                    
+                    if (item.xcsmPlnpnDcdNm === '임직원') {
+                        lifeCompanies[item.fncoNm].employees = parseInt(item.xcsmPlnpnCnt) || 0;
+                    } else if (item.xcsmPlnpnDcdNm === '설계사') {
+                        lifeCompanies[item.fncoNm].agents = parseInt(item.xcsmPlnpnCnt) || 0;
+                    }
+                });
+                
+                const sortedLife = Object.values(lifeCompanies)
+                    .sort((a, b) => b.agents - a.agents)
+                    .slice(0, 10);
+                
+                if (sortedLife.length > 0) {
+                    categories.push({
+                        name: `🏆 생명보험사 현황 (${year}년 ${month})`,
+                        icon: 'fa-heartbeat',
+                        color: 'cyan',
+                        subcategories: [{
+                            subname: `실시간 통계 (설계사 수 기준 TOP ${sortedLife.length})`,
+                            products: sortedLife.map((company, index) => ({
+                                rank: index + 1,
+                                company: company.name,
+                                product: '종합 생명보험 서비스',
+                                highlight: `설계사 ${company.agents.toLocaleString()}명 (판매력 지표)`,
+                                features: [
+                                    `임직원: ${company.employees.toLocaleString()}명`,
+                                    `총 인력: ${(company.employees + company.agents).toLocaleString()}명`,
+                                    `금융회사코드: ${company.code}`
+                                ]
+                            }))
+                        }]
+                    });
+                }
+            }
+            
+            // 2️⃣ 손해보험사 데이터 처리
+            if (results.general) {
+                const generalCompanies = {};
+                const generalItems = Array.isArray(results.general) ? results.general : [results.general];
+                
+                generalItems.forEach(item => {
+                    const companyName = item.fncoNm || item.fnco || item.company;
+                    if (companyName && !generalCompanies[companyName]) {
+                        generalCompanies[companyName] = {
+                            name: companyName,
+                            contracts: parseInt(item.conCnt) || 0,
+                            premium: parseInt(item.prm) || 0,
+                            claims: parseInt(item.payCnt) || 0
+                        };
+                    }
+                });
+                
+                const sortedGeneral = Object.values(generalCompanies)
+                    .sort((a, b) => b.premium - a.premium)
+                    .slice(0, 10);
+                
+                if (sortedGeneral.length > 0) {
+                    categories.push({
+                        name: `🚗 손해보험사 현황 (${year}년 ${month})`,
+                        icon: 'fa-car',
+                        color: 'blue',
+                        subcategories: [{
+                            subname: `실시간 통계 (보험료 기준 TOP ${sortedGeneral.length})`,
+                            products: sortedGeneral.map((company, index) => ({
+                                rank: index + 1,
+                                company: company.name,
+                                product: '종합 손해보험 서비스',
+                                highlight: `보험료 ${(company.premium / 100000000).toFixed(1)}억원`,
+                                features: [
+                                    `계약건수: ${company.contracts.toLocaleString()}건`,
+                                    `지급건수: ${company.claims.toLocaleString()}건`,
+                                    `평균 보험료: ${Math.round(company.premium / company.contracts).toLocaleString()}원/건`
+                                ]
+                            }))
+                        }]
+                    });
+                }
+            }
+            
+            // 3️⃣ 실손보험 데이터 처리
+            if (results.medical) {
+                const medicalCompanies = {};
+                const medicalItems = Array.isArray(results.medical) ? results.medical : [results.medical];
+                
+                medicalItems.forEach(item => {
+                    const companyName = item.fncoNm || item.fnco || item.company;
+                    if (companyName && !medicalCompanies[companyName]) {
+                        medicalCompanies[companyName] = {
+                            name: companyName,
+                            subscribers: parseInt(item.sbjtCnt) || 0,
+                            premium: parseInt(item.prm) || 0,
+                            payouts: parseInt(item.inptAmt) || 0
+                        };
+                    }
+                });
+                
+                const sortedMedical = Object.values(medicalCompanies)
+                    .sort((a, b) => b.subscribers - a.subscribers)
+                    .slice(0, 10);
+                
+                if (sortedMedical.length > 0) {
+                    categories.push({
+                        name: `🏥 실손보험 현황 (${year}년 ${month})`,
+                        icon: 'fa-hospital',
+                        color: 'emerald',
+                        subcategories: [{
+                            subname: `실시간 통계 (가입자 수 기준 TOP ${sortedMedical.length})`,
+                            products: sortedMedical.map((company, index) => ({
+                                rank: index + 1,
+                                company: company.name,
+                                product: '실손의료보험',
+                                highlight: `가입자 ${company.subscribers.toLocaleString()}명`,
+                                features: [
+                                    `보험료: ${(company.premium / 100000000).toFixed(1)}억원`,
+                                    `보험금 지급: ${(company.payouts / 100000000).toFixed(1)}억원`,
+                                    `평균 보험료: ${Math.round(company.premium / company.subscribers).toLocaleString()}원/명`
+                                ]
+                            }))
+                        }]
+                    });
+                }
+            }
+            
+            return categories.length > 0 ? { categories } : null;
+        }
+        
+        // API 데이터를 화면에 표시할 형식으로 변환 (기존 함수 - 하위 호환성 유지)
         function processAPIData(items) {
             // 보험사별로 그룹화
             const companies = {};
@@ -537,7 +711,7 @@
                 const option = document.createElement('option');
                 option.value = year;
                 option.textContent = year + '년';
-                if (year === 2026) option.selected = true;
+                if (year === 2025) option.selected = true; // 2025년 기본 선택
                 yearSelect.appendChild(option);
             }
             
@@ -561,9 +735,17 @@
                 const option = document.createElement('option');
                 option.value = month.value;
                 option.textContent = month.label;
-                if (month.value === 'jan') option.selected = true;
+                if (month.value === 'jan') option.selected = true; // 1월 기본 선택
                 monthSelect.appendChild(option);
             });
+            
+            // 연도 변경 시 월 필터링 (2026년은 2월까지만 표시)
+            yearSelect.addEventListener('change', function() {
+                updateMonthOptions();
+            });
+            
+            // 초기 월 옵션 설정
+            updateMonthOptions();
         }
 
         // 데이터 조회 (API 호출 포함)
@@ -596,6 +778,33 @@
             }
         }
 
+        // 연도에 따라 월 옵션 필터링
+        function updateMonthOptions() {
+            const yearSelect = document.getElementById('year-select');
+            const monthSelect = document.getElementById('month-select');
+            const selectedYear = parseInt(yearSelect.value);
+            const currentMonth = monthSelect.value;
+            
+            // 모든 옵션 표시
+            Array.from(monthSelect.options).forEach(option => {
+                option.style.display = 'block';
+            });
+            
+            // 2026년은 2월(feb)까지만 표시
+            if (selectedYear === 2026) {
+                const allowedMonths = ['jan', 'feb'];
+                Array.from(monthSelect.options).forEach(option => {
+                    if (!allowedMonths.includes(option.value)) {
+                        option.style.display = 'none';
+                    }
+                });
+                // 현재 선택된 월이 표시 범위 밖이면 1월로 초기화
+                if (!allowedMonths.includes(currentMonth)) {
+                    monthSelect.value = 'jan';
+                }
+            }
+        }
+        
         function showMonth(month) {
             currentMonth = month;
             document.getElementById('month-select').value = month;
