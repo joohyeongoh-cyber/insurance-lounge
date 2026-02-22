@@ -79,10 +79,27 @@
             <div class="mb-3">
                 <i class="fas fa-trophy text-5xl mb-3 opacity-90"></i>
             </div>
-            <h1 class="text-3xl md:text-4xl font-bold mb-3">2026 보험 종류별 베스트 상품</h1>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">보험 종류별 베스트 상품</h1>
             <p class="text-lg text-cyan-50 max-w-3xl mx-auto mb-2">
                 GA 전문가들이 직접 선정한 월별 베스트 상품
             </p>
+            
+            <!-- 연도/월 선택 드롭다운 -->
+            <div class="flex justify-center items-center gap-3 mt-6 mb-4">
+                <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2">
+                    <i class="fas fa-calendar-alt text-cyan-100"></i>
+                    <select id="year-select" class="bg-transparent text-white font-semibold outline-none cursor-pointer border-r border-white/30 pr-3">
+                        <!-- JavaScript로 동적 생성 -->
+                    </select>
+                    <select id="month-select" class="bg-transparent text-white font-semibold outline-none cursor-pointer pl-2">
+                        <!-- JavaScript로 동적 생성 -->
+                    </select>
+                </div>
+                <button id="load-data-btn" class="bg-white text-cyan-600 px-4 py-2 rounded-lg font-semibold hover:bg-cyan-50 transition shadow-lg">
+                    <i class="fas fa-sync-alt mr-2"></i>조회
+                </button>
+            </div>
+            
             <p class="text-sm text-cyan-100 opacity-90">
                 ※ 본 순위는 보험 LOUNGE 전문가 협의회가 GA 채널 판매 데이터 및 고객 만족도를 종합하여 선정한 자체 추천 순위입니다
             </p>
@@ -128,22 +145,6 @@
                         <span><strong>데이터 출처:</strong> 본 순위는 보험 LOUNGE 전문가 협의회가 수집한 GA 채널 내부 판매 데이터 및 전문가 설문조사를 기반으로 매월 선정됩니다. 개별 보험사 공식 순위가 아닌 보험 LOUNGE 자체 추천 순위임을 알려드립니다.</span>
                     </p>
                 </div>
-            </div>
-
-            <!-- 월별 선택 탭 -->
-            <div class="flex flex-wrap gap-2 mb-6 bg-gray-100 p-2 rounded-xl">
-                <button onclick="showMonth('jan')" id="tab-jan" class="month-tab px-3 py-1.5 text-sm rounded-lg font-semibold transition bg-cyan-600 text-white">1월</button>
-                <button onclick="showMonth('feb')" id="tab-feb" class="month-tab px-3 py-1.5 text-sm rounded-lg font-semibold transition text-gray-700 hover:bg-cyan-50">2월</button>
-                <button onclick="showMonth('mar')" id="tab-mar" class="month-tab px-3 py-1.5 text-sm rounded-lg font-semibold transition text-gray-700 hover:bg-cyan-50">3월</button>
-                <button onclick="showMonth('apr')" id="tab-apr" class="month-tab px-3 py-1.5 text-sm rounded-lg font-semibold transition text-gray-700 hover:bg-cyan-50">4월</button>
-                <button onclick="showMonth('may')" id="tab-may" class="month-tab px-3 py-1.5 text-sm rounded-lg font-semibold transition text-gray-700 hover:bg-cyan-50">5월</button>
-                <button onclick="showMonth('jun')" id="tab-jun" class="month-tab px-3 py-1.5 text-sm rounded-lg font-semibold transition text-gray-700 hover:bg-cyan-50">6월</button>
-                <button onclick="showMonth('jul')" id="tab-jul" class="month-tab px-3 py-1.5 text-sm rounded-lg font-semibold transition text-gray-700 hover:bg-cyan-50">7월</button>
-                <button onclick="showMonth('aug')" id="tab-aug" class="month-tab px-3 py-1.5 text-sm rounded-lg font-semibold transition text-gray-700 hover:bg-cyan-50">8월</button>
-                <button onclick="showMonth('sep')" id="tab-sep" class="month-tab px-3 py-1.5 text-sm rounded-lg font-semibold transition text-gray-700 hover:bg-cyan-50">9월</button>
-                <button onclick="showMonth('oct')" id="tab-oct" class="month-tab px-3 py-1.5 text-sm rounded-lg font-semibold transition text-gray-700 hover:bg-cyan-50">10월</button>
-                <button onclick="showMonth('nov')" id="tab-nov" class="month-tab px-3 py-1.5 text-sm rounded-lg font-semibold transition text-gray-700 hover:bg-cyan-50">11월</button>
-                <button onclick="showMonth('dec')" id="tab-dec" class="month-tab px-3 py-1.5 text-sm rounded-lg font-semibold transition text-gray-700 hover:bg-cyan-50">12월</button>
             </div>
 
             <!-- 보험 종류별 아코디언 컨테이너 -->
@@ -202,10 +203,24 @@
     </footer>
 
     <script>
-        // 월별 보험 종류별 데이터 (확장됨)
-        const monthlyRankings = {
-            jan: {
-                categories: [
+        // 연도/월별 보험 종류별 데이터
+        const yearlyData = {
+            2025: {
+                jan: { categories: [] }, // 2025년 1월 데이터는 비어있음
+                feb: { categories: [] },
+                mar: { categories: [] },
+                apr: { categories: [] },
+                may: { categories: [] },
+                jun: { categories: [] },
+                jul: { categories: [] },
+                aug: { categories: [] },
+                sep: { categories: [] },
+                oct: { categories: [] },
+                nov: { categories: [] },
+                dec: { categories: [] }
+            },
+            2026: {
+                jan: { categories: [
                     {
                         name: '종신보험',
                         icon: 'fa-heartbeat',
@@ -406,30 +421,77 @@
                     }
                 ]
             },
-
+            feb: { comingSoon: true },
+            mar: { comingSoon: true },
+            apr: { comingSoon: true },
+            may: { comingSoon: true },
+            jun: { comingSoon: true },
+            jul: { comingSoon: true },
+            aug: { comingSoon: true },
+            sep: { comingSoon: true },
+            oct: { comingSoon: true },
+            nov: { comingSoon: true },
+            dec: { comingSoon: true }
+            }
         };
 
-        // 2-12월은 Coming Soon
-        const comingSoonMonths = ['feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
-        comingSoonMonths.forEach(month => {
-            monthlyRankings[month] = { comingSoon: true };
-        });
-
+        let currentYear = 2026;
         let currentMonth = 'jan';
+
+        // 연도/월 드롭다운 초기화
+        function initializeDropdowns() {
+            const yearSelect = document.getElementById('year-select');
+            const monthSelect = document.getElementById('month-select');
+            
+            // 2025년 1월부터 현재까지 연도 생성
+            for (let year = 2025; year <= 2026; year++) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year + '년';
+                if (year === 2026) option.selected = true;
+                yearSelect.appendChild(option);
+            }
+            
+            // 월 드롭다운 생성
+            const months = [
+                {value: 'jan', label: '1월'},
+                {value: 'feb', label: '2월'},
+                {value: 'mar', label: '3월'},
+                {value: 'apr', label: '4월'},
+                {value: 'may', label: '5월'},
+                {value: 'jun', label: '6월'},
+                {value: 'jul', label: '7월'},
+                {value: 'aug', label: '8월'},
+                {value: 'sep', label: '9월'},
+                {value: 'oct', label: '10월'},
+                {value: 'nov', label: '11월'},
+                {value: 'dec', label: '12월'}
+            ];
+            
+            months.forEach(month => {
+                const option = document.createElement('option');
+                option.value = month.value;
+                option.textContent = month.label;
+                if (month.value === 'jan') option.selected = true;
+                monthSelect.appendChild(option);
+            });
+        }
+
+        // 데이터 조회
+        function loadData() {
+            const year = document.getElementById('year-select').value;
+            const month = document.getElementById('month-select').value;
+            
+            currentYear = parseInt(year);
+            currentMonth = month;
+            
+            renderRankings(year, month);
+        }
 
         function showMonth(month) {
             currentMonth = month;
-            
-            // 탭 스타일 업데이트
-            document.querySelectorAll('.month-tab').forEach(tab => {
-                tab.classList.remove('bg-cyan-600', 'text-white');
-                tab.classList.add('text-gray-700', 'hover:bg-cyan-50');
-            });
-            document.getElementById('tab-' + month).classList.add('bg-cyan-600', 'text-white');
-            document.getElementById('tab-' + month).classList.remove('text-gray-700', 'hover:bg-cyan-50');
-
-            // 순위 표시
-            renderRankings(month);
+            document.getElementById('month-select').value = month;
+            renderRankings(currentYear, month);
         }
 
         function toggleAccordion(categoryIndex) {
@@ -447,9 +509,16 @@
             }
         }
 
-        function renderRankings(month) {
-            const data = monthlyRankings[month];
+        function renderRankings(year, month) {
+            const yearData = yearlyData[year];
             const container = document.getElementById('ranking-container');
+            
+            if (!yearData) {
+                container.innerHTML = '<div class="text-center py-12"><p class="text-gray-500">해당 연도의 데이터가 없습니다.</p></div>';
+                return;
+            }
+            
+            const data = yearData[month];
             
             // Coming Soon 처리
             if (data.comingSoon) {
@@ -547,9 +616,13 @@
             container.innerHTML = html;
         }
 
-        // 페이지 로드 시 1월 데이터 표시
+        // 페이지 로드 시 초기화
         document.addEventListener('DOMContentLoaded', () => {
-            showMonth('jan');
+            initializeDropdowns();
+            loadData();
+            
+            // 조회 버튼 이벤트
+            document.getElementById('load-data-btn').addEventListener('click', loadData);
         });
 
         // Mobile menu toggle
