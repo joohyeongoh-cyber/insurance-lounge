@@ -402,14 +402,18 @@
         }
 
         // Form submission
-        document.getElementById('fa-application-form').addEventListener('submit', function(e) {
+        document.getElementById('fa-application-form').addEventListener('submit', async function(e) {
             e.preventDefault();
 
             // Collect form data
             const formData = new FormData(e.target);
             const data = {};
+            
+            // Process text fields
             formData.forEach((value, key) => {
-                data[key] = value;
+                if (key !== 'photoFile') {  // Skip file input
+                    data[key] = value;
+                }
             });
 
             // Validate password
@@ -428,6 +432,21 @@
 
             // Remove passwordConfirm from data (don't save it)
             delete data.passwordConfirm;
+
+            // Handle photo upload (convert to base64)
+            const photoInput = document.querySelector('input[name="photoFile"]');
+            if (photoInput && photoInput.files && photoInput.files[0]) {
+                const file = photoInput.files[0];
+                const reader = new FileReader();
+                
+                await new Promise((resolve) => {
+                    reader.onload = function(e) {
+                        data.photoUrl = e.target.result;  // base64 string
+                        resolve();
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
 
             // Generate application ID
             const applicationId = '보험 전문가' + Date.now();
