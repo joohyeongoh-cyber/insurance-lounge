@@ -1,0 +1,9 @@
+.git
+.github
+node_modules
+.DS_Store
+*.log
+.pm2
+.wrangler
+ecosystem.config.cjs
+README_UPDATE.md
