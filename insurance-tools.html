@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>보험 계산기 - 보험 LOUNGE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center gap-3 group">
+                        <div class="relative">
+                            <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl rotate-12 group-hover:rotate-0 transition-transform duration-300 shadow-lg"></div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <span class="text-2xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">보험 LOUNGE</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-3 lg:space-x-4 text-sm">
+                    <a href="index.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">홈</a>
+                    <a href="best-products.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">베스트</a>
+                    <a href="fa-intro.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">전문가</a>
+                    <a href="contract-cases.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">계약</a>
+                    <a href="claim-cases.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">청구</a>
+                    <a href="insurance-info.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">정보</a>
+                    <a href="inquiries.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">문의</a>
+                    <a href="fa-apply.html" class="bg-cyan-600 text-white px-3 py-2 rounded-lg hover:bg-cyan-700 transition font-medium whitespace-nowrap">전문가 신청</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-700">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">홈</a>
+                <a href="best-products.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">베스트</a>
+                <a href="fa-intro.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">전문가</a>
+                <a href="contract-cases.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">계약</a>
+                <a href="claim-cases.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">청구</a>
+                <a href="insurance-info.html" class="block px-3 py-2 bg-cyan-50 text-cyan-600 rounded">정보</a>
+                <a href="inquiries.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">문의</a>
+                <a href="fa-apply.html" class="block px-3 py-2 bg-cyan-600 text-white rounded text-center">전문가 신청</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-cyan-600 to-blue-600 text-white pt-24 pb-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="mb-3">
+                <i class="fas fa-calculator text-5xl mb-3 opacity-90"></i>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">보험 AI 도구</h1>
+            <p class="text-lg text-cyan-50 max-w-3xl mx-auto">
+                AI 보험 추천, 보험료 계산, 보험금 시뮬레이션, 절세 계산까지 한번에
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- 도구 선택 탭 -->
+            <div class="flex flex-wrap gap-3 mb-8 justify-center">
+                <button onclick="showTool('recommend')" id="tab-recommend" class="tool-tab px-6 py-3 rounded-lg font-semibold transition bg-cyan-600 text-white shadow-lg">
+                    <i class="fas fa-robot mr-2"></i>AI 추천
+                </button>
+                <button onclick="showTool('premium')" id="tab-premium" class="tool-tab px-6 py-3 rounded-lg font-semibold transition bg-gray-200 text-gray-700 hover:bg-gray-300">
+                    <i class="fas fa-calculator mr-2"></i>보험료 계산
+                </button>
+                <button onclick="showTool('claim')" id="tab-claim" class="tool-tab px-6 py-3 rounded-lg font-semibold transition bg-gray-200 text-gray-700 hover:bg-gray-300">
+                    <i class="fas fa-money-bill-wave mr-2"></i>보험금 예상
+                </button>
+                <button onclick="showTool('tax')" id="tab-tax" class="tool-tab px-6 py-3 rounded-lg font-semibold transition bg-gray-200 text-gray-700 hover:bg-gray-300">
+                    <i class="fas fa-percent mr-2"></i>절세 계산
+                </button>
+            </div>
+
+            <!-- AI 보험 추천 -->
+            <div id="tool-recommend" class="tool-content">
+                <div class="bg-white rounded-2xl shadow-xl p-8">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-3">
+                        <i class="fas fa-robot text-cyan-600"></i>
+                        AI 보험 추천 시스템
+                    </h2>
+                    
+                    <form id="recommend-form" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- 개인 정보 -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">나이</label>
+                                <input type="number" id="age" min="20" max="80" value="35" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">성별</label>
+                                <select id="gender" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                                    <option value="male">남성</option>
+                                    <option value="female">여성</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">직업</label>
+                                <select id="occupation" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                                    <option value="office">사무직</option>
+                                    <option value="professional">전문직</option>
+                                    <option value="selfemployed">자영업</option>
+                                    <option value="business">사업자</option>
+                                    <option value="manual">생산/기능직</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">연소득 (만원)</label>
+                                <input type="number" id="income" min="2000" max="50000" value="5000" step="500" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">결혼 여부</label>
+                                <select id="marital" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                                    <option value="single">미혼</option>
+                                    <option value="married">기혼</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">자녀 수</label>
+                                <input type="number" id="children" min="0" max="10" value="0" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                            </div>
+                        </div>
+
+                        <!-- 관심 보험 -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">관심 보험 분야 (복수 선택 가능)</label>
+                            <div class="grid md:grid-cols-3 gap-3">
+                                <label class="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-cyan-50">
+                                    <input type="checkbox" value="life" class="interest-checkbox w-5 h-5 text-cyan-600">
+                                    <span>종신보험</span>
+                                </label>
+                                <label class="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-cyan-50">
+                                    <input type="checkbox" value="health" class="interest-checkbox w-5 h-5 text-cyan-600">
+                                    <span>건강보험</span>
+                                </label>
+                                <label class="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-cyan-50">
+                                    <input type="checkbox" value="medical" class="interest-checkbox w-5 h-5 text-cyan-600">
+                                    <span>실손의료비</span>
+                                </label>
+                                <label class="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-cyan-50">
+                                    <input type="checkbox" value="cancer" class="interest-checkbox w-5 h-5 text-cyan-600">
+                                    <span>암보험</span>
+                                </label>
+                                <label class="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-cyan-50">
+                                    <input type="checkbox" value="driver" class="interest-checkbox w-5 h-5 text-cyan-600">
+                                    <span>운전자보험</span>
+                                </label>
+                                <label class="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-cyan-50">
+                                    <input type="checkbox" value="pension" class="interest-checkbox w-5 h-5 text-cyan-600">
+                                    <span>연금보험</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white py-4 rounded-lg font-bold text-lg hover:shadow-lg transition">
+                            <i class="fas fa-magic mr-2"></i>AI 추천 받기
+                        </button>
+                    </form>
+
+                    <!-- 추천 결과 -->
+                    <div id="recommend-result" class="mt-8 hidden">
+                        <div class="border-t pt-8">
+                            <h3 class="text-xl font-bold mb-4 text-gray-800">
+                                <i class="fas fa-star text-yellow-500 mr-2"></i>맞춤 추천 결과
+                            </h3>
+                            <div id="recommend-cards" class="space-y-4">
+                                <!-- JavaScript로 동적 생성 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 보험료 계산기 -->
+            <div id="tool-premium" class="tool-content hidden">
+                <div class="bg-white rounded-2xl shadow-xl p-8">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-3">
+                        <i class="fas fa-calculator text-cyan-600"></i>
+                        보험료 자동 계산기
+                    </h2>
+                    
+                    <form id="premium-form" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">보험 종류</label>
+                                <select id="insurance-type" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                                    <option value="life">종신보험</option>
+                                    <option value="health">건강보험</option>
+                                    <option value="medical">실손의료비</option>
+                                    <option value="cancer">암보험</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">가입 나이</label>
+                                <input type="number" id="premium-age" min="20" max="70" value="35" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">성별</label>
+                                <select id="premium-gender" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                                    <option value="male">남성</option>
+                                    <option value="female">여성</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">가입 금액 (만원)</label>
+                                <input type="number" id="coverage" min="1000" max="50000" value="10000" step="1000" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">납입 기간 (년)</label>
+                                <select id="payment-period" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                                    <option value="10">10년</option>
+                                    <option value="15">15년</option>
+                                    <option value="20">20년</option>
+                                    <option value="30">30년</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">보험사</label>
+                                <select id="company" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                                    <option value="samsung">삼성생명</option>
+                                    <option value="nh">NH농협생명</option>
+                                    <option value="kb">KB생명</option>
+                                    <option value="hanwha">한화생명</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white py-4 rounded-lg font-bold text-lg hover:shadow-lg transition">
+                            <i class="fas fa-calculator mr-2"></i>보험료 계산하기
+                        </button>
+                    </form>
+
+                    <!-- 계산 결과 -->
+                    <div id="premium-result" class="mt-8 hidden">
+                        <div class="border-t pt-8">
+                            <h3 class="text-xl font-bold mb-6 text-gray-800">계산 결과</h3>
+                            <div class="grid md:grid-cols-3 gap-6">
+                                <div class="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-xl p-6 border-2 border-cyan-200">
+                                    <div class="text-sm text-gray-600 mb-2">월 보험료</div>
+                                    <div class="text-3xl font-bold text-cyan-600" id="monthly-premium">-</div>
+                                </div>
+                                <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 border-2 border-purple-200">
+                                    <div class="text-sm text-gray-600 mb-2">연간 보험료</div>
+                                    <div class="text-3xl font-bold text-purple-600" id="yearly-premium">-</div>
+                                </div>
+                                <div class="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-6 border-2 border-orange-200">
+                                    <div class="text-sm text-gray-600 mb-2">총 납입액</div>
+                                    <div class="text-3xl font-bold text-orange-600" id="total-premium">-</div>
+                                </div>
+                            </div>
+                            
+                            <!-- 비교 차트 -->
+                            <div class="mt-8">
+                                <h4 class="font-bold text-gray-800 mb-4">다른 보험사 비교</h4>
+                                <canvas id="premium-chart" class="max-h-64"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 보험금 예상 계산기 -->
+            <div id="tool-claim" class="tool-content hidden">
+                <div class="bg-white rounded-2xl shadow-xl p-8">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-3">
+                        <i class="fas fa-money-bill-wave text-cyan-600"></i>
+                        보험금 예상 계산기
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <!-- 보험금 유형 선택 -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">보험금 유형</label>
+                            <select id="claim-type" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                                <option value="medical">실손의료비</option>
+                                <option value="cancer">암 진단비</option>
+                                <option value="death">사망보험금</option>
+                            </select>
+                        </div>
+
+                        <!-- 실손의료비 -->
+                        <div id="medical-claim-form">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">총 병원비 (원)</label>
+                                    <input type="number" id="hospital-fee" min="0" value="1000000" step="10000" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">급여 항목 (원)</label>
+                                    <input type="number" id="insured-fee" min="0" value="600000" step="10000" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                                </div>
+                            </div>
+                            <button onclick="calculateMedicalClaim()" class="mt-4 w-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white py-3 rounded-lg font-bold hover:shadow-lg transition">
+                                계산하기
+                            </button>
+                        </div>
+
+                        <!-- 결과 -->
+                        <div id="claim-result" class="mt-6 hidden">
+                            <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border-2 border-green-200">
+                                <div class="text-sm text-gray-600 mb-2">예상 보험금</div>
+                                <div class="text-4xl font-bold text-green-600" id="claim-amount">-</div>
+                                <div class="text-xs text-gray-500 mt-2" id="claim-detail">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 절세 계산기 -->
+            <div id="tool-tax" class="tool-content hidden">
+                <div class="bg-white rounded-2xl shadow-xl p-8">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-3">
+                        <i class="fas fa-percent text-cyan-600"></i>
+                        절세 효과 계산기
+                    </h2>
+                    
+                    <form id="tax-form" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">절세 유형</label>
+                            <select id="tax-type" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                                <option value="inheritance">상속세 절감 (종신보험)</option>
+                                <option value="income">소득공제 (연금저축)</option>
+                                <option value="pension">연금소득세</option>
+                            </select>
+                        </div>
+
+                        <!-- 상속세 -->
+                        <div id="inheritance-form">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">상속 재산 (억원)</label>
+                                    <input type="number" id="estate-value" min="1" max="1000" value="10" step="1" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">상속인 수</label>
+                                    <input type="number" id="heir-count" min="1" max="10" value="2" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">종신보험 가입액 (억원)</label>
+                                    <input type="number" id="life-insurance" min="0" max="100" value="5" step="0.5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                                </div>
+                            </div>
+                            <button type="button" onclick="calculateInheritanceTax()" class="mt-4 w-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white py-3 rounded-lg font-bold hover:shadow-lg transition">
+                                계산하기
+                            </button>
+                        </div>
+
+                        <!-- 결과 -->
+                        <div id="tax-result" class="mt-6 hidden">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="bg-gradient-to-br from-red-50 to-orange-50 rounded-xl p-6 border-2 border-red-200">
+                                    <div class="text-sm text-gray-600 mb-2">절세 전 세금</div>
+                                    <div class="text-3xl font-bold text-red-600" id="tax-before">-</div>
+                                </div>
+                                <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border-2 border-green-200">
+                                    <div class="text-sm text-gray-600 mb-2">절세 후 세금</div>
+                                    <div class="text-3xl font-bold text-green-600" id="tax-after">-</div>
+                                </div>
+                            </div>
+                            <div class="mt-4 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 border-2 border-blue-200">
+                                <div class="text-sm text-gray-600 mb-2">절세 금액</div>
+                                <div class="text-4xl font-bold text-blue-600" id="tax-saved">-</div>
+                                <div class="text-sm text-gray-600 mt-2" id="tax-saved-percent">-</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-sm">&copy; 2026 보험 LOUNGE. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="common.js"></script>
+    <script>
+        // 도구 전환
+        function showTool(toolName) {
+            // 모든 탭 비활성화
+            document.querySelectorAll('.tool-tab').forEach(tab => {
+                tab.classList.remove('bg-cyan-600', 'text-white');
+                tab.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            
+            // 선택된 탭 활성화
+            document.getElementById('tab-' + toolName).classList.remove('bg-gray-200', 'text-gray-700');
+            document.getElementById('tab-' + toolName).classList.add('bg-cyan-600', 'text-white');
+            
+            // 모든 컨텐츠 숨기기
+            document.querySelectorAll('.tool-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // 선택된 컨텐츠 표시
+            document.getElementById('tool-' + toolName).classList.remove('hidden');
+        }
+
+        // AI 추천
+        document.getElementById('recommend-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const age = parseInt(document.getElementById('age').value);
+            const gender = document.getElementById('gender').value;
+            const occupation = document.getElementById('occupation').value;
+            const income = parseInt(document.getElementById('income').value);
+            const marital = document.getElementById('marital').value;
+            const children = parseInt(document.getElementById('children').value);
+            
+            const interests = Array.from(document.querySelectorAll('.interest-checkbox:checked')).map(cb => cb.value);
+            
+            // AI 추천 알고리즘
+            const recommendations = generateRecommendations(age, gender, occupation, income, marital, children, interests);
+            
+            // 결과 표시
+            displayRecommendations(recommendations);
+        });
+
+        function generateRecommendations(age, gender, occupation, income, marital, children, interests) {
+            const recommendations = [];
+            
+            // 기본 추천 (실손의료비)
+            recommendations.push({
+                type: '실손의료비보험',
+                company: '현대해상',
+                product: '실속형실손의료비보험',
+                priority: 10,
+                reason: '필수 보장으로 모든 연령대에 권장됩니다',
+                monthlyPremium: Math.floor((age * 800 + (gender === 'male' ? 5000 : 3000)) / 100) * 100
+            });
+            
+            // 나이별 추천
+            if (age < 40) {
+                recommendations.push({
+                    type: '종신보험',
+                    company: 'NH농협생명',
+                    product: '투스텝NH종신보험',
+                    priority: 9,
+                    reason: '젊을수록 보험료가 저렴하며, 장기 자산 형성에 유리합니다',
+                    monthlyPremium: Math.floor(age * 4500 / 100) * 100
+                });
+            }
+            
+            // 직업별 추천
+            if (occupation === 'business' || occupation === 'selfemployed') {
+                recommendations.push({
+                    type: '경영인정기보험',
+                    company: '푸본현대생명',
+                    product: 'MAX경영인정기보험',
+                    priority: 8,
+                    reason: '사업자/경영인에게 특화된 보장을 제공합니다',
+                    monthlyPremium: Math.floor(income * 0.02)
+                });
+            }
+            
+            // 소득별 추천
+            if (income >= 8000) {
+                recommendations.push({
+                    type: '종신보험(달러)',
+                    company: '메트라이프',
+                    product: '백만인을위한달러종신보험PLUS',
+                    priority: 7,
+                    reason: '고소득자에게 환 헷지 및 자산 분산 효과를 제공합니다',
+                    monthlyPremium: Math.floor(income * 0.03)
+                });
+            }
+            
+            // 가족 구성별 추천
+            if (marital === 'married' && children > 0) {
+                recommendations.push({
+                    type: '종합건강보험',
+                    company: '메리츠화재',
+                    product: '알파 Plus보장보험',
+                    priority: 9,
+                    reason: '가족의 건강 보장을 위한 필수 보험입니다',
+                    monthlyPremium: Math.floor((age * 1200 + children * 3000) / 100) * 100
+                });
+            }
+            
+            // 관심 분야별 추천
+            if (interests.includes('cancer')) {
+                recommendations.push({
+                    type: '암보험',
+                    company: '삼성화재',
+                    product: '삼성화재암보험',
+                    priority: 8,
+                    reason: '암 발병 시 고액의 진단비를 보장합니다',
+                    monthlyPremium: Math.floor(age * 600 / 100) * 100
+                });
+            }
+            
+            if (interests.includes('driver')) {
+                recommendations.push({
+                    type: '운전자보험',
+                    company: 'DB손해보험',
+                    product: '참좋은 운전자상해보험',
+                    priority: 7,
+                    reason: '교통사고 시 법률비용 및 벌금을 보장합니다',
+                    monthlyPremium: 35000
+                });
+            }
+            
+            // 우선순위순 정렬
+            recommendations.sort((a, b) => b.priority - a.priority);
+            
+            return recommendations.slice(0, 5); // 상위 5개만
+        }
+
+        function displayRecommendations(recommendations) {
+            const container = document.getElementById('recommend-cards');
+            let html = '';
+            
+            recommendations.forEach((rec, index) => {
+                const medalColor = index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'orange' : 'gray';
+                html += `
+                    <div class="border-2 border-${medalColor === 'gold' ? 'yellow' : medalColor === 'silver' ? 'gray' : medalColor}-300 rounded-xl p-6 bg-gradient-to-br from-white to-${medalColor === 'gold' ? 'yellow' : medalColor === 'silver' ? 'gray' : medalColor}-50">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <div class="text-xs font-semibold text-${medalColor === 'gold' ? 'yellow' : medalColor === 'silver' ? 'gray' : medalColor}-600 mb-1">${index + 1}순위 추천</div>
+                                <div class="font-bold text-lg text-gray-800">${rec.type}</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-cyan-600">${(rec.monthlyPremium).toLocaleString()}원</div>
+                                <div class="text-xs text-gray-500">월 보험료</div>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-600 mb-2">${rec.company} - ${rec.product}</div>
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-800">
+                            <i class="fas fa-info-circle mr-1"></i>${rec.reason}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            document.getElementById('recommend-result').classList.remove('hidden');
+        }
+
+        // 보험료 계산
+        document.getElementById('premium-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const type = document.getElementById('insurance-type').value;
+            const age = parseInt(document.getElementById('premium-age').value);
+            const gender = document.getElementById('premium-gender').value;
+            const coverage = parseInt(document.getElementById('coverage').value);
+            const period = parseInt(document.getElementById('payment-period').value);
+            
+            // 보험료 계산 로직
+            let baseRate = 0;
+            if (type === 'life') baseRate = age * 5 + (gender === 'male' ? 10 : 5);
+            else if (type === 'health') baseRate = age * 4 + (gender === 'male' ? 8 : 6);
+            else if (type === 'medical') baseRate = age * 3 + (gender === 'male' ? 6 : 4);
+            else if (type === 'cancer') baseRate = age * 2.5 + (gender === 'male' ? 5 : 3);
+            
+            const monthlyPremium = Math.floor((coverage / 10000) * baseRate * (30 / period) / 100) * 100;
+            const yearlyPremium = monthlyPremium * 12;
+            const totalPremium = yearlyPremium * period;
+            
+            document.getElementById('monthly-premium').textContent = monthlyPremium.toLocaleString() + '원';
+            document.getElementById('yearly-premium').textContent = yearlyPremium.toLocaleString() + '원';
+            document.getElementById('total-premium').textContent = totalPremium.toLocaleString() + '원';
+            
+            document.getElementById('premium-result').classList.remove('hidden');
+            
+            // 차트 생성
+            createPremiumChart(monthlyPremium);
+        });
+
+        function createPremiumChart(basePremium) {
+            const ctx = document.getElementById('premium-chart').getContext('2d');
+            
+            // 기존 차트 삭제
+            if (window.premiumChart) window.premiumChart.destroy();
+            
+            window.premiumChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['삼성생명', 'NH농협생명', 'KB생명', '한화생명', '현대해상'],
+                    datasets: [{
+                        label: '월 보험료 (원)',
+                        data: [
+                            basePremium,
+                            Math.floor(basePremium * 0.95),
+                            Math.floor(basePremium * 1.05),
+                            Math.floor(basePremium * 0.98),
+                            Math.floor(basePremium * 1.02)
+                        ],
+                        backgroundColor: ['#0891b2', '#14b8a6', '#8b5cf6', '#f59e0b', '#ef4444']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        // 보험금 계산
+        function calculateMedicalClaim() {
+            const totalFee = parseInt(document.getElementById('hospital-fee').value);
+            const insuredFee = parseInt(document.getElementById('insured-fee').value);
+            const nonInsuredFee = totalFee - insuredFee;
+            
+            // 실손 보장 계산 (급여 80%, 비급여 80%)
+            const insuredClaim = Math.floor(insuredFee * 0.8);
+            const nonInsuredClaim = Math.floor(nonInsuredFee * 0.8);
+            const totalClaim = insuredClaim + nonInsuredClaim;
+            
+            document.getElementById('claim-amount').textContent = totalClaim.toLocaleString() + '원';
+            document.getElementById('claim-detail').textContent = 
+                `급여 항목: ${insuredClaim.toLocaleString()}원 (80%) | 비급여 항목: ${nonInsuredClaim.toLocaleString()}원 (80%)`;
+            
+            document.getElementById('claim-result').classList.remove('hidden');
+        }
+
+        // 상속세 계산
+        function calculateInheritanceTax() {
+            const estateValue = parseFloat(document.getElementById('estate-value').value) * 100000000; // 억원 -> 원
+            const heirCount = parseInt(document.getElementById('heir-count').value);
+            const lifeInsurance = parseFloat(document.getElementById('life-insurance').value) * 100000000;
+            
+            // 상속공제 (배우자 + 자녀)
+            const basicDeduction = 500000000; // 5억
+            const spouseDeduction = 500000000; // 5억
+            const totalDeduction = basicDeduction + spouseDeduction;
+            
+            // 과세표준 (절세 전)
+            const taxableAmountBefore = Math.max(0, estateValue - totalDeduction);
+            
+            // 상속세 계산 (누진세율)
+            const taxBefore = calculateProgressiveTax(taxableAmountBefore);
+            
+            // 보험금 활용 시 (보험금은 상속재산에서 제외)
+            const taxableAmountAfter = Math.max(0, (estateValue - lifeInsurance) - totalDeduction);
+            const taxAfter = calculateProgressiveTax(taxableAmountAfter);
+            
+            const savedTax = taxBefore - taxAfter;
+            const savedPercent = ((savedTax / taxBefore) * 100).toFixed(1);
+            
+            document.getElementById('tax-before').textContent = (taxBefore / 100000000).toFixed(2) + '억원';
+            document.getElementById('tax-after').textContent = (taxAfter / 100000000).toFixed(2) + '억원';
+            document.getElementById('tax-saved').textContent = (savedTax / 100000000).toFixed(2) + '억원';
+            document.getElementById('tax-saved-percent').textContent = `약 ${savedPercent}% 절감`;
+            
+            document.getElementById('tax-result').classList.remove('hidden');
+        }
+
+        function calculateProgressiveTax(taxableAmount) {
+            // 상속세 누진세율 (2026년 기준)
+            if (taxableAmount <= 100000000) return taxableAmount * 0.10;
+            if (taxableAmount <= 500000000) return 10000000 + (taxableAmount - 100000000) * 0.20;
+            if (taxableAmount <= 1000000000) return 90000000 + (taxableAmount - 500000000) * 0.30;
+            if (taxableAmount <= 3000000000) return 240000000 + (taxableAmount - 1000000000) * 0.40;
+            return 1040000000 + (taxableAmount - 3000000000) * 0.50;
+        }
+
+        // 페이지 로드 시
+        document.addEventListener('DOMContentLoaded', () => {
+            showTool('recommend');
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
