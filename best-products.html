@@ -258,7 +258,7 @@
         // 공공데이터 API 키
         const API_KEY = '4b5c77bf08fd7db79ad9754d135838715e778724d0ff9800c2c2682513f72d32';
 
-        // API에서 실시간 데이터 가져오기 (3개 API 통합: 생명보험 + 손해보험 + 실손보험)
+        // API에서 실시간 데이터 가져오기 (생명보험사 정보만)
         async function fetchInsuranceData(year, month) {
             const monthMap = {
                 'jan': '01', 'feb': '02', 'mar': '03', 'apr': '04',
@@ -267,10 +267,9 @@
             };
             
             const baseYm = `${year}${monthMap[month]}`;
-            const results = { life: null, general: null, medical: null };
             
             try {
-                // 1️⃣ 생명보험사 일반현황 조회 (Proxy 사용)
+                // 생명보험사 일반현황 조회 (Proxy 사용)
                 const lifeUrl = `/api/proxy/life-insurance?basYm=${baseYm}&serviceKey=${API_KEY}`;
                 
                 const lifeResponse = await fetch(lifeUrl);
@@ -278,46 +277,83 @@
                 
                 console.log('생명보험 API 응답:', lifeData);
                 
-                if (lifeData.response?.header?.resultCode === '00' && lifeData.response?.body?.items) {
-                    results.life = lifeData.response.body.items.item;
+                // API 응답 확인
+                if (lifeData.response?.header?.resultCode === '00') {
+                    // tableList에서 임직원 및 설계사 현황 테이블 찾기
+                    const tableList = lifeData.response.body.tableList || [];
+                    const empTable = tableList.find(t => t.title && t.title.includes('임직원 및 설계사'));
+                    
+                    if (empTable && empTable.items && empTable.items.item && empTable.items.item.length > 0) {
+                        return processLifeInsuranceData(empTable.items.item, year, month);
+                    }
                 }
                 
-                // 2️⃣ 손해보험사 정보 조회 (Proxy 사용)
-                const generalUrl = `/api/proxy/general-insurance?basYm=${baseYm}&serviceKey=${API_KEY}`;
-                
-                const generalResponse = await fetch(generalUrl);
-                const generalData = await generalResponse.json();
-                
-                console.log('손해보험 API 응답:', generalData);
-                
-                if (generalData.response?.header?.resultCode === '00' && generalData.response?.body?.items) {
-                    results.general = generalData.response.body.items.item;
-                }
-                
-                // 3️⃣ 실손보험 정보 조회 (Proxy 사용)
-                const medicalUrl = `/api/proxy/medical-insurance?basYm=${baseYm}&serviceKey=${API_KEY}`;
-                
-                const medicalResponse = await fetch(medicalUrl);
-                const medicalData = await medicalResponse.json();
-                
-                console.log('실손보험 API 응답:', medicalData);
-                
-                if (medicalData.response?.header?.resultCode === '00' && medicalData.response?.body?.items) {
-                    results.medical = medicalData.response.body.items.item;
-                }
-                
-                // 데이터가 하나라도 있으면 처리
-                if (results.life || results.general || results.medical) {
-                    return processAllAPIData(results, year, month);
-                } else {
-                    console.error('모든 API에서 데이터를 가져오지 못했습니다');
-                    return null;
-                }
+                console.error('생명보험 API 데이터가 없습니다');
+                return null;
             } catch (error) {
                 console.error('API 호출 실패:', error);
                 return null;
             }
         }
+        
+        // 생명보험 데이터 처리
+        function processLifeInsuranceData(items, year, month) {
+            const companies = {};
+            const itemsArray = Array.isArray(items) ? items : [items];
+            
+            itemsArray.forEach(item => {
+                if (!companies[item.fncoNm]) {
+                    companies[item.fncoNm] = {
+                        name: item.fncoNm,
+                        code: item.fncoCd,
+                        employees: 0,
+                        agents: 0
+                    };
+                }
+                
+                if (item.xcsmPlnpnDcdNm === '임직원') {
+                    companies[item.fncoNm].employees = parseInt(item.xcsmPlnpnCnt) || 0;
+                } else if (item.xcsmPlnpnDcdNm === '설계사') {
+                    companies[item.fncoNm].agents = parseInt(item.xcsmPlnpnCnt) || 0;
+                }
+            });
+            
+            const sortedLife = Object.values(companies)
+                .sort((a, b) => b.agents - a.agents)
+                .slice(0, 10);
+            
+            if (sortedLife.length > 0) {
+                return {
+                    categories: [{
+                        name: `🏆 생명보험사 현황 (${year}년 ${monthMap[month] || month})`,
+                        icon: 'fa-heartbeat',
+                        color: 'cyan',
+                        subcategories: [{
+                            subname: `실시간 통계 (설계사 수 기준 TOP ${sortedLife.length})`,
+                            products: sortedLife.map((company, index) => ({
+                                rank: index + 1,
+                                company: company.name,
+                                product: '종합 생명보험 서비스',
+                                highlight: `설계사 ${company.agents.toLocaleString()}명 (판매력 지표)`,
+                                features: [
+                                    `임직원: ${company.employees.toLocaleString()}명`,
+                                    `총 인력: ${(company.employees + company.agents).toLocaleString()}명`,
+                                    `금융회사코드: ${company.code}`
+                                ]
+                            }))
+                        }]
+                    }]
+                };
+            }
+            
+            return null;
+        }
+        
+        const monthMap = {
+            'jan': '1', 'feb': '2', 'mar': '3', 'apr': '4',
+            'may': '5', 'jun': '6', 'jul': '7', 'aug': '8',
+            'sep': '9', 'oct': '10', 'nov': '11', 'dec': '12'
+        };
 
         // 3개 API 데이터를 모두 처리하여 화면에 표시할 형식으로 변환
         function processAllAPIData(results, year, month) {
