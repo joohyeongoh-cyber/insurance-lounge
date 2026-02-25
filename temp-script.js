@@ -1,210 +1,3 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>보험 종류별 베스트 상품 - 보험 LOUNGE</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            font-family: 'Noto Sans KR', sans-serif;
-        }
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-        .accordion-content.active {
-            max-height: 2000px;
-            transition: max-height 0.5s ease-in;
-        }
-    </style>
-</head>
-<body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-md fixed w-full top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <a href="index.html" class="flex items-center gap-3 group">
-                        <div class="relative">
-                            <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl rotate-12 group-hover:rotate-0 transition-transform duration-300 shadow-lg"></div>
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <span class="text-2xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">보험 LOUNGE</span>
-                    </a>
-                </div>
-                <div class="hidden md:flex space-x-3 lg:space-x-4 text-sm">
-                    <a href="index.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">홈</a>
-                    <a href="best-products.html" class="text-cyan-600 font-medium transition border-b-2 border-cyan-600 whitespace-nowrap">베스트</a>
-                    <a href="fa-intro.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">전문가</a>
-                    <a href="contract-cases.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">계약</a>
-                    <a href="claim-cases.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">청구</a>
-                    <a href="insurance-info.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">정보</a>
-                    <a href="inquiries.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">문의</a>
-                    <a href="fa-apply.html" class="bg-cyan-600 text-white px-3 py-2 rounded-lg hover:bg-cyan-700 transition font-medium whitespace-nowrap">전문가 신청</a>
-                </div>
-                <div class="md:hidden">
-                    <button id="mobile-menu-btn" class="text-gray-700">
-                        <i class="fas fa-bars text-2xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
-            <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="index.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">홈</a>
-                <a href="best-products.html" class="block px-3 py-2 bg-cyan-50 text-cyan-600 rounded">베스트</a>
-                <a href="fa-intro.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">전문가</a>
-                <a href="contract-cases.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">계약</a>
-                <a href="claim-cases.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">청구</a>
-                <a href="insurance-info.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">정보</a>
-                <a href="inquiries.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">문의</a>
-                <a href="fa-apply.html" class="block px-3 py-2 bg-cyan-600 text-white rounded text-center">전문가 신청</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-cyan-600 to-blue-600 text-white pt-24 pb-12 mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div class="mb-3">
-                <i class="fas fa-trophy text-5xl mb-3 opacity-90"></i>
-            </div>
-            <h1 class="text-3xl md:text-4xl font-bold mb-3">보험 종류별 베스트 상품</h1>
-            <p class="text-lg text-cyan-50 max-w-3xl mx-auto mb-2">
-                실제 통계 기반 정확한 데이터만 제공합니다
-            </p>
-            
-            <!-- 연도/월 선택 드롭다운 -->
-            <div class="flex justify-center items-center gap-3 mt-6 mb-4">
-                <div class="flex items-center gap-2 bg-white rounded-lg px-4 py-2 shadow-lg">
-                    <i class="fas fa-calendar-alt text-cyan-600"></i>
-                    <select id="year-select" class="bg-white text-gray-800 font-semibold outline-none cursor-pointer border-r border-gray-300 pr-3 py-1">
-                        <option value="2025" selected>2025년</option>
-                        <option value="2026">2026년</option>
-                    </select>
-                    <select id="month-select" class="bg-white text-gray-800 font-semibold outline-none cursor-pointer pl-2 py-1">
-                        <option value="jan" selected>1월</option>
-                        <option value="feb">2월</option>
-                        <option value="mar">3월</option>
-                        <option value="apr">4월</option>
-                        <option value="may">5월</option>
-                        <option value="jun">6월</option>
-                        <option value="jul">7월</option>
-                        <option value="aug">8월</option>
-                        <option value="sep">9월</option>
-                        <option value="oct">10월</option>
-                        <option value="nov">11월</option>
-                        <option value="dec">12월</option>
-                    </select>
-                </div>
-                <button id="load-data-btn" class="bg-white text-cyan-600 px-4 py-3 rounded-lg font-semibold hover:bg-cyan-50 transition shadow-lg">
-                    <i class="fas fa-sync-alt mr-2"></i>조회
-                </button>
-            </div>
-            
-            <p class="text-sm text-cyan-100 opacity-90">
-                ※ 현재 실제 통계 데이터 수집 및 검증 중입니다 (금융감독원, 보험사 공시자료)
-            </p>
-        </div>
-    </section>
-
-    <!-- Main Content -->
-    <section class="py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            <!-- 선정 기준 안내 -->
-            <div class="mb-8 bg-gradient-to-r from-red-50 to-orange-50 border-2 border-red-300 rounded-xl p-6">
-                <h3 class="text-xl font-bold mb-4 text-red-800 flex items-center">
-                    <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i>
-                    중요 공지: 정확한 데이터만 제공합니다
-                </h3>
-                <div class="space-y-3 text-sm text-red-700">
-                    <p class="font-semibold">
-                        <i class="fas fa-check-circle text-red-600 mr-2"></i>
-                        베스트 상품 순위는 <strong>실제 통계 기반 검증된 데이터</strong>만 제공됩니다.
-                    </p>
-                    <p>
-                        <i class="fas fa-ban text-red-600 mr-2"></i>
-                        임의 추정 데이터나 확인되지 않은 정보는 절대 제공하지 않습니다.
-                    </p>
-                    <div class="bg-white rounded-lg p-4 mt-4 border border-red-200">
-                        <p class="font-semibold text-gray-800 mb-2">📊 예정된 데이터 출처:</p>
-                        <ul class="text-xs text-gray-600 space-y-1 list-disc list-inside">
-                            <li>금융감독원 공식 통계 (보험사별 판매 실적)</li>
-                            <li>보험사 전자공시 자료 (상품별 가입 현황)</li>
-                            <li>GA 채널 실제 판매 데이터 (협의회 집계)</li>
-                            <li>보험 전문가 설문조사 (객관적 평가)</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 보험 종류별 아코디언 컨테이너 -->
-            <div id="ranking-container" class="space-y-3">
-                <!-- JavaScript로 동적 생성 -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-gray-300 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div>
-                    <h3 class="text-white text-lg font-bold mb-3">
-                        <span class="font-black bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">보험 LOUNGE</span>
-                    </h3>
-                    <p class="text-gray-400 text-sm">
-                        신뢰할 수 있는 보험 플랫폼
-                    </p>
-                </div>
-                <div>
-                    <h4 class="text-white font-semibold mb-3 text-sm">빠른 링크</h4>
-                    <ul class="space-y-1.5 text-sm">
-                        <li><a href="best-products.html" class="hover:text-white transition">베스트 상품</a></li>
-                        <li><a href="fa-intro.html" class="hover:text-white transition">보험 전문가 소개</a></li>
-                        <li><a href="contract-cases.html" class="hover:text-white transition">계약 사례</a></li>
-                        <li><a href="claim-cases.html" class="hover:text-white transition">청구 사례</a></li>
-                        <li><a href="insurance-info.html" class="hover:text-white transition">보험 정보</a></li>
-                        <li><a href="inquiries.html" class="hover:text-white transition">보험 문의</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-semibold mb-3 text-sm">관리자/전문가</h4>
-                    <ul class="space-y-1.5 text-sm">
-                        <li><a href="admin-login.html" class="hover:text-white transition text-cyan-400">
-                            <i class="fas fa-user-shield mr-1"></i>관리자 로그인
-                        </a></li>
-                        <li><a href="fa-login.html" class="hover:text-white transition text-emerald-400">
-                            <i class="fas fa-user-tie mr-1"></i>전문가 로그인
-                        </a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-semibold mb-3 text-sm">개인정보 처리방침</h4>
-                    <p class="text-xs text-gray-400 mb-2">
-                        본 사이트는 오픈채팅 링크만 제공하며,<br>
-                        별도의 개인정보를 수집하지 않습니다.
-                    </p>
-                </div>
-            </div>
-            <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-400 text-sm">
-                <p>&copy; 2026 보험 LOUNGE. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
         // 연도/월별 보험 종류별 데이터
         const yearlyData = {
             2025: {
@@ -252,8 +45,8 @@
             const results = { life: null, general: null, medical: null };
             
             try {
-                // 1️⃣ 생명보험사 일반현황 조회 (Proxy 사용)
-                const lifeUrl = `/api/proxy/life-insurance?basYm=${baseYm}&serviceKey=${API_KEY}`;
+                // 1️⃣ 생명보험사 일반현황 조회
+                const lifeUrl = `https://apis.data.go.kr/1160100/service/GetLifeInsuCompInfoService/getLifeInsuCompGeneInfo?serviceKey=${API_KEY}&numOfRows=100&pageNo=1&resultType=json&basYm=${baseYm}`;
                 
                 const lifeResponse = await fetch(lifeUrl);
                 const lifeData = await lifeResponse.json();
@@ -264,8 +57,8 @@
                     results.life = lifeData.response.body.items.item;
                 }
                 
-                // 2️⃣ 손해보험사 정보 조회 (Proxy 사용)
-                const generalUrl = `/api/proxy/general-insurance?basYm=${baseYm}&serviceKey=${API_KEY}`;
+                // 2️⃣ 손해보험사 정보 조회
+                const generalUrl = `https://apis.data.go.kr/1160100/service/GetGeneInsuInfoService/getGeneInsuInfo?serviceKey=${API_KEY}&numOfRows=100&pageNo=1&resultType=json&basYm=${baseYm}`;
                 
                 const generalResponse = await fetch(generalUrl);
                 const generalData = await generalResponse.json();
@@ -276,8 +69,8 @@
                     results.general = generalData.response.body.items.item;
                 }
                 
-                // 3️⃣ 실손보험 정보 조회 (Proxy 사용)
-                const medicalUrl = `/api/proxy/medical-insurance?basYm=${baseYm}&serviceKey=${API_KEY}`;
+                // 3️⃣ 실손보험 정보 조회
+                const medicalUrl = `https://apis.data.go.kr/1160100/service/GetIndinaInsuranceInfoService/getIndInsuGenInfoList?serviceKey=${API_KEY}&numOfRows=100&pageNo=1&resultType=json&basYm=${baseYm}`;
                 
                 const medicalResponse = await fetch(medicalUrl);
                 const medicalData = await medicalResponse.json();
@@ -493,6 +286,222 @@
                 }]
             };
         }
+
+        /*
+                    {
+                        name: '종신보험',
+                        icon: 'fa-heartbeat',
+                        color: 'cyan',
+                        subcategories: [
+                            {
+                                subname: '단기납 종신(원화)',
+                                products: [
+                                    {rank: 1, company: 'NH농협생명', product: '투스텝NH종신보험', highlight: '2단계 보험료 설계 (2단계는 1단계의 20%)', features: ['단기간 고액 납입으로 평생보장 (예: 3년납 후 평생 1억 보장)', 'SmartPay 대출 활용 가능 (예: 납입액의 최대 90% 대출)', '사업자·고소득자 최적화 (세제혜택+자산관리)']},
+                                    {rank: 2, company: '삼성생명', product: '삼성챔피온종신보험', highlight: '안정적 종신보장', features: ['저렴한 보험료 (예: 40세 남성 월 15만원대)', '평생 사망보장 (최대 5억원)']},
+                                    {rank: 3, company: '교보생명', product: '교보무배당종신보험', highlight: '단순 명확한 구조', features: ['부담 없는 보험료 (예: 30대 월 10만원대)', '평생 보장 (1~3억원)']}
+                                ]
+                            },
+                            {
+                                subname: '단기납 종신(달러)',
+                                products: [
+                                    {rank: 1, company: '메트라이프', product: '백만인을위한달러종신보험PLUS', highlight: '달러 자산 확보', features: ['환율 변동 대응 (예: 달러 강세 시 수익 증가)', '안정적 사망보장 (10만~30만 달러)', '글로벌 분산 투자 (환 리스크 헷지)']},
+                                    {rank: 2, company: '푸르덴셜', product: '달러종신보험', highlight: '외화 자산 형성', features: ['환 헷지 효과 (원화 약세 대비)', '자산 다각화 (달러 자산 비중 확대)']},
+                                    {rank: 3, company: 'AIA생명', product: 'AIA달러종신보험', highlight: '안정적 달러보장', features: ['환율 리스크 분산 (달러 강세 수혜)', '평생보장 (달러 표시)']}
+                                ]
+                            },
+                            {
+                                subname: '상속종신',
+                                products: [
+                                    {rank: 1, company: '미래에셋생명', product: '헤리티지종신보험', highlight: '상속세 대비', features: ['높은 사망보험금 (10~50억원)', '유산 승계 최적화 (상속세 현금 납부)', '상속 재원 확보 (사망 시 즉시 지급)']},
+                                    {rank: 2, company: '한화생명', product: '상속종신보험', highlight: '상속 전용 설계', features: ['상속세 해결 (최대 50% 절감)', '평생보장 (고액 자산가 특화)']},
+                                    {rank: 3, company: 'KB라이프', product: 'KB상속종신보험', highlight: '상속 플랜', features: ['상속재원 마련 (부동산 상속세 대비)', '세금 절감 (보험금 비과세)']}
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        name: '종합건강보험',
+                        icon: 'fa-hospital',
+                        color: 'blue',
+                        subcategories: [
+                            {
+                                subname: '일반고지 종합건강',
+                                products: [
+                                    {rank: 1, company: '메리츠화재', product: '알파 Plus보장보험', highlight: '3대질병 전액 수술비 실손보장', features: ['🏆 3대질병 수술비 전액 (암·뇌·심장 최대 5천만원)', '입원일당 최대 10만원 (1일당 지급)', '7대 질병 수술비 집중보장 (질병별 최대 3천만원)']},
+                                    {rank: 2, company: 'KB손해보험', product: 'KB 5.10.10플러스건강보험', highlight: '5천만원 진단비', features: ['10대질병 보장 (각 질병별 진단비)', '10년갱신 (갱신 시 보험료 인상)']},
+                                    {rank: 3, company: '삼성화재', product: '삼성건강보험', highlight: '종합 보장', features: ['질병·상해 보장 (입원·수술 포함)', '입원·수술 보장 (일당 5만원)']}
+                                ]
+                            },
+                            {
+                                subname: '건강고지 종합건강',
+                                products: [
+                                    {rank: 1, company: 'KB손해보험', product: 'KB 5.10.10플러스건강보험', highlight: '5천만원 진단비', features: ['10대질병 보장', '10년갱신', '건강관리 특약']},
+                                    {rank: 2, company: '현대해상', product: '현대건강보험', highlight: '질병 집중보장', features: ['암·뇌·심장 보장', '수술비 특화']},
+                                    {rank: 3, company: '한화손해보험', product: '한화건강보험', highlight: '건강 특화', features: ['질병진단비', '수술·입원 보장']}
+                                ]
+                            },
+                            {
+                                subname: '간편고지 건강보험 (3.0.5~3.5.5)',
+                                products: [
+                                    {rank: 1, company: 'DB손해보험', product: '나에게맞춘간편건강보험', highlight: '간편 가입', features: ['맞춤형 보장 (기존 질환 제외 보장)', '고령자 가입 가능 (만 70세까지)', '질병 이력자 가능 (당뇨·고혈압 OK)']},
+                                    {rank: 2, company: '현대해상', product: '간편건강보험', highlight: '간단한 심사', features: ['빠른 가입 (3개 질문만 답변)', '기본 보장 충실 (암·뇌·심장)']},
+                                    {rank: 3, company: 'KB손해보험', product: 'KB간편건강보험', highlight: '간편 심사', features: ['고령자 OK (만 75세까지)', '기본 보장 (진단비 중심)']}
+                                ]
+                            },
+                            {
+                                subname: '초경증간편 (3.6.5~3.10.10)',
+                                products: [
+                                    {rank: 1, company: '삼성화재', product: '간편보험 3655 고고 새로고침100세', highlight: '초간편 심사', features: ['질병 이력자 가입 가능', '고령자 특화', '만 100세 보장']},
+                                    {rank: 2, company: '메리츠화재', product: '초경증간편건강보험', highlight: '최소 심사', features: ['기존 질환자 OK', '고령 가입']},
+                                    {rank: 3, company: 'DB손해보험', product: '초간편건강보험', highlight: '간편 가입', features: ['질병자 OK', '간편 심사']}
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        name: '실손의료비',
+                        icon: 'fa-medkit',
+                        color: 'emerald',
+                        subcategories: [
+                            {
+                                subname: '4세대 실손',
+                                products: [
+                                    {rank: 1, company: '현대해상', product: '실속형실손의료비보험', highlight: '저렴한 보험료', features: ['갱신부담 완화 (3년마다 작은 폭 인상)', '비급여 보장 (MRI·초음파 등 80% 보장)', '자기부담금 최소화 (입원 10%, 통원 20%)']},
+                                    {rank: 2, company: '삼성화재', product: '실손의료비보험', highlight: '종합 보장', features: ['통원·입원 보장 (연 5천만원 한도)', '특약 다양 (치과·한방 추가 가능)']},
+                                    {rank: 3, company: 'KB손해보험', product: 'KB실손의료비보험', highlight: '디지털 특화', features: ['앱 청구 간편 (사진 찍어 전송)', '빠른 처리 (평균 3일 내 지급)']}
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        name: '운전자보험',
+                        icon: 'fa-car',
+                        color: 'purple',
+                        subcategories: [
+                            {
+                                subname: '운전자 상해보험',
+                                products: [
+                                    {rank: 1, company: 'DB손해보험', product: '참좋은 운전자상해보험', highlight: '교통사고 보장', features: ['법률비용 지원', '벌금 보장', '교통사고처리지원금']},
+                                    {rank: 2, company: '삼성화재', product: '운전자보험', highlight: '자동차사고 특화', features: ['벌금·방어비 보장', '교통사고처리지원금']},
+                                    {rank: 3, company: '현대해상', product: '운전자보험', highlight: '폭넓은 보장', features: ['대인·대물 보장', '특수사고 보장']}
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        name: '암보험',
+                        icon: 'fa-ribbon',
+                        color: 'pink',
+                        subcategories: [
+                            {
+                                subname: '일반암보험',
+                                products: [
+                                    {rank: 1, company: 'KDB생명', product: '암만생각해도KDB암보험', highlight: '전암종 보장', features: ['표적항암약물 지원', '고액암 집중보장', '재진단암 보장']},
+                                    {rank: 2, company: '삼성생명', product: '암보험', highlight: '종합 암 보장', features: ['일반암·고액암 보장', '암 진단비 특화']},
+                                    {rank: 3, company: 'NH농협생명', product: 'NH암보험', highlight: '유사암 포함', features: ['소액암·유사암 보장', '재진단암 보장']}
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        name: '변액보험',
+                        icon: 'fa-chart-line',
+                        color: 'orange',
+                        subcategories: [
+                            {
+                                subname: '변액연금(미보증형)',
+                                products: [
+                                    {rank: 1, company: 'iM라이프', product: '마이솔루션AI변액연금보험', highlight: 'AI 자산배분', features: ['글로벌 분산투자', '연금소득 최적화', 'AI 포트폴리오 관리']},
+                                    {rank: 2, company: '미래에셋생명', product: '변액연금보험', highlight: '다양한 펀드', features: ['글로벌 펀드 선택', '실적배당']},
+                                    {rank: 3, company: '삼성생명', product: '변액연금보험', highlight: '안정적 운용', features: ['펀드 다양성', '연금 전환']}
+                                ]
+                            },
+                            {
+                                subname: '변액연금(보증형)',
+                                products: [
+                                    {rank: 1, company: '하나생명', product: '하나뿐인변액연금보험', highlight: '원리금 보증', features: ['안정성 확보', '최저보증 수익률', '원금 보장']},
+                                    {rank: 2, company: '교보생명', product: '변액연금(보증형)', highlight: '보증형', features: ['최저보증', '안정 운용']},
+                                    {rank: 3, company: '한화생명', product: '보증형변액연금', highlight: '원금보장', features: ['최저보증', '연금 전환']}
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        name: '일반연금보험',
+                        icon: 'fa-piggy-bank',
+                        color: 'indigo',
+                        subcategories: [
+                            {
+                                subname: '일반연금보험',
+                                products: [
+                                    {rank: 1, company: 'KB라이프', product: '트리플레벨업연금보험', highlight: '3단계 레벨업', features: ['연금 안정성', '노후 대비', '평생 연금 지급']},
+                                    {rank: 2, company: '교보생명', product: '즉시연금보험', highlight: '즉시 연금 개시', features: ['즉시 연금 지급', '평생 보장']},
+                                    {rank: 3, company: '삼성생명', product: '일반연금보험', highlight: '기본 연금', features: ['안정적 연금', '노후 대비']}
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        name: '치매·간병보험',
+                        icon: 'fa-hands-helping',
+                        color: 'teal',
+                        subcategories: [
+                            {
+                                subname: '치매간병보험',
+                                products: [
+                                    {rank: 1, company: '라이나생명', product: '전에없던실속치매보험', highlight: '경도인지장애부터 보장', features: ['간병비 지원', '치매등급별 차등지급', '조기 치매 보장']},
+                                    {rank: 2, company: '동양생명', product: '치매간병보험', highlight: '간병비 집중보장', features: ['장기요양등급 보장', '가족간병비 지원']},
+                                    {rank: 3, company: 'ABL생명', product: '치매간병보험', highlight: '치매 특화', features: ['초기치매 보장', '장기간병 지원']}
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        name: '펫보험',
+                        icon: 'fa-paw',
+                        color: 'amber',
+                        subcategories: [
+                            {
+                                subname: '반려동물보험',
+                                products: [
+                                    {rank: 1, company: 'KB손해보험', product: 'KB금쪽같은 펫보험', highlight: '반려동물 진료비', features: ['배상책임 보장', '장례비 지원', '의료비 보장']},
+                                    {rank: 2, company: '삼성화재', product: '펫보험', highlight: '종합 보장', features: ['진료·수술비 보장', '배상책임 특약']},
+                                    {rank: 3, company: 'DB손해보험', product: '펫퍼민트보험', highlight: '고양이·강아지', features: ['의료비 보장', '책임보험']}
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        name: '경영인정기보험',
+                        icon: 'fa-briefcase',
+                        color: 'slate',
+                        subcategories: [
+                            {
+                                subname: '경영인정기보험',
+                                products: [
+                                    {rank: 1, company: '푸본현대생명', product: 'MAX경영인정기보험 탑픽', highlight: '사업자 전용', features: ['사망·재해 보장', '경영 리스크 대비', '법인 가입 가능']},
+                                    {rank: 2, company: '한화생명', product: '경영인정기보험', highlight: '기업 경영자', features: ['사업 안정성', '법인 보장']},
+                                    {rank: 3, company: 'NH농협생명', product: '경영인정기보험', highlight: '사업자 특화', features: ['경영 보장', '사망보장']}
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            */
+            feb: { comingSoon: true },
+            mar: { comingSoon: true },
+            apr: { comingSoon: true },
+            may: { comingSoon: true },
+            jun: { comingSoon: true },
+            jul: { comingSoon: true },
+            aug: { comingSoon: true },
+            sep: { comingSoon: true },
+            oct: { comingSoon: true },
+            nov: { comingSoon: true },
+            dec: { comingSoon: true }
+        }
+    };
 
         let currentYear = 2025;
         let currentMonth = 'jan';
@@ -843,6 +852,3 @@
             container.innerHTML = html;
         }
 
-    </script>
-</body>
-</html>

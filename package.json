@@ -1,0 +1,13 @@
+{
+  "name": "insurance-lounge",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "hono": "^4.0.0",
+    "@hono/node-server": "^1.12.0"
+  }
+}
