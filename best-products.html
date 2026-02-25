@@ -713,11 +713,12 @@
         let currentYear = 2025;
         let currentMonth = 'jan';
 
-        // 연도 변경 시 월 필터링
+        // 페이지 로드 시 초기화
         document.addEventListener('DOMContentLoaded', () => {
             const yearSelect = document.getElementById('year-select');
             const monthSelect = document.getElementById('month-select');
             
+            // 연도 변경 시 월 필터링
             yearSelect.addEventListener('change', function() {
                 const selectedYear = parseInt(this.value);
                 Array.from(monthSelect.options).forEach(option => {
@@ -739,6 +740,12 @@
             
             // 조회 버튼 이벤트
             document.getElementById('load-data-btn').addEventListener('click', loadData);
+            
+            // Mobile menu toggle
+            document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+                const menu = document.getElementById('mobile-menu');
+                menu.classList.toggle('hidden');
+            });
         });
 
         // 데이터 조회 (API 호출 포함)
@@ -1052,13 +1059,6 @@
             container.innerHTML = html;
         }
 
-        // Mobile menu toggle
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-                const menu = document.getElementById('mobile-menu');
-                menu.classList.toggle('hidden');
-            });
-        });
     </script>
 </body>
 </html>
