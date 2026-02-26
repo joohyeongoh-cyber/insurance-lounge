@@ -103,16 +103,21 @@
 
             // Check password (stored in profile)
             if (faProfile.password && faProfile.password === faPassword) {
-                // Set FA session
-                sessionStorage.setItem('fa_logged_in', 'true');
-                sessionStorage.setItem('fa_id', faProfile.id);
-                sessionStorage.setItem('fa_email', faProfile.email);
-                sessionStorage.setItem('fa_name', faProfile.name);
-                sessionStorage.setItem('login_time', new Date().toISOString());
+                // Set FA session (localStorage로 변경하여 페이지 이동 시에도 유지)
+                localStorage.setItem('fa_logged_in', 'true');
+                localStorage.setItem('fa_user', JSON.stringify({
+                    id: faProfile.id,
+                    email: faProfile.email,
+                    name: faProfile.name
+                }));
+                localStorage.setItem('login_time', new Date().toISOString());
                 
                 console.log('로그인 성공!');
-                // Redirect to FA dashboard
-                window.location.href = 'fa-dashboard.html';
+                
+                // 이전 페이지로 리다이렉트 (없으면 대시보드)
+                const returnUrl = sessionStorage.getItem('login_return_url') || 'fa-dashboard.html';
+                sessionStorage.removeItem('login_return_url');
+                window.location.href = returnUrl;
             } else {
                 console.log('비밀번호 불일치!');
                 errorText.textContent = '비밀번호가 올바르지 않습니다. (저장된 비밀번호: ' + (faProfile.password ? '있음' : '없음') + ')';

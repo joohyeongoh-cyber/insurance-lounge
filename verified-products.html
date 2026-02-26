@@ -70,7 +70,7 @@
                     <a href="claim-cases.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">청구</a>
                     <a href="insurance-info.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">정보</a>
                     <a href="inquiries.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">문의</a>
-                    <a href="fa-apply.html" class="bg-cyan-600 text-white px-3 py-2 rounded-lg hover:bg-cyan-700 transition font-medium whitespace-nowrap">전문가 신청</a>
+                    <div id="nav-auth-desktop"></div>
                 </div>
                 <div class="md:hidden">
                     <button id="mobile-menu-btn" class="text-gray-700">
@@ -90,7 +90,7 @@
                 <a href="claim-cases.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">청구</a>
                 <a href="insurance-info.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">정보</a>
                 <a href="inquiries.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">문의</a>
-                <a href="fa-apply.html" class="block px-3 py-2 bg-cyan-600 text-white rounded text-center">전문가 신청</a>
+                <div id="nav-auth-mobile"></div>
             </div>
         </div>
     </nav>
@@ -283,6 +283,11 @@
         function getUserInfo() {
             const userStr = localStorage.getItem('fa_user');
             return userStr ? JSON.parse(userStr) : null;
+        }
+        
+        // 로그인 후 돌아올 URL 저장
+        function saveReturnUrl() {
+            sessionStorage.setItem('login_return_url', window.location.href);
         }
         
         // === 설계 가이드 데이터 (초보 설계사용) ===
@@ -555,7 +560,7 @@
                             초보 설계사를 위한 고객 니즈 파악법, 설계 체크리스트, 단계별 프로세스를<br>
                             회원 가입 후 확인하실 수 있습니다.
                         </p>
-                        <a href="fa-login.html" style="display: inline-block; background: #2563eb; color: white; padding: 12px 30px; border-radius: 10px; text-decoration: none; font-weight: bold;">
+                        <a href="fa-login.html" onclick="saveReturnUrl()" style="display: inline-block; background: #2563eb; color: white; padding: 12px 30px; border-radius: 10px; text-decoration: none; font-weight: bold;">
                             로그인하고 가이드 보기
                         </a>
                     </div>
@@ -659,7 +664,7 @@
                             고객 상담 시 실제로 사용할 수 있는 멘트·반론 대응·클로징 화법을<br>
                             회원 가입 후 확인하실 수 있습니다.
                         </p>
-                        <a href="fa-login.html" style="display: inline-block; background: #f59e0b; color: white; padding: 12px 30px; border-radius: 10px; text-decoration: none; font-weight: bold;">
+                        <a href="fa-login.html" onclick="saveReturnUrl()" style="display: inline-block; background: #f59e0b; color: white; padding: 12px 30px; border-radius: 10px; text-decoration: none; font-weight: bold;">
                             로그인하고 스크립트 보기
                         </a>
                     </div>
@@ -1034,7 +1039,68 @@
             }
         }
 
+        // 로그아웃 함수
+        function logout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                localStorage.removeItem('fa_logged_in');
+                localStorage.removeItem('fa_user');
+                localStorage.removeItem('login_time');
+                location.reload();
+            }
+        }
+
+        // 네비게이션 로그인 상태 업데이트
+        function updateNavAuth() {
+            const desktopNav = document.getElementById('nav-auth-desktop');
+            const mobileNav = document.getElementById('nav-auth-mobile');
+            
+            if (isLoggedIn()) {
+                const user = getUserInfo();
+                const userName = user?.name || '회원';
+                
+                // 데스크톱 네비게이션
+                desktopNav.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm text-gray-700">
+                            <i class="fas fa-user-circle text-cyan-600"></i>
+                            <strong>${userName}</strong> 님
+                        </span>
+                        <button onclick="logout()" class="text-sm text-gray-600 hover:text-red-600 transition">
+                            <i class="fas fa-sign-out-alt"></i> 로그아웃
+                        </button>
+                    </div>
+                `;
+                
+                // 모바일 네비게이션
+                mobileNav.innerHTML = `
+                    <div class="border-t pt-2 mt-2">
+                        <div class="px-3 py-2 text-sm text-gray-700">
+                            <i class="fas fa-user-circle text-cyan-600"></i>
+                            <strong>${userName}</strong> 님
+                        </div>
+                        <button onclick="logout()" class="block w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-600 rounded">
+                            <i class="fas fa-sign-out-alt"></i> 로그아웃
+                        </button>
+                    </div>
+                `;
+            } else {
+                // 비로그인 상태
+                desktopNav.innerHTML = `
+                    <a href="fa-login.html" onclick="saveReturnUrl()" class="bg-cyan-600 text-white px-3 py-2 rounded-lg hover:bg-cyan-700 transition font-medium whitespace-nowrap">
+                        <i class="fas fa-sign-in-alt"></i> 로그인
+                    </a>
+                `;
+                
+                mobileNav.innerHTML = `
+                    <a href="fa-login.html" onclick="saveReturnUrl()" class="block px-3 py-2 bg-cyan-600 text-white rounded text-center">
+                        <i class="fas fa-sign-in-alt"></i> 로그인
+                    </a>
+                `;
+            }
+        }
+
         // Initialize
+        updateNavAuth();
         loadAwardProducts('2025');
         loadTrendingProducts();
     </script>
