@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>진료정보 확인 가이드 - 보험 LOUNGE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- PDF/Excel/Image 다운로드를 위한 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center gap-3 group">
+                        <div class="relative">
+                            <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl rotate-12 group-hover:rotate-0 transition-transform duration-300 shadow-lg"></div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <span class="text-2xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">보험 LOUNGE</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-3 lg:space-x-4 text-sm">
+                    <a href="index.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">홈</a>
+                    <a href="verified-products.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">검증상품</a>
+                    <a href="fa-intro.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">전문가</a>
+                    <a href="contract-cases.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">계약</a>
+                    <a href="claim-cases.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">청구</a>
+                    <a href="insurance-info.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">정보</a>
+                    <a href="medical-records.html" class="text-cyan-600 font-medium transition border-b-2 border-cyan-600 whitespace-nowrap">진료정보</a>
+                    <a href="inquiries.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">문의</a>
+                    <div id="nav-auth-desktop"></div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-700">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">홈</a>
+                <a href="verified-products.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">검증상품</a>
+                <a href="fa-intro.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">전문가</a>
+                <a href="contract-cases.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">계약</a>
+                <a href="claim-cases.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">청구</a>
+                <a href="insurance-info.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">정보</a>
+                <a href="medical-records.html" class="block px-3 py-2 bg-cyan-50 text-cyan-600 rounded">진료정보</a>
+                <a href="inquiries.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">문의</a>
+                <div id="nav-auth-mobile"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-cyan-600 to-blue-600 text-white pt-24 pb-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                <i class="fas fa-file-medical mr-3"></i>
+                진료정보 확인 가이드
+            </h1>
+            <p class="text-xl text-cyan-100 mb-6">
+                보험 청약 전 진료기록 확인 및 고지사항 체크리스트 생성
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- 심평원 진료정보 조회 섹션 -->
+        <section class="bg-white rounded-2xl shadow-lg p-8 mb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-hospital-user text-blue-600 text-xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800">심평원 진료정보 조회</h2>
+            </div>
+            
+            <div class="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-lg mb-8">
+                <p class="text-blue-900 font-bold text-lg mb-2">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    최근 5년간 진료기록을 무료로 확인할 수 있습니다
+                </p>
+                <p class="text-blue-800">
+                    보험 청약 전 진료기록을 미리 확인하여 고지사항을 정확히 작성하세요.
+                </p>
+            </div>
+
+            <!-- 심평원 바로가기 버튼 -->
+            <div class="text-center mb-8">
+                <a href="https://www.hira.or.kr/rf/mdcl/getMdclList.do" target="_blank" 
+                   class="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-xl text-lg font-bold hover:shadow-2xl hover:scale-105 transition-all">
+                    <i class="fas fa-external-link-alt text-2xl"></i>
+                    <span>심평원 "내 진료정보" 바로가기</span>
+                </a>
+                <p class="text-gray-600 mt-4 text-sm">
+                    공동·금융인증서 또는 간편인증으로 로그인하세요
+                </p>
+            </div>
+
+            <!-- 단계별 가이드 -->
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-xl border border-purple-200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold">
+                            1
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">조회 기간 설정</h3>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed">
+                        최근 <strong class="text-purple-600">5년</strong> 기간을 설정하여 진료내역을 조회합니다.<br>
+                        청약서 고지사항은 보통 5년 이내를 묻기 때문입니다.
+                    </p>
+                </div>
+
+                <div class="bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-xl border border-blue-200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
+                            2
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">진료내역 확인</h3>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed">
+                        병원명, 진료과목, 질병명(상병명)을 꼼꼼히 확인하세요.<br>
+                        <strong class="text-blue-600">기억이 안 나는 항목</strong>은 반드시 체크합니다.
+                    </p>
+                </div>
+
+                <div class="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center font-bold">
+                            3
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">병원에 서류 발급</h3>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed">
+                        기억이 안 나는 진료기록은 해당 병원에서<br>
+                        <strong class="text-green-600">진단서·진료확인서·의무기록사본</strong> 발급받으세요.
+                    </p>
+                </div>
+
+                <div class="bg-gradient-to-br from-orange-50 to-amber-50 p-6 rounded-xl border border-orange-200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-orange-600 text-white rounded-full flex items-center justify-center font-bold">
+                            4
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">청약서 정확히 작성</h3>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed">
+                        확인한 진료기록을 바탕으로 청약서를<br>
+                        <strong class="text-orange-600">정확하게</strong> 작성합니다. (불실고지 방지)
+                    </p>
+                </div>
+            </div>
+
+            <!-- 주의사항 -->
+            <div class="bg-red-50 border-l-4 border-red-600 p-6 rounded-lg">
+                <p class="text-red-900 font-bold text-lg mb-3">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    주의사항
+                </p>
+                <ul class="text-red-800 space-y-2 ml-6">
+                    <li class="list-disc">심평원 조회 내역은 <strong>참고용</strong>입니다 (일부 누락 가능)</li>
+                    <li class="list-disc">의원·한의원·치과 등 <strong>모든 진료</strong>가 조회됩니다</li>
+                    <li class="list-disc">기억이 안 나는 질병명은 <strong>반드시</strong> 해당 병원에 확인하세요</li>
+                    <li class="list-disc">불실고지 시 보험금 지급 거절 또는 계약 해지될 수 있습니다</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 청약 고지 체크리스트 생성기 섹션 (회원 전용) -->
+        <section id="checklist-generator" class="bg-white rounded-2xl shadow-lg p-8">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-cyan-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-clipboard-check text-cyan-600 text-xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800">청약 고지 체크리스트 생성기</h2>
+                <span class="ml-auto bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-bold">
+                    <i class="fas fa-crown mr-1"></i>회원 전용
+                </span>
+            </div>
+
+            <!-- 비로그인 시 잠금 화면 -->
+            <div id="login-required" class="text-center py-16">
+                <div class="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-12 max-w-2xl mx-auto border-2 border-yellow-200">
+                    <i class="fas fa-lock text-6xl text-yellow-600 mb-6"></i>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">
+                        회원 전용 기능입니다
+                    </h3>
+                    <p class="text-gray-700 mb-8 text-lg leading-relaxed">
+                        청약 고지 체크리스트 생성기는 로그인 후 이용 가능합니다.<br>
+                        보험사·상품별 맞춤 체크리스트를 자동으로 생성해드립니다.
+                    </p>
+                    <a href="fa-login.html" onclick="saveReturnUrl()" 
+                       class="inline-block bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-8 py-4 rounded-xl text-lg font-bold hover:shadow-2xl hover:scale-105 transition-all">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        로그인하고 사용하기
+                    </a>
+                </div>
+            </div>
+
+            <!-- 로그인 시 체크리스트 생성기 -->
+            <div id="generator-form" class="hidden">
+                <div class="bg-gradient-to-br from-cyan-50 to-blue-50 p-6 rounded-xl mb-8">
+                    <p class="text-cyan-900 leading-relaxed">
+                        <i class="fas fa-magic mr-2 text-cyan-600"></i>
+                        보험사와 상품명, 청약서 고지 질문을 입력하시면 <strong>AI가 자동으로 분석</strong>하여<br>
+                        기간별 고지 항목과 진료기록 체크리스트를 생성해드립니다.
+                    </p>
+                </div>
+
+                <!-- 입력 폼 -->
+                <div class="space-y-6 mb-8">
+                    <!-- 보험사/상품명 -->
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-700 font-bold mb-2">
+                                <i class="fas fa-building mr-2 text-blue-600"></i>
+                                보험사
+                            </label>
+                            <input type="text" id="insurance-company" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                                   placeholder="예: 삼성생명, KB손해보험">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-bold mb-2">
+                                <i class="fas fa-file-contract mr-2 text-blue-600"></i>
+                                상품명
+                            </label>
+                            <input type="text" id="product-name" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                                   placeholder="예: 실속암보험, True종신보험">
+                        </div>
+                    </div>
+
+                    <!-- 청약서 고지 질문 입력 -->
+                    <div>
+                        <label class="block text-gray-700 font-bold mb-2">
+                            <i class="fas fa-clipboard-list mr-2 text-blue-600"></i>
+                            청약서 고지 질문 (텍스트 입력)
+                        </label>
+                        <textarea id="disclosure-questions" rows="8"
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent font-mono text-sm"
+                                  placeholder="청약서 고지 질문을 입력하세요.
+
+예시:
+1. 최근 3개월 이내에 질병이나 상해로 의사의 진찰, 검사, 치료, 투약을 받은 사실이 있습니까?
+2. 최근 1년 이내에 질병이나 상해로 7일 이상의 입원 또는 수술을 받은 사실이 있습니까?
+3. 최근 5년 이내에 암, 뇌혈관질환, 심장질환으로 진단받거나 치료를 받은 사실이 있습니까?"></textarea>
+                    </div>
+
+                    <!-- 청약서 이미지 업로드 -->
+                    <div>
+                        <label class="block text-gray-700 font-bold mb-2">
+                            <i class="fas fa-image mr-2 text-blue-600"></i>
+                            청약서 고지 부분 이미지 업로드 (선택)
+                        </label>
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-cyan-500 transition cursor-pointer"
+                             onclick="document.getElementById('image-upload').click()">
+                            <i class="fas fa-cloud-upload-alt text-5xl text-gray-400 mb-3"></i>
+                            <p class="text-gray-600 mb-2">클릭하여 이미지 업로드</p>
+                            <p class="text-gray-400 text-sm">JPG, PNG, PDF 형식 지원</p>
+                            <input type="file" id="image-upload" class="hidden" accept="image/*,.pdf" 
+                                   onchange="handleImageUpload(this)">
+                        </div>
+                        <div id="image-preview" class="mt-4 hidden">
+                            <p class="text-sm text-gray-600 mb-2">업로드된 파일:</p>
+                            <div class="bg-gray-100 p-3 rounded-lg flex items-center justify-between">
+                                <span id="file-name" class="text-sm text-gray-700"></span>
+                                <button onclick="clearImageUpload()" class="text-red-600 hover:text-red-800">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 생성 버튼 -->
+                <div class="text-center mb-8">
+                    <button onclick="generateChecklist()" 
+                            class="bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-12 py-4 rounded-xl text-lg font-bold hover:shadow-2xl hover:scale-105 transition-all">
+                        <i class="fas fa-magic mr-2"></i>
+                        체크리스트 생성하기
+                    </button>
+                </div>
+
+                <!-- 결과 표시 영역 -->
+                <div id="checklist-result" class="hidden">
+                    <div class="bg-white border-2 border-cyan-500 rounded-2xl p-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-2xl font-bold text-gray-800">
+                                <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                                생성된 체크리스트
+                            </h3>
+                            <div class="flex gap-3">
+                                <button onclick="downloadChecklist('pdf')" 
+                                        class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
+                                    <i class="fas fa-file-pdf mr-2"></i>PDF 다운로드
+                                </button>
+                                <button onclick="downloadChecklist('excel')" 
+                                        class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+                                    <i class="fas fa-file-excel mr-2"></i>엑셀 다운로드
+                                </button>
+                                <button onclick="downloadChecklist('image')" 
+                                        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                                    <i class="fas fa-image mr-2"></i>이미지 다운로드
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 상품 정보 -->
+                        <div class="bg-gradient-to-r from-cyan-50 to-blue-50 p-4 rounded-lg mb-6">
+                            <p class="text-gray-700">
+                                <strong class="text-cyan-700">보험사:</strong> <span id="result-company"></span> |
+                                <strong class="text-cyan-700">상품:</strong> <span id="result-product"></span>
+                            </p>
+                        </div>
+
+                        <!-- 체크리스트 내용 -->
+                        <div id="checklist-content" class="space-y-6">
+                            <!-- AI가 생성한 체크리스트가 여기 표시됩니다 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl"></div>
+                        <span class="text-2xl font-bold">보험 LOUNGE</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        보험 전문가와 고객을 연결하는<br>신뢰할 수 있는 보험 정보 플랫폼
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">바로가기</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="verified-products.html" class="hover:text-cyan-400 transition">검증상품</a></li>
+                        <li><a href="fa-intro.html" class="hover:text-cyan-400 transition">전문가 소개</a></li>
+                        <li><a href="medical-records.html" class="hover:text-cyan-400 transition">진료정보</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">문의</h3>
+                    <p class="text-gray-400">
+                        <i class="fas fa-envelope mr-2"></i>
+                        info@inslounge.com
+                    </p>
+                    <p class="text-gray-400 mt-2">
+                        <i class="fas fa-phone mr-2"></i>
+                        1234-5678
+                    </p>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 보험 LOUNGE. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 로그인 상태 체크
+        function isLoggedIn() {
+            return localStorage.getItem('fa_logged_in') === 'true';
+        }
+        
+        function getUserInfo() {
+            const userStr = localStorage.getItem('fa_user');
+            return userStr ? JSON.parse(userStr) : null;
+        }
+        
+        function saveReturnUrl() {
+            sessionStorage.setItem('login_return_url', window.location.href);
+        }
+        
+        function logout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                localStorage.removeItem('fa_logged_in');
+                localStorage.removeItem('fa_user');
+                localStorage.removeItem('login_time');
+                location.reload();
+            }
+        }
+
+        // 네비게이션 로그인 상태 업데이트
+        function updateNavAuth() {
+            const desktopNav = document.getElementById('nav-auth-desktop');
+            const mobileNav = document.getElementById('nav-auth-mobile');
+            
+            if (isLoggedIn()) {
+                const user = getUserInfo();
+                const userName = user?.name || '회원';
+                
+                desktopNav.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm text-gray-700">
+                            <i class="fas fa-user-circle text-cyan-600"></i>
+                            <strong>${userName}</strong> 님
+                        </span>
+                        <button onclick="logout()" class="text-sm text-gray-600 hover:text-red-600 transition">
+                            <i class="fas fa-sign-out-alt"></i> 로그아웃
+                        </button>
+                    </div>
+                `;
+                
+                mobileNav.innerHTML = `
+                    <div class="border-t pt-2 mt-2">
+                        <div class="px-3 py-2 text-sm text-gray-700">
+                            <i class="fas fa-user-circle text-cyan-600"></i>
+                            <strong>${userName}</strong> 님
+                        </div>
+                        <button onclick="logout()" class="block w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-red-50 hover:text-red-600 rounded">
+                            <i class="fas fa-sign-out-alt"></i> 로그아웃
+                        </button>
+                    </div>
+                `;
+
+                // 로그인 시 체크리스트 생성기 표시
+                document.getElementById('login-required').classList.add('hidden');
+                document.getElementById('generator-form').classList.remove('hidden');
+            } else {
+                desktopNav.innerHTML = `
+                    <a href="fa-login.html" onclick="saveReturnUrl()" class="bg-cyan-600 text-white px-3 py-2 rounded-lg hover:bg-cyan-700 transition font-medium whitespace-nowrap">
+                        <i class="fas fa-sign-in-alt"></i> 로그인
+                    </a>
+                `;
+                
+                mobileNav.innerHTML = `
+                    <a href="fa-login.html" onclick="saveReturnUrl()" class="block px-3 py-2 bg-cyan-600 text-white rounded text-center">
+                        <i class="fas fa-sign-in-alt"></i> 로그인
+                    </a>
+                `;
+
+                // 비로그인 시 잠금 화면 표시
+                document.getElementById('login-required').classList.remove('hidden');
+                document.getElementById('generator-form').classList.add('hidden');
+            }
+        }
+
+        // 모바일 메뉴 토글
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // 페이지 로드 시 초기화
+        updateNavAuth();
+
+        // 이미지 업로드 처리
+        function handleImageUpload(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                document.getElementById('file-name').textContent = file.name;
+                document.getElementById('image-preview').classList.remove('hidden');
+            }
+        }
+
+        function clearImageUpload() {
+            document.getElementById('image-upload').value = '';
+            document.getElementById('image-preview').classList.add('hidden');
+        }
+
+        // 체크리스트 생성 (AI 분석)
+        async function generateChecklist() {
+            const company = document.getElementById('insurance-company').value.trim();
+            const product = document.getElementById('product-name').value.trim();
+            const questions = document.getElementById('disclosure-questions').value.trim();
+
+            if (!company || !product || !questions) {
+                alert('보험사, 상품명, 청약서 고지 질문을 모두 입력해주세요.');
+                return;
+            }
+
+            // 로딩 표시
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>분석 중...';
+            btn.disabled = true;
+
+            try {
+                // AI 분석 (간단한 패턴 매칭)
+                const checklist = analyzeDisclosure(questions);
+
+                // 결과 표시
+                displayChecklist(company, product, checklist);
+
+                // 결과 영역으로 스크롤
+                document.getElementById('checklist-result').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            } catch (error) {
+                alert('체크리스트 생성 중 오류가 발생했습니다.');
+                console.error(error);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // 고지 질문 분석 (AI 시뮬레이션)
+        function analyzeDisclosure(questions) {
+            const checklist = {
+                periods: [],
+                recordTypes: [],
+                warnings: []
+            };
+
+            const text = questions.toLowerCase();
+
+            // 기간별 항목 감지
+            if (text.includes('3개월') || text.includes('3 개월')) {
+                checklist.periods.push({
+                    period: '3개월',
+                    items: [
+                        '진찰 또는 검사',
+                        '치료 또는 투약',
+                        '입원 또는 수술'
+                    ]
+                });
+            }
+
+            if (text.includes('1년') || text.includes('1 년')) {
+                checklist.periods.push({
+                    period: '1년',
+                    items: [
+                        '7일 이상 입원',
+                        '수술 또는 시술',
+                        '30일 이상 투약'
+                    ]
+                });
+            }
+
+            if (text.includes('5년') || text.includes('5 년')) {
+                checklist.periods.push({
+                    period: '5년',
+                    items: [
+                        '암, 뇌질환, 심장질환 진단',
+                        '입원 (30일 이상)',
+                        '고혈압, 당뇨병 등 만성질환 진단',
+                        '수술 또는 시술'
+                    ]
+                });
+            }
+
+            // 진료기록 유형 매핑
+            checklist.recordTypes = [
+                {
+                    type: '외래 진료',
+                    description: '병원·의원 방문 진료',
+                    checkPoints: [
+                        '진료과목 확인',
+                        '진단명(상병명) 확인',
+                        '처방약 확인'
+                    ]
+                },
+                {
+                    type: '입원 기록',
+                    description: '병원 입원 이력',
+                    checkPoints: [
+                        '입원 일수 확인',
+                        '입원 사유 확인',
+                        '퇴원 진단서 확인'
+                    ]
+                },
+                {
+                    type: '수술/시술',
+                    description: '수술 또는 시술 이력',
+                    checkPoints: [
+                        '수술명 확인',
+                        '수술 날짜 확인',
+                        '수술 결과 확인'
+                    ]
+                },
+                {
+                    type: '투약 내역',
+                    description: '처방약 복용 이력',
+                    checkPoints: [
+                        '약품명 확인',
+                        '복용 기간 확인',
+                        '질병명 확인'
+                    ]
+                },
+                {
+                    type: '검사 기록',
+                    description: '정밀검사 이력',
+                    checkPoints: [
+                        '검사 종류 확인',
+                        '검사 결과 확인',
+                        '추가 검사 필요 여부'
+                    ]
+                }
+            ];
+
+            // 추가 서류 필요 케이스 감지
+            if (text.includes('암') || text.includes('cancer')) {
+                checklist.warnings.push({
+                    category: '암 관련',
+                    warning: '암 진단 시 조직검사 결과지, 진단서 필수',
+                    documents: ['조직검사 결과지', '진단서', '수술 기록지']
+                });
+            }
+
+            if (text.includes('뇌') || text.includes('심장') || text.includes('혈관')) {
+                checklist.warnings.push({
+                    category: '중증질환',
+                    warning: '뇌·심장 질환 진단 시 정밀검사 결과 필수',
+                    documents: ['MRI/CT 결과지', '진단서', '수술 기록지']
+                });
+            }
+
+            if (text.includes('입원') || text.includes('수술')) {
+                checklist.warnings.push({
+                    category: '입원/수술',
+                    warning: '입원·수술 이력 시 퇴원 요약지, 수술 기록지 필요',
+                    documents: ['퇴원 요약지', '입원 확인서', '수술 기록지']
+                });
+            }
+
+            if (text.includes('투약') || text.includes('약')) {
+                checklist.warnings.push({
+                    category: '장기 투약',
+                    warning: '30일 이상 투약 시 처방전, 진료 확인서 필요',
+                    documents: ['처방전', '진료 확인서', '투약 기록']
+                });
+            }
+
+            // 기본 경고사항
+            if (checklist.warnings.length === 0) {
+                checklist.warnings.push({
+                    category: '일반',
+                    warning: '진료 이력 확인 후 해당 병원에서 서류 발급',
+                    documents: ['진단서', '진료 확인서', '의무기록 사본']
+                });
+            }
+
+            return checklist;
+        }
+
+        // 체크리스트 표시
+        function displayChecklist(company, product, checklist) {
+            document.getElementById('result-company').textContent = company;
+            document.getElementById('result-product').textContent = product;
+
+            const content = document.getElementById('checklist-content');
+            content.innerHTML = '';
+
+            // 1. 기간별 고지 항목
+            const periodsHTML = `
+                <div class="border-2 border-purple-200 rounded-xl p-6 bg-gradient-to-br from-purple-50 to-pink-50">
+                    <h4 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i class="fas fa-calendar-alt text-purple-600"></i>
+                        기간별 고지 항목
+                    </h4>
+                    ${checklist.periods.map(p => `
+                        <div class="mb-4 last:mb-0">
+                            <h5 class="font-bold text-purple-700 mb-2">
+                                <i class="far fa-clock mr-1"></i>
+                                최근 ${p.period} 이내
+                            </h5>
+                            <ul class="ml-6 space-y-1">
+                                ${p.items.map(item => `
+                                    <li class="text-gray-700">
+                                        <i class="fas fa-check text-green-600 mr-2"></i>
+                                        ${item}
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            // 2. 진료기록 매핑표
+            const recordsHTML = `
+                <div class="border-2 border-blue-200 rounded-xl p-6 bg-gradient-to-br from-blue-50 to-cyan-50">
+                    <h4 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i class="fas fa-file-medical text-blue-600"></i>
+                        진료기록 매핑표
+                    </h4>
+                    <div class="space-y-3">
+                        ${checklist.recordTypes.map(r => `
+                            <div class="bg-white p-4 rounded-lg border border-blue-200">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-clipboard-list text-blue-600"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h5 class="font-bold text-gray-800 mb-1">${r.type}</h5>
+                                        <p class="text-sm text-gray-600 mb-2">${r.description}</p>
+                                        <div class="flex flex-wrap gap-2">
+                                            ${r.checkPoints.map(cp => `
+                                                <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                                                    ${cp}
+                                                </span>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            // 3. 추가 서류 필요 케이스
+            const warningsHTML = `
+                <div class="border-2 border-orange-200 rounded-xl p-6 bg-gradient-to-br from-orange-50 to-amber-50">
+                    <h4 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i class="fas fa-exclamation-triangle text-orange-600"></i>
+                        추가 서류 필요 케이스
+                    </h4>
+                    <div class="space-y-3">
+                        ${checklist.warnings.map(w => `
+                            <div class="bg-white p-4 rounded-lg border border-orange-200">
+                                <h5 class="font-bold text-orange-700 mb-2">
+                                    <i class="fas fa-folder-open mr-1"></i>
+                                    ${w.category}
+                                </h5>
+                                <p class="text-gray-700 mb-3">${w.warning}</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <strong class="text-sm text-gray-700">필요 서류:</strong>
+                                    ${w.documents.map(doc => `
+                                        <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">
+                                            <i class="fas fa-file-alt mr-1"></i>${doc}
+                                        </span>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            // 4. 사용 가이드
+            const guideHTML = `
+                <div class="border-2 border-green-200 rounded-xl p-6 bg-gradient-to-br from-green-50 to-emerald-50">
+                    <h4 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i class="fas fa-lightbulb text-green-600"></i>
+                        체크리스트 사용 방법
+                    </h4>
+                    <ol class="space-y-3">
+                        <li class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">
+                                1
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-gray-700">
+                                    <strong>심평원에서 진료기록 조회</strong> - 최근 5년 내역 확인
+                                </p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">
+                                2
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-gray-700">
+                                    <strong>기간별 항목과 대조</strong> - 해당하는 진료기록 체크
+                                </p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">
+                                3
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-gray-700">
+                                    <strong>추가 서류 발급</strong> - 필요한 경우 병원에서 서류 받기
+                                </p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">
+                                4
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-gray-700">
+                                    <strong>청약서 정확히 작성</strong> - 확인한 내용 바탕으로 고지
+                                </p>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            `;
+
+            content.innerHTML = periodsHTML + recordsHTML + warningsHTML + guideHTML;
+            document.getElementById('checklist-result').classList.remove('hidden');
+        }
+
+        // PDF 다운로드
+        async function downloadChecklist(format) {
+            const company = document.getElementById('result-company').textContent;
+            const product = document.getElementById('result-product').textContent;
+            const content = document.getElementById('checklist-content');
+
+            if (format === 'pdf') {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                // 제목
+                pdf.setFont('NanumGothic', 'bold');
+                pdf.setFontSize(18);
+                pdf.text('청약 고지 체크리스트', 105, 20, { align: 'center' });
+                
+                pdf.setFontSize(12);
+                pdf.text(`보험사: ${company}`, 20, 35);
+                pdf.text(`상품: ${product}`, 20, 45);
+                
+                // html2canvas로 변환
+                const canvas = await html2canvas(content, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#ffffff'
+                });
+                
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = 170;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                
+                pdf.addImage(imgData, 'PNG', 20, 55, imgWidth, imgHeight);
+                pdf.save(`청약고지체크리스트_${company}_${product}.pdf`);
+                
+            } else if (format === 'excel') {
+                // 엑셀 데이터 생성
+                const wb = XLSX.utils.book_new();
+                
+                // 시트 1: 기본 정보
+                const infoData = [
+                    ['청약 고지 체크리스트'],
+                    ['보험사', company],
+                    ['상품', product],
+                    ['생성일', new Date().toLocaleDateString('ko-KR')]
+                ];
+                const ws1 = XLSX.utils.aoa_to_sheet(infoData);
+                XLSX.utils.book_append_sheet(wb, ws1, '기본정보');
+                
+                // 시트 2: 체크리스트 (텍스트 추출)
+                const checklistText = content.innerText;
+                const checklistData = checklistText.split('\n').map(line => [line.trim()]).filter(row => row[0]);
+                const ws2 = XLSX.utils.aoa_to_sheet(checklistData);
+                XLSX.utils.book_append_sheet(wb, ws2, '체크리스트');
+                
+                XLSX.writeFile(wb, `청약고지체크리스트_${company}_${product}.xlsx`);
+                
+            } else if (format === 'image') {
+                // 이미지로 다운로드
+                const canvas = await html2canvas(document.getElementById('checklist-result'), {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#ffffff'
+                });
+                
+                canvas.toBlob(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `청약고지체크리스트_${company}_${product}.png`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
