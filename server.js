@@ -3,6 +3,7 @@ import { serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { cors } from 'hono/cors';
 import * as cheerio from 'cheerio';
+import { awardProducts2025 } from './award-products-2025.js';
 
 const app = new Hono();
 
@@ -356,98 +357,25 @@ app.get('/api/insurance-stats/:year/:month', async (c) => {
 app.get('/api/award-products/:year', async (c) => {
     const { year } = c.req.param();
     
-    const awards = {
-        '2025': {
-            products: [
-                {
-                    company: '라이나생명',
-                    product: '전에없던실속치매보험',
-                    category: '생명보험 - 치매간병',
-                    icon: 'fa-brain',
-                    color: 'cyan',
-                    reason: 'GA 현장에서 가장 많이 추천하는 치매보험. 경도인지장애 단계부터 보장하여 초기 치매 환자도 혜택을 받을 수 있으며, 실제 간병에 필요한 비용을 단계별로 지급하여 실용성이 뛰어남.',
-                    strengths: ['경도인지장애부터 보장', '단계별 맞춤 보장', '간병비+생활자금 이중 지급', '해약환급금 미지급형으로 저렴']
-                },
-                {
-                    company: 'KB손해보험',
-                    product: 'KB금쪽같은 펫보험',
-                    category: '손해보험 - 펫보험',
-                    icon: 'fa-dog',
-                    color: 'emerald',
-                    reason: '의료비 한도 업계 최고 수준. 입원·통원 각 2천만원으로 연간 총 4천만원까지 보장. 항암 약물치료 신설, 재활·약물치료 보장 확대로 생애주기별 맞춤 보장 제공.',
-                    strengths: ['의료비 한도 업계 최고', '항암 약물치료 신설', '재활·약물치료 확대', '최대 70% 실손 보장']
-                },
-                {
-                    company: '한화손해보험',
-                    product: '시그니처 여성 건강보험 3.0',
-                    category: '손해보험 - 여성건강',
-                    icon: 'fa-female',
-                    color: 'pink',
-                    reason: '질병·출산·정신건강까지 여성 생애주기 전방위 보장. 출산 지원금 최대 900만원, 유방암 통합암 진단비, 출산 후 5년간 중대질환 2배 보장 등 실질적 혜택 제공.',
-                    strengths: ['출산 지원금 최대 900만원', '유방암 통합암 최대 13회', '출산 후 5년 중대질환 2배', '난자동결 시술비 선지급']
-                },
-                {
-                    company: 'NH농협손해보험',
-                    product: '치매간병시니어종합보험',
-                    category: '손해보험 - 간병치매',
-                    icon: 'fa-user-md',
-                    color: 'orange',
-                    reason: '표적치매약물(레켐비) 2천만원 보장으로 업계 최초. 비갱신형 만기보장 구조로 보험료 인상 걱정 없음. 장기요양 1~4등급 월 100만원 지급.',
-                    strengths: ['레켐비 2천만원 보장', '비갱신형 만기보장', '주간보호센터 월 50만원', '3대 주요 치료비 만기보장']
-                }
-            ]
-        },
-        '2024': {
-            products: [
-                {
-                    company: '삼성생명',
-                    product: '실속암보험',
-                    category: '생명보험 - 암보험',
-                    icon: 'fa-ribbon',
-                    color: 'pink',
-                    reason: '2024년 GA 현장에서 가장 많이 판매된 암보험. 재발·전이암까지 반복 보장하며, 치료비 중심 구조로 실질적 의료비 부담 완화.',
-                    strengths: ['재발·전이암 반복 보장', '치료비 중심 구조', '합리적 보험료', 'GA 판매 1위']
-                },
-                {
-                    company: '메리츠화재',
-                    product: '알파 Plus보장보험',
-                    category: '손해보험 - 종합건강',
-                    icon: 'fa-hospital',
-                    color: 'red',
-                    reason: '종합건강보험의 새로운 기준. 암·뇌·심장질환 3대 질병 통합 보장에 실손의료비까지 한 상품으로 해결 가능.',
-                    strengths: ['3대 질병 통합 보장', '실손의료비 포함', '보장 범위 넓음', '가성비 우수']
-                }
-            ]
-        },
-        '2023': {
-            products: [
-                {
-                    company: '교보생명',
-                    product: '무배당교보True종신보험',
-                    category: '생명보험 - 종신보험',
-                    icon: 'fa-shield-alt',
-                    color: 'blue',
-                    reason: '2023년 종신보험 부문 GA 선호도 1위. 사망보장 중심의 단순 구조로 이해하기 쉽고, 유족에게 확실한 보장 제공.',
-                    strengths: ['사망보장 중심 단순 구조', '유족 보장 확실', 'GA 선호도 1위', '브랜드 신뢰도 높음']
-                }
-            ]
-        },
-        '2022': {
-            products: [
-                {
-                    company: 'DGB생명',
-                    product: '변액연금보험',
-                    category: '생명보험 - 변액연금',
-                    icon: 'fa-coins',
-                    color: 'yellow',
-                    reason: '2022년 변액연금 부문 2년 연속 수상. 투자 수익과 연금 보장을 동시에 추구하는 설계로 은퇴 준비에 최적화.',
-                    strengths: ['2년 연속 수상', '투자+연금 동시 추구', '은퇴 준비 최적화', '수익률 안정적']
-                }
-            ]
-        }
-    };
+    if (year === '2025') {
+        return c.json({
+            year: '2025',
+            source: '보험저널 2025 올해의 보험상품',
+            totalProducts: 23,
+            categories: {
+                life: 12,
+                nonLife: 11
+            },
+            products: awardProducts2025
+        });
+    }
     
-    return c.json(awards[year] || { products: [] });
+    // 다른 연도는 준비 중
+    return c.json({
+        year,
+        message: `${year}년 데이터는 준비 중입니다.`,
+        products: []
+    });
 });
 
 // 2026 이슈 상품 API
