@@ -651,37 +651,98 @@
                 <div class="text-center py-16">
                     <i class="fas fa-spinner fa-spin text-5xl text-cyan-600 mb-4"></i>
                     <h3 class="text-2xl font-bold text-gray-700 mb-3">데이터 로딩 중...</h3>
-                    <p class="text-gray-600">전문가 추천 상품 + 보험사 통계 데이터</p>
+                    <p class="text-gray-600">실시간 통계 데이터 수집 중...</p>
                 </div>
             `;
             
-            // 1. 먼저 정적 데이터 확인
-            const yearData = yearlyData[year];
-            if (!yearData) {
-                container.innerHTML = '<div class="text-center py-16 text-gray-600">해당 연도의 데이터가 없습니다.</div>';
-                return;
-            }
-            
-            const monthData = yearData[month];
-            
-            // 2. Coming Soon인 경우
-            if (monthData.comingSoon) {
-                renderRankings(year, month);
-                return;
-            }
-            
-            // 3. 정적 데이터가 있는 경우 → API 데이터 추가 시도
-            const apiData = await fetchInsuranceData(year, month);
-            
-            if (apiData && apiData.categories) {
-                // 정적 데이터 + API 데이터 합치기
-                const combinedData = {
-                    categories: [...monthData.categories, ...apiData.categories]
+            try {
+                // 1. 새로운 크롤링 API로 데이터 가져오기
+                const response = await fetch(`/api/insurance-stats/${year}/${month}`);
+                const apiData = await response.json();
+                
+                if (apiData.error) {
+                    throw new Error(apiData.message);
+                }
+                
+                // 2. API 데이터를 yearlyData 형식으로 변환
+                const formattedData = {
+                    categories: [
+                        {
+                            name: '치매간병보험',
+                            icon: 'fa-brain',
+                            color: 'cyan',
+                            subcategories: [{
+                                subname: `전문가 추천 TOP 3 (${apiData.year}년 ${apiData.month} 기준)`,
+                                products: apiData.products.dementia.map(p => ({
+                                    rank: p.rank,
+                                    company: p.company,
+                                    product: p.product,
+                                    highlight: `GA 점유율 ${p.gaShare}%`,
+                                    features: ['실시간 데이터', '금융감독원 공시 기준'],
+                                    gaShare: `${p.gaShare}%`
+                                }))
+                            }]
+                        },
+                        {
+                            name: '펫보험',
+                            icon: 'fa-dog',
+                            color: 'emerald',
+                            subcategories: [{
+                                subname: `전문가 추천 TOP 3 (${apiData.year}년 ${apiData.month} 기준)`,
+                                products: apiData.products.pet.map(p => ({
+                                    rank: p.rank,
+                                    company: p.company,
+                                    product: p.product,
+                                    highlight: `GA 점유율 ${p.gaShare}%`,
+                                    features: ['실시간 데이터', '금융감독원 공시 기준'],
+                                    gaShare: `${p.gaShare}%`
+                                }))
+                            }]
+                        },
+                        {
+                            name: '경영인정기보험',
+                            icon: 'fa-briefcase',
+                            color: 'indigo',
+                            subcategories: [{
+                                subname: `전문가 추천 TOP 3 (${apiData.year}년 ${apiData.month} 기준)`,
+                                products: apiData.products.executive.map(p => ({
+                                    rank: p.rank,
+                                    company: p.company,
+                                    product: p.product,
+                                    highlight: `GA 점유율 ${p.gaShare}%`,
+                                    features: ['실시간 데이터', '금융감독원 공시 기준'],
+                                    gaShare: `${p.gaShare}%`
+                                }))
+                            }]
+                        }
+                    ]
                 };
-                renderRankingsWithData(combinedData);
-            } else {
-                // API 실패 시 정적 데이터만 표시
-                renderRankingsWithData(monthData);
+                
+                // 3. 생명보험사 통계 API 추가
+                const lifeInsuranceData = await fetchInsuranceData(year, month);
+                if (lifeInsuranceData && lifeInsuranceData.categories) {
+                    formattedData.categories.push(...lifeInsuranceData.categories);
+                }
+                
+                // 4. 렌더링
+                renderRankingsWithData(formattedData);
+                
+            } catch (error) {
+                console.error('데이터 로딩 실패:', error);
+                
+                // 실패 시 정적 데이터 표시
+                const yearData = yearlyData[year];
+                if (!yearData) {
+                    container.innerHTML = '<div class="text-center py-16 text-gray-600">해당 연도의 데이터가 없습니다.</div>';
+                    return;
+                }
+                
+                const monthData = yearData[month];
+                if (monthData.comingSoon) {
+                    renderRankings(year, month);
+                } else {
+                    renderRankingsWithData(monthData);
+                }
             }
         }
 
