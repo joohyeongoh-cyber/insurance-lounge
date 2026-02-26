@@ -1,0 +1,20 @@
+node_modules/
+
+# PM2
+.pm2/
+pids/
+logs/
+*.log
+
+# Backup files
+*.backup
+*.bak
+*.tar.gz
+*.zip
+
+# Cloudflare
+.wrangler/
+dist/
+.dev.vars
+
+# Build files
