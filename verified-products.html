@@ -210,22 +210,30 @@
     </section>
 
     <!-- Sales Card Preview Modal -->
-    <div id="sales-card-preview">
-        <div class="relative">
-            <button onclick="closeSalesCard()" class="absolute -top-10 right-0 text-white text-2xl hover:text-gray-300">
-                <i class="fas fa-times"></i>
+    <div id="sales-card-preview" onclick="closeOnBackgroundClick(event)">
+        <div class="relative" onclick="event.stopPropagation();">
+            <!-- 닫기 버튼 (우측 상단 고정) -->
+            <button onclick="closeSalesCard()" class="fixed top-6 right-6 z-50 bg-red-600 hover:bg-red-700 text-white w-12 h-12 rounded-full shadow-2xl transition-all hover:scale-110 flex items-center justify-center" title="닫기">
+                <i class="fas fa-times text-2xl"></i>
             </button>
+            
             <div id="sales-card-content" class="sales-card">
                 <!-- 세일즈카드 내용이 여기에 동적으로 생성됩니다 -->
             </div>
-            <div class="mt-4 flex gap-4 justify-center">
-                <button onclick="downloadSalesCardPDF()" class="bg-red-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-red-700 transition">
+            
+            <!-- 다운로드 버튼 -->
+            <div class="mt-6 flex gap-4 justify-center pb-8">
+                <button onclick="downloadSalesCardPDF()" class="bg-red-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-red-700 transition-all hover:scale-105 shadow-lg">
                     <i class="fas fa-file-pdf mr-2"></i>
                     PDF 다운로드
                 </button>
-                <button onclick="downloadSalesCardImage()" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition">
+                <button onclick="downloadSalesCardImage()" class="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-blue-700 transition-all hover:scale-105 shadow-lg">
                     <i class="fas fa-image mr-2"></i>
                     이미지 다운로드
+                </button>
+                <button onclick="closeSalesCard()" class="bg-gray-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-gray-700 transition-all hover:scale-105 shadow-lg">
+                    <i class="fas fa-times mr-2"></i>
+                    닫기
                 </button>
             </div>
         </div>
@@ -892,6 +900,23 @@
         function closeSalesCard() {
             document.getElementById('sales-card-preview').classList.remove('active');
         }
+        
+        // 배경 클릭 시 닫기
+        function closeOnBackgroundClick(event) {
+            if (event.target.id === 'sales-card-preview') {
+                closeSalesCard();
+            }
+        }
+        
+        // ESC 키로도 닫기
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const preview = document.getElementById('sales-card-preview');
+                if (preview && preview.classList.contains('active')) {
+                    closeSalesCard();
+                }
+            }
+        });
 
         async function downloadSalesCardPDF() {
             const element = document.getElementById('sales-card-content');
