@@ -7,6 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * {
             font-family: 'Noto Sans KR', sans-serif;
@@ -16,6 +18,29 @@
         }
         .tab-content.active {
             display: block;
+        }
+        #sales-card-preview {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 9999;
+            overflow-y: auto;
+        }
+        #sales-card-preview.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .sales-card {
+            background: white;
+            width: 800px;
+            padding: 60px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
     </style>
 </head>
@@ -184,6 +209,28 @@
         </div>
     </section>
 
+    <!-- Sales Card Preview Modal -->
+    <div id="sales-card-preview">
+        <div class="relative">
+            <button onclick="closeSalesCard()" class="absolute -top-10 right-0 text-white text-2xl hover:text-gray-300">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="sales-card-content" class="sales-card">
+                <!-- 세일즈카드 내용이 여기에 동적으로 생성됩니다 -->
+            </div>
+            <div class="mt-4 flex gap-4 justify-center">
+                <button onclick="downloadSalesCardPDF()" class="bg-red-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-red-700 transition">
+                    <i class="fas fa-file-pdf mr-2"></i>
+                    PDF 다운로드
+                </button>
+                <button onclick="downloadSalesCardImage()" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition">
+                    <i class="fas fa-image mr-2"></i>
+                    이미지 다운로드
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -268,69 +315,7 @@
             });
         });
 
-        // Load award products
-        async function loadAwardProducts(year) {
-            const container = document.getElementById('award-products-container');
-            container.innerHTML = '<div class="text-center py-8"><i class="fas fa-spinner fa-spin text-4xl text-cyan-600"></i></div>';
-            
-            try {
-                const response = await fetch(`/api/award-products/${year}`);
-                const data = await response.json();
-                
-                if (data.products && data.products.length > 0) {
-                    let html = '<div class="grid gap-6">';
-                    
-                    data.products.forEach(product => {
-                        html += `
-                            <div class="border-l-4 border-${product.color || 'cyan'}-600 bg-gray-50 p-6 rounded-lg hover:shadow-lg transition">
-                                <div class="flex justify-between items-start mb-4">
-                                    <div>
-                                        <div class="flex items-center gap-3 mb-2">
-                                            <span class="bg-${product.color || 'cyan'}-100 text-${product.color || 'cyan'}-800 px-3 py-1 rounded-full text-sm font-bold">
-                                                ${product.category}
-                                            </span>
-                                            <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-bold">
-                                                <i class="fas fa-trophy mr-1"></i>${year}년 수상
-                                            </span>
-                                        </div>
-                                        <h3 class="text-xl font-bold text-gray-800">${product.company} - ${product.product}</h3>
-                                    </div>
-                                    <i class="fas ${product.icon || 'fa-award'} text-3xl text-${product.color || 'cyan'}-600"></i>
-                                </div>
-                                <div class="mb-4">
-                                    <h4 class="font-bold text-gray-700 mb-2">왜 선정되었나?</h4>
-                                    <p class="text-gray-600 text-sm">${product.reason}</p>
-                                </div>
-                                <div class="flex gap-2 flex-wrap">
-                                    ${product.strengths.map(strength => `
-                                        <span class="bg-white px-3 py-1 rounded-full text-xs text-gray-700 border border-gray-300">
-                                            ${strength}
-                                        </span>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        `;
-                    });
-                    
-                    html += '</div>';
-                    container.innerHTML = html;
-                } else {
-                    container.innerHTML = `
-                        <div class="text-center py-8 text-gray-500">
-                            <i class="fas fa-info-circle text-4xl mb-3"></i>
-                            <p>${year}년 데이터는 준비 중입니다.</p>
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                container.innerHTML = `
-                    <div class="text-center py-8 text-red-500">
-                        <i class="fas fa-exclamation-circle text-4xl mb-3"></i>
-                        <p>데이터 로드 실패: ${error.message}</p>
-                    </div>
-                `;
-            }
-        }
+
 
         // Load trending products
         async function loadTrendingProducts() {
@@ -384,6 +369,215 @@
                         <div class="text-center py-8 text-gray-500">
                             <i class="fas fa-info-circle text-4xl mb-3"></i>
                             <p>최신 이슈 상품을 수집 중입니다...</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-red-500">
+                        <i class="fas fa-exclamation-circle text-4xl mb-3"></i>
+                        <p>데이터 로드 실패: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 세일즈카드 생성 함수
+        function generateSalesCard(product) {
+            const cardContent = document.getElementById('sales-card-content');
+            
+            // 1억 만들기 플랜 계산 (종신보험 기준)
+            const monthlyPremium = Math.round(100000000 / 240 / 12); // 20년납 기준
+            const totalPremium = monthlyPremium * 12 * 20;
+            
+            cardContent.innerHTML = `
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <div style="display: inline-block; background: linear-gradient(135deg, #06b6d4 0%, #2563eb 100%); color: white; padding: 10px 30px; border-radius: 50px; font-size: 14px; font-weight: bold; margin-bottom: 20px;">
+                        보험저널 검증 상품
+                    </div>
+                    <h1 style="font-size: 36px; font-weight: bold; color: #1f2937; margin-bottom: 10px;">
+                        ${product.company}
+                    </h1>
+                    <h2 style="font-size: 28px; color: #06b6d4; margin-bottom: 20px;">
+                        ${product.product}
+                    </h2>
+                    <p style="color: #6b7280; font-size: 16px; line-height: 1.6;">
+                        ${product.reason}
+                    </p>
+                </div>
+
+                <div style="background: #f9fafb; border-radius: 15px; padding: 30px; margin-bottom: 30px;">
+                    <h3 style="font-size: 22px; font-weight: bold; color: #1f2937; margin-bottom: 20px; display: flex; align-items: center;">
+                        <i class="fas fa-star" style="color: #f59e0b; margin-right: 10px;"></i>
+                        주요 강점
+                    </h3>
+                    ${product.strengths.map((strength, index) => `
+                        <div style="display: flex; align-items: start; margin-bottom: 15px;">
+                            <div style="min-width: 30px; height: 30px; background: #06b6d4; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">
+                                ${index + 1}
+                            </div>
+                            <p style="color: #374151; font-size: 16px; line-height: 1.6; flex: 1;">
+                                ${strength}
+                            </p>
+                        </div>
+                    `).join('')}
+                </div>
+
+                ${product.category.includes('종신') ? `
+                <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 15px; padding: 30px; margin-bottom: 30px;">
+                    <h3 style="font-size: 22px; font-weight: bold; color: #92400e; margin-bottom: 20px; display: flex; align-items: center;">
+                        <i class="fas fa-piggy-bank" style="color: #f59e0b; margin-right: 10px;"></i>
+                        1억 만들기 플랜 (예시)
+                    </h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div style="background: white; border-radius: 10px; padding: 20px; text-align: center;">
+                            <p style="color: #6b7280; font-size: 14px; margin-bottom: 5px;">월 납입액</p>
+                            <p style="font-size: 28px; font-weight: bold; color: #06b6d4;">${monthlyPremium.toLocaleString()}원</p>
+                        </div>
+                        <div style="background: white; border-radius: 10px; padding: 20px; text-align: center;">
+                            <p style="color: #6b7280; font-size: 14px; margin-bottom: 5px;">납입기간</p>
+                            <p style="font-size: 28px; font-weight: bold; color: #06b6d4;">20년</p>
+                        </div>
+                        <div style="background: white; border-radius: 10px; padding: 20px; text-align: center;">
+                            <p style="color: #6b7280; font-size: 14px; margin-bottom: 5px;">총 납입액</p>
+                            <p style="font-size: 28px; font-weight: bold; color: #10b981;">${totalPremium.toLocaleString()}원</p>
+                        </div>
+                        <div style="background: white; border-radius: 10px; padding: 20px; text-align: center;">
+                            <p style="color: #6b7280; font-size: 14px; margin-bottom: 5px;">보장금액</p>
+                            <p style="font-size: 28px; font-weight: bold; color: #ef4444;">1억원</p>
+                        </div>
+                    </div>
+                    <p style="color: #92400e; font-size: 12px; margin-top: 15px; text-align: center;">
+                        ※ 위 금액은 예시이며, 실제 보험료는 나이·성별·건강상태에 따라 달라질 수 있습니다.
+                    </p>
+                </div>
+                ` : ''}
+
+                <div style="border-top: 2px solid #e5e7eb; padding-top: 20px; text-align: center;">
+                    <p style="color: #6b7280; font-size: 14px; margin-bottom: 10px;">
+                        <i class="fas fa-certificate" style="color: #f59e0b; margin-right: 5px;"></i>
+                        <strong>${product.category}</strong> 부문 수상
+                    </p>
+                    <p style="color: #9ca3af; font-size: 12px;">
+                        본 자료는 보험저널이 선정한 검증 상품 정보를 기반으로 제작되었습니다.
+                    </p>
+                    <p style="color: #9ca3af; font-size: 12px; margin-top: 5px;">
+                        생성일: ${new Date().toLocaleDateString('ko-KR')} | 보험 LOUNGE
+                    </p>
+                </div>
+            `;
+            
+            // 모달 표시
+            document.getElementById('sales-card-preview').classList.add('active');
+        }
+
+        function closeSalesCard() {
+            document.getElementById('sales-card-preview').classList.remove('active');
+        }
+
+        async function downloadSalesCardPDF() {
+            const element = document.getElementById('sales-card-content');
+            
+            // html2canvas로 이미지 생성
+            const canvas = await html2canvas(element, {
+                scale: 2,
+                useCORS: true,
+                logging: false
+            });
+            
+            // jsPDF로 PDF 생성
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+            
+            const imgData = canvas.toDataURL('image/png');
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+            
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save('세일즈카드_' + new Date().getTime() + '.pdf');
+        }
+
+        async function downloadSalesCardImage() {
+            const element = document.getElementById('sales-card-content');
+            
+            const canvas = await html2canvas(element, {
+                scale: 2,
+                useCORS: true,
+                logging: false
+            });
+            
+            // 이미지로 다운로드
+            const link = document.createElement('a');
+            link.download = '세일즈카드_' + new Date().getTime() + '.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // Load award products
+        async function loadAwardProducts(year) {
+            const container = document.getElementById('award-products-container');
+            container.innerHTML = '<div class="text-center py-8"><i class="fas fa-spinner fa-spin text-4xl text-cyan-600"></i></div>';
+            
+            try {
+                const response = await fetch(`/api/award-products/${year}`);
+                const data = await response.json();
+                
+                if (data.products && data.products.length > 0) {
+                    let html = '<div class="grid gap-6">';
+                    
+                    data.products.forEach((product, index) => {
+                        const productId = `product_${year}_${index}`;
+                        
+                        // 상품 데이터를 전역 변수에 저장
+                        window[productId] = product;
+                        
+                        html += `
+                            <div class="border-l-4 border-${product.color || 'cyan'}-600 bg-gray-50 p-6 rounded-lg hover:shadow-lg transition">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-3 mb-2 flex-wrap">
+                                            <span class="bg-${product.color || 'cyan'}-100 text-${product.color || 'cyan'}-800 px-3 py-1 rounded-full text-sm font-bold">
+                                                ${product.category}
+                                            </span>
+                                            <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-bold">
+                                                <i class="fas fa-trophy mr-1"></i>${year}년 수상
+                                            </span>
+                                        </div>
+                                        <h3 class="text-xl font-bold text-gray-800">${product.company} - ${product.product}</h3>
+                                    </div>
+                                    <i class="fas ${product.icon || 'fa-award'} text-3xl text-${product.color || 'cyan'}-600"></i>
+                                </div>
+                                <div class="mb-4">
+                                    <h4 class="font-bold text-gray-700 mb-2">왜 선정되었나?</h4>
+                                    <p class="text-gray-600 text-sm">${product.reason}</p>
+                                </div>
+                                <div class="flex gap-2 flex-wrap mb-4">
+                                    ${product.strengths.map(strength => `
+                                        <span class="bg-white px-3 py-1 rounded-full text-xs text-gray-700 border border-gray-300">
+                                            ${strength}
+                                        </span>
+                                    `).join('')}
+                                </div>
+                                <button onclick="generateSalesCard(window['${productId}'])"
+                                    class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white py-3 rounded-lg font-bold hover:from-cyan-700 hover:to-blue-700 transition">
+                                    <i class="fas fa-id-card mr-2"></i>
+                                    세일즈카드 생성
+                                </button>
+                            </div>
+                        `;
+                    });
+                    
+                    html += '</div>';
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = `
+                        <div class="text-center py-8 text-gray-500">
+                            <i class="fas fa-info-circle text-4xl mb-3"></i>
+                            <p>${year}년 데이터는 준비 중입니다.</p>
                         </div>
                     `;
                 }
