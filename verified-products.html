@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>보험저널 검증 상품 - 보험 LOUNGE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center gap-3 group">
+                        <div class="relative">
+                            <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl rotate-12 group-hover:rotate-0 transition-transform duration-300 shadow-lg"></div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <span class="text-2xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">보험 LOUNGE</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-3 lg:space-x-4 text-sm">
+                    <a href="index.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">홈</a>
+                    <a href="verified-products.html" class="text-cyan-600 font-medium transition border-b-2 border-cyan-600 whitespace-nowrap">검증상품</a>
+                    <a href="fa-intro.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">전문가</a>
+                    <a href="contract-cases.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">계약</a>
+                    <a href="claim-cases.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">청구</a>
+                    <a href="insurance-info.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">정보</a>
+                    <a href="inquiries.html" class="text-gray-700 hover:text-cyan-600 font-medium transition whitespace-nowrap">문의</a>
+                    <a href="fa-apply.html" class="bg-cyan-600 text-white px-3 py-2 rounded-lg hover:bg-cyan-700 transition font-medium whitespace-nowrap">전문가 신청</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-700">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">홈</a>
+                <a href="verified-products.html" class="block px-3 py-2 bg-cyan-50 text-cyan-600 rounded">검증상품</a>
+                <a href="fa-intro.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">전문가</a>
+                <a href="contract-cases.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">계약</a>
+                <a href="claim-cases.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">청구</a>
+                <a href="insurance-info.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">정보</a>
+                <a href="inquiries.html" class="block px-3 py-2 text-gray-700 hover:bg-cyan-50 rounded">문의</a>
+                <a href="fa-apply.html" class="block px-3 py-2 bg-cyan-600 text-white rounded text-center">전문가 신청</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-cyan-600 to-blue-600 text-white pt-24 pb-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="mb-3">
+                <i class="fas fa-certificate text-5xl mb-3 opacity-90"></i>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">보험저널 검증 상품</h1>
+            <p class="text-lg text-cyan-50 max-w-3xl mx-auto mb-2">
+                뉴스 기반 검증된 상품 - GA 현장 전문가가 인정한 믿을 수 있는 보험
+            </p>
+            <div class="mt-6 flex justify-center items-center gap-4 flex-wrap">
+                <div class="bg-white/20 px-4 py-2 rounded-lg">
+                    <i class="fas fa-newspaper mr-2"></i>
+                    보험저널 뉴스 기반
+                </div>
+                <div class="bg-white/20 px-4 py-2 rounded-lg">
+                    <i class="fas fa-check-double mr-2"></i>
+                    현장 검증 완료
+                </div>
+                <div class="bg-white/20 px-4 py-2 rounded-lg">
+                    <i class="fas fa-sync-alt mr-2"></i>
+                    자동 업데이트
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tab Navigation -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-white rounded-2xl shadow-lg p-2 mb-8">
+            <div class="flex flex-wrap gap-2" id="tab-buttons">
+                <button class="tab-btn active px-6 py-3 rounded-lg font-bold transition" data-tab="awards">
+                    <i class="fas fa-trophy mr-2"></i>
+                    역대 수상작
+                </button>
+                <button class="tab-btn px-6 py-3 rounded-lg font-bold transition" data-tab="trending">
+                    <i class="fas fa-fire mr-2"></i>
+                    2026 이슈 상품
+                </button>
+                <button class="tab-btn px-6 py-3 rounded-lg font-bold transition" data-tab="sales-card">
+                    <i class="fas fa-id-card mr-2"></i>
+                    세일즈카드
+                    <span class="ml-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">회원 전용</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Awards Tab -->
+        <div id="tab-awards" class="tab-content active">
+            <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-trophy text-yellow-500 mr-3"></i>
+                    보험저널 '올해의 보험상품' 역대 수상작
+                </h2>
+                
+                <!-- Year Selector -->
+                <div class="flex gap-4 mb-8 flex-wrap">
+                    <button class="year-btn active px-6 py-3 bg-cyan-600 text-white rounded-lg font-bold hover:bg-cyan-700 transition" data-year="2025">2025년</button>
+                    <button class="year-btn px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-bold hover:bg-gray-300 transition" data-year="2024">2024년</button>
+                    <button class="year-btn px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-bold hover:bg-gray-300 transition" data-year="2023">2023년</button>
+                    <button class="year-btn px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-bold hover:bg-gray-300 transition" data-year="2022">2022년</button>
+                </div>
+
+                <!-- Award Products Container -->
+                <div id="award-products-container">
+                    <!-- JavaScript로 동적 로드 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Trending Tab -->
+        <div id="tab-trending" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-fire text-orange-500 mr-3"></i>
+                    2026년 이슈 상품 (보험저널 뉴스 기반)
+                </h2>
+                
+                <div class="mb-6 p-4 bg-orange-50 border-l-4 border-orange-500 rounded">
+                    <p class="text-sm text-gray-700">
+                        <i class="fas fa-info-circle text-orange-600 mr-2"></i>
+                        <strong>보험저널 뉴스 자동 크롤링으로 최신 이슈 상품을 매일 업데이트합니다.</strong>
+                    </p>
+                </div>
+
+                <!-- Trending Products Container -->
+                <div id="trending-products-container">
+                    <!-- JavaScript로 동적 로드 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sales Card Tab -->
+        <div id="tab-sales-card" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-lg p-8 text-center">
+                <i class="fas fa-lock text-gray-400 text-6xl mb-4"></i>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">세일즈카드는 회원 전용 기능입니다</h2>
+                <p class="text-gray-600 mb-6">
+                    회원 가입 후 상품별 맞춤 세일즈카드를 생성하실 수 있습니다.
+                </p>
+                <div class="flex justify-center gap-4">
+                    <a href="#" onclick="alert('회원가입 기능은 준비 중입니다'); return false;" class="bg-cyan-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-cyan-700 transition">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        회원가입
+                    </a>
+                    <a href="#" onclick="alert('로그인 기능은 준비 중입니다'); return false;" class="bg-gray-200 text-gray-700 px-8 py-3 rounded-lg font-bold hover:bg-gray-300 transition">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        로그인
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">보험 LOUNGE</h3>
+                    <p class="text-gray-400 text-sm">신뢰할 수 있는 보험 정보와 전문가 상담을 제공합니다.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">바로가기</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="verified-products.html" class="text-gray-400 hover:text-white">검증 상품</a></li>
+                        <li><a href="fa-intro.html" class="text-gray-400 hover:text-white">전문가 소개</a></li>
+                        <li><a href="insurance-info.html" class="text-gray-400 hover:text-white">보험 정보</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">고객지원</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="inquiries.html" class="text-gray-400 hover:text-white">문의하기</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">자주 묻는 질문</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">연락처</h4>
+                    <p class="text-gray-400 text-sm">이메일: info@inslounge.com</p>
+                    <p class="text-gray-400 text-sm">전화: 1234-5678</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+                <p>&copy; 2026 보험 LOUNGE. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 모바일 메뉴 토글
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active', 'bg-cyan-600', 'text-white');
+                    btn.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('active', 'bg-cyan-600', 'text-white');
+                this.classList.remove('bg-gray-200', 'text-gray-700');
+                
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Show selected tab content
+                const tabId = this.dataset.tab;
+                document.getElementById(`tab-${tabId}`).classList.add('active');
+            });
+        });
+
+        // Year switching
+        document.querySelectorAll('.year-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all year buttons
+                document.querySelectorAll('.year-btn').forEach(btn => {
+                    btn.classList.remove('active', 'bg-cyan-600', 'text-white');
+                    btn.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('active', 'bg-cyan-600', 'text-white');
+                this.classList.remove('bg-gray-200', 'text-gray-700');
+                
+                // Load award products for selected year
+                const year = this.dataset.year;
+                loadAwardProducts(year);
+            });
+        });
+
+        // Load award products
+        async function loadAwardProducts(year) {
+            const container = document.getElementById('award-products-container');
+            container.innerHTML = '<div class="text-center py-8"><i class="fas fa-spinner fa-spin text-4xl text-cyan-600"></i></div>';
+            
+            try {
+                const response = await fetch(`/api/award-products/${year}`);
+                const data = await response.json();
+                
+                if (data.products && data.products.length > 0) {
+                    let html = '<div class="grid gap-6">';
+                    
+                    data.products.forEach(product => {
+                        html += `
+                            <div class="border-l-4 border-${product.color || 'cyan'}-600 bg-gray-50 p-6 rounded-lg hover:shadow-lg transition">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <span class="bg-${product.color || 'cyan'}-100 text-${product.color || 'cyan'}-800 px-3 py-1 rounded-full text-sm font-bold">
+                                                ${product.category}
+                                            </span>
+                                            <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-bold">
+                                                <i class="fas fa-trophy mr-1"></i>${year}년 수상
+                                            </span>
+                                        </div>
+                                        <h3 class="text-xl font-bold text-gray-800">${product.company} - ${product.product}</h3>
+                                    </div>
+                                    <i class="fas ${product.icon || 'fa-award'} text-3xl text-${product.color || 'cyan'}-600"></i>
+                                </div>
+                                <div class="mb-4">
+                                    <h4 class="font-bold text-gray-700 mb-2">왜 선정되었나?</h4>
+                                    <p class="text-gray-600 text-sm">${product.reason}</p>
+                                </div>
+                                <div class="flex gap-2 flex-wrap">
+                                    ${product.strengths.map(strength => `
+                                        <span class="bg-white px-3 py-1 rounded-full text-xs text-gray-700 border border-gray-300">
+                                            ${strength}
+                                        </span>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    html += '</div>';
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = `
+                        <div class="text-center py-8 text-gray-500">
+                            <i class="fas fa-info-circle text-4xl mb-3"></i>
+                            <p>${year}년 데이터는 준비 중입니다.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-red-500">
+                        <i class="fas fa-exclamation-circle text-4xl mb-3"></i>
+                        <p>데이터 로드 실패: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Load trending products
+        async function loadTrendingProducts() {
+            const container = document.getElementById('trending-products-container');
+            container.innerHTML = '<div class="text-center py-8"><i class="fas fa-spinner fa-spin text-4xl text-orange-600"></i></div>';
+            
+            try {
+                const response = await fetch('/api/trending-products/2026');
+                const data = await response.json();
+                
+                if (data.products && data.products.length > 0) {
+                    let html = '<div class="grid gap-6">';
+                    
+                    data.products.forEach(product => {
+                        html += `
+                            <div class="border-l-4 border-orange-600 bg-orange-50 p-6 rounded-lg hover:shadow-lg transition">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-bold">
+                                                <i class="fas fa-fire mr-1"></i>이슈 상품
+                                            </span>
+                                            <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-bold">
+                                                ${product.date}
+                                            </span>
+                                        </div>
+                                        <h3 class="text-xl font-bold text-gray-800">${product.company} - ${product.product}</h3>
+                                    </div>
+                                    <i class="fas fa-newspaper text-3xl text-orange-600"></i>
+                                </div>
+                                <div class="mb-4">
+                                    <h4 class="font-bold text-gray-700 mb-2">뉴스 내용</h4>
+                                    <p class="text-gray-600 text-sm">${product.news}</p>
+                                </div>
+                                <div class="mb-4">
+                                    <h4 class="font-bold text-gray-700 mb-2">주목 이유</h4>
+                                    <p class="text-gray-600 text-sm">${product.reason}</p>
+                                </div>
+                                <a href="${product.newsUrl}" target="_blank" class="text-cyan-600 hover:text-cyan-700 font-bold text-sm">
+                                    <i class="fas fa-external-link-alt mr-1"></i>
+                                    보험저널 뉴스 원문 보기
+                                </a>
+                            </div>
+                        `;
+                    });
+                    
+                    html += '</div>';
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = `
+                        <div class="text-center py-8 text-gray-500">
+                            <i class="fas fa-info-circle text-4xl mb-3"></i>
+                            <p>최신 이슈 상품을 수집 중입니다...</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-red-500">
+                        <i class="fas fa-exclamation-circle text-4xl mb-3"></i>
+                        <p>데이터 로드 실패: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize
+        loadAwardProducts('2025');
+        loadTrendingProducts();
+    </script>
+</body>
+</html>

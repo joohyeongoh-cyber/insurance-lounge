@@ -352,6 +352,153 @@ app.get('/api/insurance-stats/:year/:month', async (c) => {
     }
 });
 
+// 역대 수상작 API
+app.get('/api/award-products/:year', async (c) => {
+    const { year } = c.req.param();
+    
+    const awards = {
+        '2025': {
+            products: [
+                {
+                    company: '라이나생명',
+                    product: '전에없던실속치매보험',
+                    category: '생명보험 - 치매간병',
+                    icon: 'fa-brain',
+                    color: 'cyan',
+                    reason: 'GA 현장에서 가장 많이 추천하는 치매보험. 경도인지장애 단계부터 보장하여 초기 치매 환자도 혜택을 받을 수 있으며, 실제 간병에 필요한 비용을 단계별로 지급하여 실용성이 뛰어남.',
+                    strengths: ['경도인지장애부터 보장', '단계별 맞춤 보장', '간병비+생활자금 이중 지급', '해약환급금 미지급형으로 저렴']
+                },
+                {
+                    company: 'KB손해보험',
+                    product: 'KB금쪽같은 펫보험',
+                    category: '손해보험 - 펫보험',
+                    icon: 'fa-dog',
+                    color: 'emerald',
+                    reason: '의료비 한도 업계 최고 수준. 입원·통원 각 2천만원으로 연간 총 4천만원까지 보장. 항암 약물치료 신설, 재활·약물치료 보장 확대로 생애주기별 맞춤 보장 제공.',
+                    strengths: ['의료비 한도 업계 최고', '항암 약물치료 신설', '재활·약물치료 확대', '최대 70% 실손 보장']
+                },
+                {
+                    company: '한화손해보험',
+                    product: '시그니처 여성 건강보험 3.0',
+                    category: '손해보험 - 여성건강',
+                    icon: 'fa-female',
+                    color: 'pink',
+                    reason: '질병·출산·정신건강까지 여성 생애주기 전방위 보장. 출산 지원금 최대 900만원, 유방암 통합암 진단비, 출산 후 5년간 중대질환 2배 보장 등 실질적 혜택 제공.',
+                    strengths: ['출산 지원금 최대 900만원', '유방암 통합암 최대 13회', '출산 후 5년 중대질환 2배', '난자동결 시술비 선지급']
+                },
+                {
+                    company: 'NH농협손해보험',
+                    product: '치매간병시니어종합보험',
+                    category: '손해보험 - 간병치매',
+                    icon: 'fa-user-md',
+                    color: 'orange',
+                    reason: '표적치매약물(레켐비) 2천만원 보장으로 업계 최초. 비갱신형 만기보장 구조로 보험료 인상 걱정 없음. 장기요양 1~4등급 월 100만원 지급.',
+                    strengths: ['레켐비 2천만원 보장', '비갱신형 만기보장', '주간보호센터 월 50만원', '3대 주요 치료비 만기보장']
+                }
+            ]
+        },
+        '2024': {
+            products: [
+                {
+                    company: '삼성생명',
+                    product: '실속암보험',
+                    category: '생명보험 - 암보험',
+                    icon: 'fa-ribbon',
+                    color: 'pink',
+                    reason: '2024년 GA 현장에서 가장 많이 판매된 암보험. 재발·전이암까지 반복 보장하며, 치료비 중심 구조로 실질적 의료비 부담 완화.',
+                    strengths: ['재발·전이암 반복 보장', '치료비 중심 구조', '합리적 보험료', 'GA 판매 1위']
+                },
+                {
+                    company: '메리츠화재',
+                    product: '알파 Plus보장보험',
+                    category: '손해보험 - 종합건강',
+                    icon: 'fa-hospital',
+                    color: 'red',
+                    reason: '종합건강보험의 새로운 기준. 암·뇌·심장질환 3대 질병 통합 보장에 실손의료비까지 한 상품으로 해결 가능.',
+                    strengths: ['3대 질병 통합 보장', '실손의료비 포함', '보장 범위 넓음', '가성비 우수']
+                }
+            ]
+        },
+        '2023': {
+            products: [
+                {
+                    company: '교보생명',
+                    product: '무배당교보True종신보험',
+                    category: '생명보험 - 종신보험',
+                    icon: 'fa-shield-alt',
+                    color: 'blue',
+                    reason: '2023년 종신보험 부문 GA 선호도 1위. 사망보장 중심의 단순 구조로 이해하기 쉽고, 유족에게 확실한 보장 제공.',
+                    strengths: ['사망보장 중심 단순 구조', '유족 보장 확실', 'GA 선호도 1위', '브랜드 신뢰도 높음']
+                }
+            ]
+        },
+        '2022': {
+            products: [
+                {
+                    company: 'DGB생명',
+                    product: '변액연금보험',
+                    category: '생명보험 - 변액연금',
+                    icon: 'fa-coins',
+                    color: 'yellow',
+                    reason: '2022년 변액연금 부문 2년 연속 수상. 투자 수익과 연금 보장을 동시에 추구하는 설계로 은퇴 준비에 최적화.',
+                    strengths: ['2년 연속 수상', '투자+연금 동시 추구', '은퇴 준비 최적화', '수익률 안정적']
+                }
+            ]
+        }
+    };
+    
+    return c.json(awards[year] || { products: [] });
+});
+
+// 2026 이슈 상품 API
+app.get('/api/trending-products/:year', async (c) => {
+    const { year } = c.req.param();
+    
+    if (year !== '2026') {
+        return c.json({ products: [] });
+    }
+    
+    // 2026년 보험저널 뉴스 기반 이슈 상품
+    const trending = {
+        products: [
+            {
+                company: '다수 보험사',
+                product: '통합건강보험 (치료비 중심)',
+                date: '2026.01',
+                newsUrl: 'https://www.insnews.co.kr/news/articleView.html?idxno=88431',
+                news: '2026년 생명보험 시장은 사망보험금 유동화 확산과 함께 주력상품 지형도가 변화 중. 대부분 생보사가 상반기 주력 상품으로 다양한 보장을 강조한 "통합건강보험" 형태 보험을 출시.',
+                reason: '기존 단일 질병 중심 보험에서 벗어나 암·뇌·심장질환 등을 통합 보장하는 상품이 대세로 자리잡음. 소비자 니즈에 맞춘 실질적 보장 강화가 핵심 트렌드.'
+            },
+            {
+                company: '메리츠화재',
+                product: '장기인보험 시장 선두',
+                date: '2026.02',
+                newsUrl: 'https://www.insjournal.co.kr/news/articleView.html?idxno=30084',
+                news: '2026년 1월 손보사 GA채널 장기인보험 시장이 절반 수준으로 급감. 메리츠화재가 약 65억원(추정)으로 1위 유지.',
+                reason: '시장 전체가 위축되는 상황에서도 메리츠화재는 안정적 판매 유지. GA 채널 신뢰도와 상품 경쟁력을 동시에 입증.'
+            },
+            {
+                company: '다수 보험사',
+                product: 'IFRS17 대응 상품',
+                date: '2026.02',
+                newsUrl: 'https://v.daum.net/v/20260226053150919',
+                news: 'IFRS17 도입 2년만에 실적 부풀리기가 꺾이며 보험사 순익에 규제 쇼크. 보험사들은 기본자본 지급여력비율 확보에 주력 중.',
+                reason: '회계기준 변화에 맞춰 재설계된 상품들이 속속 출시. 보험료 인상보다는 보장 구조 최적화로 수익성 확보 시도.'
+            },
+            {
+                company: '다수 생보사',
+                product: '5세대 실손보험 (준비 중)',
+                date: '2026.01',
+                newsUrl: 'https://dazabi.com/insurance_magazine/article.php?id=4086&from_category=all',
+                news: '2026년 5세대 실손보험 도입 논의 본격화. 사망보험금 유동화 제도 확대, 생애주기별 금융상품 개발 등 핵심 정책 시행 예정.',
+                reason: '현재 4세대 실손의 손해율 악화 문제 해결을 위한 새로운 구조 도입 필요. 소비자와 보험사 모두 win-win할 수 있는 모델 기대.'
+            }
+        ]
+    };
+    
+    return c.json(trending);
+});
+
 // 정적 파일 서빙 (HTML, CSS, JS 등)
 app.use('/*', serveStatic({ root: './' }));
 
