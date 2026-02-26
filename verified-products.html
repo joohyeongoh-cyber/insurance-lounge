@@ -525,6 +525,24 @@
             `;
         }
         
+        // 보험료 안내 공통 섹션
+        function getPremiumNotice() {
+            return `
+                <div style="background: #fff7ed; border-left: 4px solid #f59e0b; border-radius: 10px; padding: 20px; margin-bottom: 30px;">
+                    <p style="color: #92400e; font-size: 16px; font-weight: bold; margin-bottom: 10px;">
+                        <i class="fas fa-exclamation-triangle" style="color: #f59e0b; margin-right: 8px;"></i>
+                        보험료 안내
+                    </p>
+                    <p style="color: #78350f; font-size: 14px; line-height: 1.8;">
+                        위 금액은 <strong>보장 금액</strong>이며, 실제 납입하실 <strong>보험료가 아닙니다</strong>.<br>
+                        보험료는 <strong>나이·성별·건강상태·납입기간·보장금액</strong>에 따라<br>
+                        개인별로 다르게 책정됩니다.<br><br>
+                        <strong style="color: #92400e;">💰 정확한 보험료는 설계사 상담을 통해 확인하세요.</strong>
+                    </p>
+                </div>
+            `;
+        }
+        
         // 공통 푸터
         function getCardFooter(product) {
             return `
@@ -744,35 +762,34 @@
         
         // 1. 종신보험
         function getWholeLifeCard(product) {
-            const monthlyPremium = Math.round(100000000 / 240 / 12);
-            const totalPremium = monthlyPremium * 12 * 20;
-            
             return getCardHeader(product) + getStrengthsSection(product.strengths) + `
                 <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 15px; padding: 30px; margin-bottom: 30px;">
                     <h3 style="font-size: 22px; font-weight: bold; color: #92400e; margin-bottom: 20px;">
-                        <i class="fas fa-piggy-bank" style="color: #f59e0b; margin-right: 10px;"></i>1억 만들기 플랜
+                        <i class="fas fa-piggy-bank" style="color: #f59e0b; margin-right: 10px;"></i>종신보험 핵심 정보
                     </h3>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div style="background: white; border-radius: 10px; padding: 20px; text-align: center;">
-                            <p style="color: #6b7280; font-size: 14px;">월 납입액</p>
-                            <p style="font-size: 28px; font-weight: bold; color: #06b6d4;">${monthlyPremium.toLocaleString()}원</p>
+                    <div style="background: white; border-radius: 10px; padding: 30px; text-align: center;">
+                        <div style="margin-bottom: 20px;">
+                            <i class="fas fa-shield-alt" style="color: #ef4444; font-size: 48px;"></i>
                         </div>
-                        <div style="background: white; border-radius: 10px; padding: 20px; text-align: center;">
-                            <p style="color: #6b7280; font-size: 14px;">납입기간</p>
-                            <p style="font-size: 28px; font-weight: bold; color: #06b6d4;">20년</p>
-                        </div>
-                        <div style="background: white; border-radius: 10px; padding: 20px; text-align: center;">
-                            <p style="color: #6b7280; font-size: 14px;">총 납입액</p>
-                            <p style="font-size: 28px; font-weight: bold; color: #10b981;">${totalPremium.toLocaleString()}원</p>
-                        </div>
-                        <div style="background: white; border-radius: 10px; padding: 20px; text-align: center;">
-                            <p style="color: #6b7280; font-size: 14px;">보장금액</p>
-                            <p style="font-size: 28px; font-weight: bold; color: #ef4444;">1억원</p>
+                        <p style="font-size: 20px; font-weight: bold; color: #1f2937; margin-bottom: 10px;">
+                            평생 사망 보장
+                        </p>
+                        <p style="color: #6b7280; font-size: 14px; line-height: 1.8; margin-bottom: 20px;">
+                            단기 납입(10/15/20년)으로 평생 보장<br>
+                            가족에게 남기는 목돈 마련<br>
+                            유산·장례비·빚 상환 등 활용 가능
+                        </p>
+                        <div style="background: #fef3c7; border-radius: 10px; padding: 20px; margin-top: 20px;">
+                            <p style="color: #92400e; font-size: 16px; font-weight: bold; margin-bottom: 10px;">
+                                💰 보험료 안내
+                            </p>
+                            <p style="color: #78350f; font-size: 14px; line-height: 1.8;">
+                                보험료는 <strong>나이·성별·건강상태·납입기간·보장금액</strong>에 따라<br>
+                                개인별로 다르게 책정됩니다.<br><br>
+                                <strong style="color: #92400e;">정확한 보험료는 설계사 상담을 통해 확인하세요.</strong>
+                            </p>
                         </div>
                     </div>
-                    <p style="color: #92400e; font-size: 12px; margin-top: 15px; text-align: center;">
-                        ※ 실제 보험료는 나이·성별·건강상태에 따라 달라질 수 있습니다.
-                    </p>
                 </div>
             ` + getDesignGuideSection('whole_life') + getSalesScriptSection('whole_life') + getCardFooter(product);
         }
@@ -807,7 +824,7 @@
                         <p style="color: #374151; font-size: 14px;">간병비 월 100만원 | 생활자금 월 50만원 | 장기요양 1~5등급 연계</p>
                     </div>
                 </div>
-            ` + getDesignGuideSection('dementia') + getSalesScriptSection('dementia') + getCardFooter(product);
+            ` + getPremiumNotice() + getDesignGuideSection('dementia') + getSalesScriptSection('dementia') + getCardFooter(product);
         }
         
         // 3. 암보험
@@ -836,7 +853,7 @@
                         <p style="color: #374151; font-size: 14px;">2년 경과 후 재발암 추가 보장 | 전이암 동일 금액 | 최대 3회 반복</p>
                     </div>
                 </div>
-            ` + getDesignGuideSection('cancer') + getSalesScriptSection('cancer') + getCardFooter(product);
+            ` + getPremiumNotice() + getDesignGuideSection('cancer') + getSalesScriptSection('cancer') + getCardFooter(product);
         }
         
         // 4. 펫보험
@@ -861,7 +878,7 @@
                         <p style="color: #374151; font-size: 14px;">항암치료(신설) | 재활치료 | 약물치료 | 실손 70~90% | 장례비 | 배상책임</p>
                     </div>
                 </div>
-            ` + getDesignGuideSection('pet') + getSalesScriptSection('pet') + getCardFooter(product);
+            ` + getPremiumNotice() + getDesignGuideSection('pet') + getSalesScriptSection('pet') + getCardFooter(product);
         }
         
         // 5. 여성건강보험
@@ -894,7 +911,7 @@
                         <p style="color: #374151; font-size: 14px;">난자동결 200만원 | 인공수정·체외수정 | 출산 합병증</p>
                     </div>
                 </div>
-            ` + getDesignGuideSection('women_health') + getSalesScriptSection('women_health') + getCardFooter(product);
+            ` + getPremiumNotice() + getDesignGuideSection('women_health') + getSalesScriptSection('women_health') + getCardFooter(product);
         }
         
         // 기본 템플릿
