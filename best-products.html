@@ -84,8 +84,8 @@
                 보험업계 전문가 추천 + 실제 보험사 통계 데이터 제공
             </p>
             
-            <!-- 연도/월 선택 드롭다운 -->
-            <div class="flex justify-center items-center gap-3 mt-6 mb-4">
+            <!-- 연도/월 + 보험 종류 선택 드롭다운 -->
+            <div class="flex justify-center items-center gap-3 mt-6 mb-4 flex-wrap">
                 <div class="flex items-center gap-2 bg-white rounded-lg px-4 py-2 shadow-lg">
                     <i class="fas fa-calendar-alt text-cyan-600"></i>
                     <select id="year-select" class="bg-white text-gray-800 font-semibold outline-none cursor-pointer border-r border-gray-300 pr-3 py-1">
@@ -106,11 +106,26 @@
                         <option value="oct">10월</option>
                         <option value="nov">11월</option>
                         <option value="dec" selected>12월</option>
-                        <option value="oct">10월</option>
-                        <option value="nov">11월</option>
-                        <option value="dec">12월</option>
                     </select>
                 </div>
+                
+                <div class="flex items-center gap-2 bg-white rounded-lg px-4 py-2 shadow-lg">
+                    <i class="fas fa-shield-alt text-cyan-600"></i>
+                    <select id="insurance-type-select" class="bg-white text-gray-800 font-semibold outline-none cursor-pointer py-1">
+                        <option value="all">전체 보험 종류</option>
+                        <option value="치매간병보험">치매간병보험</option>
+                        <option value="펫보험">펫보험</option>
+                        <option value="암보험">암보험</option>
+                        <option value="실손보험">실손보험</option>
+                        <option value="연금보험">연금보험</option>
+                        <option value="저축보험">저축보험</option>
+                        <option value="어린이보험">어린이보험</option>
+                        <option value="운전자보험">운전자보험</option>
+                        <option value="여행자보험">여행자보험</option>
+                        <option value="경영인정기보험">경영인정기보험</option>
+                    </select>
+                </div>
+                
                 <button id="load-data-btn" class="bg-white text-cyan-600 px-4 py-3 rounded-lg font-semibold hover:bg-cyan-50 transition shadow-lg">
                     <i class="fas fa-sync-alt mr-2"></i>조회
                 </button>
@@ -641,6 +656,7 @@
         async function loadData() {
             const year = parseInt(document.getElementById('year-select').value);
             const month = document.getElementById('month-select').value;
+            const selectedType = document.getElementById('insurance-type-select').value;
             
             currentYear = year;
             currentMonth = month;
@@ -665,58 +681,31 @@
                 }
                 
                 // 2. API 데이터를 yearlyData 형식으로 변환
-                const formattedData = {
-                    categories: [
-                        {
-                            name: '치매간병보험',
-                            icon: 'fa-brain',
-                            color: 'cyan',
+                const categories = [];
+                
+                Object.entries(apiData.products).forEach(([typeName, typeData]) => {
+                    // 선택된 보험 종류만 표시 (또는 전체)
+                    if (selectedType === 'all' || selectedType === typeName) {
+                        categories.push({
+                            name: typeName,
+                            icon: typeData.icon,
+                            color: typeData.color,
                             subcategories: [{
-                                subname: `전문가 추천 TOP 3 (${apiData.year}년 ${apiData.month} 기준)`,
-                                products: apiData.products.dementia.map(p => ({
+                                subname: `GA 채널 판매 점유율 TOP ${typeData.items.length} (${apiData.year}년 ${apiData.monthName})`,
+                                products: typeData.items.map(p => ({
                                     rank: p.rank,
                                     company: p.company,
                                     product: p.product,
-                                    highlight: `GA 점유율 ${p.gaShare}%`,
-                                    features: ['실시간 데이터', '금융감독원 공시 기준'],
+                                    highlight: `시장 점유율 ${p.gaShare}%`,
+                                    features: [`GA채널 판매 ${p.gaShare}%`, '실시간 변동 데이터'],
                                     gaShare: `${p.gaShare}%`
                                 }))
                             }]
-                        },
-                        {
-                            name: '펫보험',
-                            icon: 'fa-dog',
-                            color: 'emerald',
-                            subcategories: [{
-                                subname: `전문가 추천 TOP 3 (${apiData.year}년 ${apiData.month} 기준)`,
-                                products: apiData.products.pet.map(p => ({
-                                    rank: p.rank,
-                                    company: p.company,
-                                    product: p.product,
-                                    highlight: `GA 점유율 ${p.gaShare}%`,
-                                    features: ['실시간 데이터', '금융감독원 공시 기준'],
-                                    gaShare: `${p.gaShare}%`
-                                }))
-                            }]
-                        },
-                        {
-                            name: '경영인정기보험',
-                            icon: 'fa-briefcase',
-                            color: 'indigo',
-                            subcategories: [{
-                                subname: `전문가 추천 TOP 3 (${apiData.year}년 ${apiData.month} 기준)`,
-                                products: apiData.products.executive.map(p => ({
-                                    rank: p.rank,
-                                    company: p.company,
-                                    product: p.product,
-                                    highlight: `GA 점유율 ${p.gaShare}%`,
-                                    features: ['실시간 데이터', '금융감독원 공시 기준'],
-                                    gaShare: `${p.gaShare}%`
-                                }))
-                            }]
-                        }
-                    ]
-                };
+                        });
+                    }
+                });
+                
+                const formattedData = { categories };
                 
                 // 3. 생명보험사 통계 API 추가
                 const lifeInsuranceData = await fetchInsuranceData(year, month);
