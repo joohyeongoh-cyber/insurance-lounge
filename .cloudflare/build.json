@@ -1,0 +1,5 @@
+{
+  "buildCommand": "npm run build",
+  "buildOutputDirectory": "dist",
+  "deployCommand": "npx wrangler pages deploy dist --project-name insurance-lounge"
+}
