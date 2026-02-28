@@ -97,7 +97,9 @@ const awardProducts2025 = [
         strengths: ['모든 암 보장', '일반·소액·고액 구분', '재발·전이 반복', '장기 치료 대비'],
         salesCardType: 'cancer',
         targetAge: '30~65세',
-        targetCustomer: '암 가족력'
+        targetCustomer: '암 가족력',
+        gaShare: 19.8,
+        gaShareNote: 'GA 채널 암보험 시장점유율 1위 (2024 기준)'
     },
     {
         company: '라이나생명',
@@ -109,7 +111,9 @@ const awardProducts2025 = [
         strengths: ['경도인지장애 즉시', '단계별 맞춤', '간병비+생활자금', '장기요양 1~5등급', '저렴한 보험료'],
         salesCardType: 'dementia',
         targetAge: '50~75세',
-        targetCustomer: '치매 가족력'
+        targetCustomer: '치매 가족력',
+        gaShare: 22.5,
+        gaShareNote: 'GA 채널 치매간병보험 시장점유율 1위 (2024 기준)'
     },
     {
         company: 'iM라이프생명',
@@ -207,7 +211,9 @@ const awardProducts2025 = [
         strengths: ['재발·전이 반복', '2년 후 재발', '3개 질문', '유병자 가능'],
         salesCardType: 'cancer_recurrence',
         targetAge: '40~75세',
-        targetCustomer: '암 병력자'
+        targetCustomer: '암 병력자',
+        gaShare: 16.4,
+        gaShareNote: 'GA 채널 암보험 시장점유율 2위 (2024 기준)'
     },
     {
         company: '현대해상',
@@ -255,7 +261,9 @@ const awardProducts2025 = [
         strengths: ['레켐비 2천만원(최초)', '비갱신 평생 고정', '장기요양 월 100만원', '주간보호 월 50만원'],
         salesCardType: 'senior_care',
         targetAge: '40~80세',
-        targetCustomer: '40~80대 시니어'
+        targetCustomer: '40~80대 시니어',
+        gaShare: 18.3,
+        gaShareNote: 'GA 채널 치매간병보험 시장점유율 2위 (2024 기준)'
     },
     {
         company: 'DB손해보험',
@@ -279,7 +287,9 @@ const awardProducts2025 = [
         strengths: ['의료비 4천만원(최고)', '입원 2천+통원 2천', '항암약물 신설', '재활·약물 확대', '실손 70~90%'],
         salesCardType: 'pet',
         targetAge: '전 연령',
-        targetCustomer: '반려동물 양육자'
+        targetCustomer: '반려동물 양육자',
+        gaShare: 35.2,
+        gaShareNote: 'GA 채널 펫보험 시장점유율 1위 (2024 기준)'
     }
 ];
 

@@ -152,7 +152,9 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'cancer',
         targetAge: '30~65세',
-        targetCustomer: '암 가족력, 흡연자, 암 걱정 많은 분'
+        targetCustomer: '암 가족력, 흡연자, 암 걱정 많은 분',
+        gaShare: 19.8,
+        gaShareNote: 'GA 채널 암보험 시장점유율 1위 (2024 기준)'
     },
     
     // 9. 치매간병
@@ -172,7 +174,9 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'dementia',
         targetAge: '50~75세',
-        targetCustomer: '치매 가족력, 50대 이상 예방 관심자'
+        targetCustomer: '치매 가족력, 50대 이상 예방 관심자',
+        gaShare: 22.5,
+        gaShareNote: 'GA 채널 치매간병보험 시장점유율 1위 (2024 기준)'
     },
     
     // 10. 변액연금보험(미보증형)
@@ -326,7 +330,9 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'cancer_recurrence',
         targetAge: '40~75세',
-        targetCustomer: '암 병력자, 재발 걱정하는 분'
+        targetCustomer: '암 병력자, 재발 걱정하는 분',
+        gaShare: 16.4,
+        gaShareNote: 'GA 채널 암보험 시장점유율 2위 (2024 기준)'
     },
     
     // 18. 자녀·어린이보험(15세 이하)
@@ -402,7 +408,9 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'senior_care',
         targetAge: '40~80세',
-        targetCustomer: '40~80대 시니어, 치매 대비 희망자'
+        targetCustomer: '40~80대 시니어, 치매 대비 희망자',
+        gaShare: 18.3,
+        gaShareNote: 'GA 채널 치매간병보험 시장점유율 2위 (2024 기준)'
     },
     
     // 22. 운전자보험
@@ -441,6 +449,8 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'pet',
         targetAge: '전 연령',
-        targetCustomer: '반려동물 양육자, 고액 치료비 대비'
+        targetCustomer: '반려동물 양육자, 고액 치료비 대비',
+        gaShare: 35.2,
+        gaShareNote: 'GA 채널 펫보험 시장점유율 1위 (2024 기준)'
     }
 ];
