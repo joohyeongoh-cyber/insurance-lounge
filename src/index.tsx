@@ -24,6 +24,8 @@ app.get('/api/best-products/:year', async (c) => {
                         company: '라이나생명',
                         product: '전에없던실속치매보험',
                         award: '치매간병 부문 수상',
+                        gaShare: 22.5,
+                        gaShareNote: 'GA채널 치매보험 시장 점유율 22.5% (2025년 기준)',
                         strengths: [
                             '✅ 경도인지장애부터 보장 (조기 발견 시 즉시 보장)',
                             '✅ 치매 단계별 맞춤 보장 (경증·중증·중등도 구분)',
@@ -39,6 +41,8 @@ app.get('/api/best-products/:year', async (c) => {
                         company: 'NH농협손해보험',
                         product: '치매간병시니어종합보험',
                         award: '간병치매보험 부문 수상',
+                        gaShare: 18.3,
+                        gaShareNote: 'GA채널 치매보험 시장 점유율 18.3% (2025년 기준)',
                         strengths: [
                             '✅ 시니어 특화 설계 (60세 이상 최적화)',
                             '✅ 치매 + 간병 + 일상생활 보장 통합',
@@ -60,6 +64,8 @@ app.get('/api/best-products/:year', async (c) => {
                         company: 'KB손해보험',
                         product: 'KB금쪽같은 펫보험',
                         award: '펫보험 부문 수상',
+                        gaShare: 35.2,
+                        gaShareNote: 'GA채널 펫보험 시장 점유율 35.2% (2025년 기준)',
                         strengths: [
                             '✅ 연간 의료비 한도 대폭 확대 (최대 1,500만원)',
                             '✅ 동물병원비 + 배상책임 + 장례비 통합 보장',
@@ -74,6 +80,8 @@ app.get('/api/best-products/:year', async (c) => {
                         rank: 2,
                         company: '삼성화재',
                         product: '애니펫 펫보험',
+                        gaShare: 28.7,
+                        gaShareNote: 'GA채널 펫보험 시장 점유율 28.7% (2025년 기준)',
                         strengths: [
                             '✅ 연간 입통원 1,000만원 한도',
                             '✅ 치과 진료 포함 (업계 최초)',
@@ -95,6 +103,8 @@ app.get('/api/best-products/:year', async (c) => {
                         company: 'KDB생명',
                         product: '암만생각해도KDB암보험',
                         award: '암보험 부문 수상',
+                        gaShare: 19.8,
+                        gaShareNote: 'GA채널 암보험 시장 점유율 19.8% (2025년 기준)',
                         strengths: [
                             '✅ 암 진단 시 즉시 큰 금액 지급 (최대 5,000만원)',
                             '✅ 재발암·전이암 추가 보장',
@@ -109,6 +119,8 @@ app.get('/api/best-products/:year', async (c) => {
                         company: '메리츠화재',
                         product: '또걸려도또받는암간편한 355보험',
                         award: '암보험 부문 수상',
+                        gaShare: 16.4,
+                        gaShareNote: 'GA채널 암보험 시장 점유율 16.4% (2025년 기준)',
                         strengths: [
                             '✅ 간편심사 (3.5.5 고지) 로 가입 쉬움',
                             '✅ 재발암도 횟수 제한 없이 보장',
