@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>보험 전문가 대시보드 - 보험 LOUNGE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <script>
+        // Check if FA is logged in
+        if (!sessionStorage.getItem('fa_logged_in')) {
+            window.location.href = 'fa-login.html';
+        }
+    </script>
+
+    <!-- Header -->
+    <header class="bg-purple-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <i class="fas fa-user-tie text-2xl"></i>
+                    <div class="text-2xl font-bold">보험 전문가 대시보드</div>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <span class="text-sm" id="fa-name">환영합니다</span>
+                    <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 font-semibold">
+                        <i class="fas fa-sign-out-alt mr-2"></i>로그아웃
+                    </button>
+                    <a href="index.html" class="bg-white text-purple-600 px-4 py-2 rounded-lg hover:bg-gray-100 font-semibold">사이트로 이동</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- Stats -->
+        <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="text-gray-500">내 계약사례</div>
+                    <i class="fas fa-file-contract text-purple-600 text-2xl"></i>
+                </div>
+                <div id="stat-contracts" class="text-3xl font-bold text-purple-600">0</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="text-gray-500">조회수</div>
+                    <i class="fas fa-eye text-blue-600 text-2xl"></i>
+                </div>
+                <div id="stat-views" class="text-3xl font-bold text-blue-600">0</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="text-gray-500">프로필 상태</div>
+                    <i class="fas fa-check-circle text-emerald-600 text-2xl"></i>
+                </div>
+                <div class="text-xl font-bold text-emerald-600">활성화</div>
+            </div>
+        </div>
+
+        <!-- Contract Cases Management -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">내 계약사례 관리</h2>
+                <button onclick="showAddContractModal()" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 font-semibold">
+                    <i class="fas fa-plus mr-2"></i>새 계약사례 추가
+                </button>
+            </div>
+            <div id="contracts-list" class="space-y-4">
+                <!-- Contracts will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Profile Info -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold mb-6">내 프로필 정보</h2>
+            <div id="profile-info" class="space-y-4">
+                <!-- Profile will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Contract Modal -->
+    <div id="add-contract-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-6">
+                    <h3 class="text-2xl font-bold">새 계약사례 추가</h3>
+                    <button onclick="closeAddContractModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                <form id="add-contract-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">고객 프로필 <span class="text-red-500">*</span></label>
+                        <input type="text" name="customerProfile" required class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="예: 가임, 연임(만 나이), 직업(금속), 거주, 가족 예산">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">니즈(Needs) 정의 <span class="text-red-500">*</span></label>
+                        <textarea name="needs" required rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="고객이 기존에 우려하는 실생활 또는 재무적 목표 2~3개"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">비교 대상 <span class="text-red-500">*</span></label>
+                        <div class="space-y-2">
+                            <input type="text" name="optionA" required class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="A안: A사(승인), B사(대기), C사(자가산 등)">
+                            <input type="text" name="optionB" required class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="B안: A사(승인), B사(대기), C사(자가산 등)">
+                            <input type="text" name="optionC" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="C안 (선택사항)">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">비교 항목 분석 <span class="text-red-500">*</span></label>
+                        <textarea name="comparison" required rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="보장범위, 단말기가격, 해지환급금, 예치원금비, 특약 구조 등"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">최종 선택 <span class="text-red-500">*</span></label>
+                        <textarea name="finalChoice" required rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="선택 A안 또는 종류에 근거를 알맞게 작성"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">기대 효과 <span class="text-red-500">*</span></label>
+                        <textarea name="expectedEffect" required rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="최종 가입된 상품, 추가 조율 포인트"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">기타 효과</label>
+                        <textarea name="additionalNotes" rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="보상 관련 예수, 제한조건 등을 중점어 담음니다, 학업의 동의 받고 제시되는 반드시 바람직"></textarea>
+                    </div>
+                    <div class="flex justify-end gap-4">
+                        <button type="button" onclick="closeAddContractModal()" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 font-semibold">취소</button>
+                        <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 font-semibold">추가</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Display FA info
+        const faName = sessionStorage.getItem('fa_name');
+        const faId = parseInt(sessionStorage.getItem('fa_id'));
+        const faEmail = sessionStorage.getItem('fa_email');
+
+        if (faName) {
+            document.getElementById('fa-name').textContent = faName + '님 환영합니다';
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                sessionStorage.clear();
+                window.location.href = 'fa-login.html';
+            }
+        }
+
+        // Load contracts
+        function loadContracts() {
+            const contracts = JSON.parse(localStorage.getItem('contract_cases') || '[]');
+            const myContracts = contracts.filter(c => c.faId === faId);
+            const listDiv = document.getElementById('contracts-list');
+
+            document.getElementById('stat-contracts').textContent = myContracts.length;
+
+            if (myContracts.length === 0) {
+                listDiv.innerHTML = '<p class="text-center text-gray-500 py-8">등록된 계약사례가 없습니다</p>';
+                return;
+            }
+
+            listDiv.innerHTML = myContracts.map(contract => `
+                <div class="border rounded-lg p-4 hover:bg-gray-50">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <h3 class="font-bold text-lg mb-2">${contract.customerProfile}</h3>
+                            <p class="text-sm text-gray-600 mb-2"><strong>니즈:</strong> ${contract.needs}</p>
+                            <p class="text-sm text-gray-600"><strong>최종 선택:</strong> ${contract.finalChoice}</p>
+                            <div class="mt-2 text-xs text-gray-500">
+                                등록일: ${new Date(contract.createdAt).toLocaleDateString('ko-KR')}
+                            </div>
+                        </div>
+                        <button onclick="deleteContract(${contract.id})" class="text-red-600 hover:text-red-700 ml-4">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load profile
+        function loadProfile() {
+            const profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
+            const myProfile = profiles.find(p => p.id === faId);
+            const profileDiv = document.getElementById('profile-info');
+
+            if (!myProfile) {
+                profileDiv.innerHTML = '<p class="text-gray-500">프로필 정보를 찾을 수 없습니다</p>';
+                return;
+            }
+
+            profileDiv.innerHTML = `
+                <div class="grid md:grid-cols-2 gap-4">
+                    ${myProfile.photoUrl ? `
+                    <div class="md:col-span-2">
+                        <img src="${myProfile.photoUrl}" alt="프로필" class="w-32 h-32 object-cover rounded-lg">
+                    </div>
+                    ` : ''}
+                    <div>
+                        <div class="text-sm text-gray-500">이름</div>
+                        <div class="font-semibold">${myProfile.name}</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-500">이메일</div>
+                        <div class="font-semibold">${myProfile.email}</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-500">휴대폰</div>
+                        <div class="font-semibold">${myProfile.phone}</div>
+                    </div>
+                    ${myProfile.company ? `
+                    <div>
+                        <div class="text-sm text-gray-500">소속</div>
+                        <div class="font-semibold">${myProfile.company}</div>
+                    </div>
+                    ` : ''}
+                    ${myProfile.introduction ? `
+                    <div class="md:col-span-2">
+                        <div class="text-sm text-gray-500">소개</div>
+                        <div class="font-semibold">${myProfile.introduction}</div>
+                    </div>
+                    ` : ''}
+                    ${myProfile.specialties ? `
+                    <div class="md:col-span-2">
+                        <div class="text-sm text-gray-500 mb-2">전문 분야</div>
+                        <div class="flex flex-wrap gap-2">
+                            ${myProfile.specialties.split(',').map(s => `<span class="bg-purple-100 text-purple-600 px-2 py-1 rounded text-sm">${s.trim()}</span>`).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Show add contract modal
+        function showAddContractModal() {
+            document.getElementById('add-contract-modal').classList.remove('hidden');
+        }
+
+        // Close add contract modal
+        function closeAddContractModal() {
+            document.getElementById('add-contract-modal').classList.add('hidden');
+            document.getElementById('add-contract-form').reset();
+        }
+
+        // Add contract form submission
+        document.getElementById('add-contract-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const newContract = {
+                id: Date.now(),
+                faId: faId,
+                faName: faName,
+                faEmail: faEmail,
+                customerProfile: formData.get('customerProfile'),
+                needs: formData.get('needs'),
+                optionA: formData.get('optionA'),
+                optionB: formData.get('optionB'),
+                optionC: formData.get('optionC') || '',
+                comparison: formData.get('comparison'),
+                finalChoice: formData.get('finalChoice'),
+                expectedEffect: formData.get('expectedEffect'),
+                additionalNotes: formData.get('additionalNotes') || '',
+                createdAt: new Date().toISOString()
+            };
+
+            let contracts = JSON.parse(localStorage.getItem('contract_cases') || '[]');
+            contracts.unshift(newContract); // Add to beginning
+            localStorage.setItem('contract_cases', JSON.stringify(contracts));
+
+            alert('계약사례가 등록되었습니다!');
+            closeAddContractModal();
+            loadContracts();
+        });
+
+        // Delete contract
+        function deleteContract(id) {
+            if (!confirm('이 계약사례를 삭제하시겠습니까?')) return;
+
+            let contracts = JSON.parse(localStorage.getItem('contract_cases') || '[]');
+            contracts = contracts.filter(c => c.id !== id);
+            localStorage.setItem('contract_cases', JSON.stringify(contracts));
+
+            alert('삭제되었습니다');
+            loadContracts();
+        }
+
+        // Initialize
+        loadContracts();
+        loadProfile();
+    </script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>보험 전문가 로그인 - 보험 LOUNGE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-purple-50 to-pink-50 min-h-screen flex items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+        <div class="text-center mb-8">
+            <i class="fas fa-user-tie text-purple-600 text-5xl mb-4"></i>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">보험 전문가 로그인</h1>
+            <p class="text-gray-600">계약사례 관리 시스템</p>
+        </div>
+
+        <form id="fa-login-form" class="space-y-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <i class="fas fa-user mr-2"></i>아이디 (이메일)
+                </label>
+                <input 
+                    type="email" 
+                    id="fa-id" 
+                    required 
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="등록된 이메일을 입력하세요"
+                >
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <i class="fas fa-lock mr-2"></i>비밀번호
+                </label>
+                <input 
+                    type="password" 
+                    id="fa-password" 
+                    required 
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="비밀번호를 입력하세요"
+                >
+            </div>
+
+            <div id="error-message" class="hidden bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <span id="error-text"></span>
+            </div>
+
+            <button 
+                type="submit" 
+                class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition shadow-lg"
+            >
+                <i class="fas fa-sign-in-alt mr-2"></i>로그인
+            </button>
+        </form>
+
+        <div class="mt-6 text-center space-y-2">
+            <a href="fa-apply.html" class="block text-sm text-purple-600 hover:text-purple-700">
+                <i class="fas fa-user-plus mr-1"></i>아직 등록하지 않으셨나요? 보험 전문가 신청하기
+            </a>
+            <a href="index.html" class="block text-sm text-gray-600 hover:text-gray-700">
+                <i class="fas fa-arrow-left mr-1"></i>메인으로 돌아가기
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('fa-login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const faId = document.getElementById('fa-id').value;
+            const faPassword = document.getElementById('fa-password').value;
+            const errorMessage = document.getElementById('error-message');
+            const errorText = document.getElementById('error-text');
+
+            // Get FA profiles from localStorage
+            const profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
+            
+            console.log('전체 프로필:', profiles);
+            console.log('입력한 이메일:', faId);
+            console.log('입력한 비밀번호:', faPassword);
+            
+            // Find FA by email
+            const faProfile = profiles.find(p => p.email === faId);
+
+            if (!faProfile) {
+                errorText.textContent = '등록되지 않은 이메일입니다. 보험 전문가 신청을 먼저 해주세요.';
+                errorMessage.classList.remove('hidden');
+                console.log('프로필을 찾을 수 없습니다');
+                return;
+            }
+
+            console.log('찾은 프로필:', faProfile);
+            console.log('저장된 비밀번호:', faProfile.password);
+            console.log('비밀번호 일치 여부:', faProfile.password === faPassword);
+
+            // Check password (stored in profile)
+            if (faProfile.password && faProfile.password === faPassword) {
+                // Set FA session (localStorage로 변경하여 페이지 이동 시에도 유지)
+                localStorage.setItem('fa_logged_in', 'true');
+                localStorage.setItem('fa_user', JSON.stringify({
+                    id: faProfile.id,
+                    email: faProfile.email,
+                    name: faProfile.name
+                }));
+                localStorage.setItem('login_time', new Date().toISOString());
+                
+                console.log('로그인 성공!');
+                
+                // 이전 페이지로 리다이렉트 (없으면 대시보드)
+                const returnUrl = sessionStorage.getItem('login_return_url') || 'fa-dashboard.html';
+                sessionStorage.removeItem('login_return_url');
+                window.location.href = returnUrl;
+            } else {
+                console.log('비밀번호 불일치!');
+                errorText.textContent = '비밀번호가 올바르지 않습니다. (저장된 비밀번호: ' + (faProfile.password ? '있음' : '없음') + ')';
+                errorMessage.classList.remove('hidden');
+                document.getElementById('fa-password').value = '';
+            }
+        });
+    </script>
+</body>
+</html>

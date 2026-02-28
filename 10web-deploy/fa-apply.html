@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>보험 전문가 신청 - 보험 LOUNGE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm fixed w-full top-0 z-50">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="index.html" class="flex items-center gap-3 group">
+                        <div class="relative">
+                            <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl rotate-12 group-hover:rotate-0 transition-transform duration-300 shadow-lg"></div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <span class="text-2xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">보험 LOUNGE</span>
+                    </a>
+                <div class="hidden md:flex space-x-3 lg:space-x-4 text-sm">
+                    <a href="index.html" class="text-gray-700 hover:text-cyan-600 font-medium transition">홈</a>
+                    <a href="best-products.html" class="text-gray-700 hover:text-cyan-600 font-medium transition">베스트</a>
+                    <a href="fa-intro.html" class="text-gray-700 hover:text-cyan-600 font-medium transition">전문가</a>
+                    <a href="contract-cases.html" class="text-gray-700 hover:text-cyan-600 font-medium transition">계약</a>
+                    <a href="claim-cases.html" class="text-gray-700 hover:text-cyan-600 font-medium transition">청구</a>
+                    <a href="insurance-info.html" class="text-gray-700 hover:text-cyan-600 font-medium transition">정보</a>
+                    <a href="inquiries.html" class="text-gray-700 hover:text-cyan-600 font-medium transition">문의</a>
+                    <a href="fa-apply.html" class="bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 transition font-medium">전문가 신청</a>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+                <a href="index.html" class="block py-2 text-gray-700">홈</a>
+                <a href="fa-intro.html" class="block py-2 text-gray-700">전문가</a>
+                <a href="claim-cases.html" class="block py-2 text-gray-700">청구</a>
+                <a href="insurance-info.html" class="block py-2 text-gray-700">정보</a>
+                <a href="fa-apply.html" class="block py-2 text-indigo-600 font-semibold">보험 전문가 신청</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="pt-24 pb-16">
+        <!-- Page Header -->
+        <section class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-16">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">보험 전문가 신청</h1>
+                <p class="text-xl opacity-90">보험 LOUNGE와 함께 성장하세요</p>
+            </div>
+        </section>
+
+        <div class="container mx-auto px-4 mt-12 max-w-3xl">
+            <!-- Progress Steps -->
+            <div class="mb-12">
+                <div class="flex justify-between items-center">
+                    <div class="flex flex-col items-center flex-1">
+                        <div id="step1-circle" class="w-12 h-12 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold mb-2">1</div>
+                        <div class="text-sm font-semibold">기본 정보</div>
+                    </div>
+                    <div class="flex-1 h-1 bg-gray-300 mx-2">
+                        <div id="progress1" class="h-1 bg-indigo-600 w-0 transition-all duration-300"></div>
+                    </div>
+                    <div class="flex flex-col items-center flex-1">
+                        <div id="step2-circle" class="w-12 h-12 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center font-bold mb-2">2</div>
+                        <div class="text-sm">프로필 정보</div>
+                    </div>
+                    <div class="flex-1 h-1 bg-gray-300 mx-2">
+                        <div id="progress2" class="h-1 bg-indigo-600 w-0 transition-all duration-300"></div>
+                    </div>
+                    <div class="flex flex-col items-center flex-1">
+                        <div id="step3-circle" class="w-12 h-12 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center font-bold mb-2">3</div>
+                        <div class="text-sm">동의 및 제출</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Application Form -->
+            <form id="fa-application-form" class="bg-white rounded-xl shadow-md p-8">
+                <!-- Step 1: Basic Info -->
+                <div id="step1" class="step-content">
+                    <h2 class="text-2xl font-bold mb-6">기본 정보</h2>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">이름 <span class="text-red-500">*</span></label>
+                        <input type="text" name="name" required class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="홍길동">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">휴대폰 번호 <span class="text-red-500">*</span></label>
+                        <input type="tel" name="phone" required class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="010-1234-5678">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">소속 회사 <span class="text-red-500">*</span></label>
+                        <input type="text" name="company" required class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="예: 삼성화재, KB손해보험 등">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">사번 (7자리) <span class="text-red-500">*</span></label>
+                        <input type="text" name="employeeId" required pattern="[0-9]{7}" maxlength="7" class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="1234567">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">이메일 (선택)</label>
+                        <input type="email" name="email" class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="example@email.com">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">활동 지역 <span class="text-red-500">*</span></label>
+                        <select name="region" id="region-select" required class="w-full border border-gray-300 rounded-lg px-4 py-3">
+                            <option value="">선택하세요</option>
+                            <option value="서울">서울</option>
+                            <option value="경기">경기</option>
+                            <option value="인천">인천</option>
+                            <option value="부산">부산</option>
+                            <option value="대구">대구</option>
+                            <option value="대전">대전</option>
+                            <option value="광주">광주</option>
+                            <option value="울산">울산</option>
+                            <option value="세종">세종</option>
+                            <option value="강원">강원</option>
+                            <option value="충북">충북</option>
+                            <option value="충남">충남</option>
+                            <option value="전북">전북</option>
+                            <option value="전남">전남</option>
+                            <option value="경북">경북</option>
+                            <option value="경남">경남</option>
+                            <option value="제주">제주</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">지점 (선택)</label>
+                        <input type="text" name="branch" class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="예: 강남지점, 서초지점 등">
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="button" onclick="nextStep(2)" class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 font-semibold">다음</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Profile Info -->
+                <div id="step2" class="step-content hidden">
+                    <h2 class="text-2xl font-bold mb-6">프로필 정보 및 계정 설정</h2>
+
+                    <div class="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <h3 class="font-semibold text-blue-800 mb-2">
+                            <i class="fas fa-info-circle mr-2"></i>계정 로그인 정보
+                        </h3>
+                        <p class="text-sm text-blue-700 mb-3">계약사례를 관리하기 위한 로그인 비밀번호를 설정해주세요.</p>
+                        
+                        <div class="mb-3">
+                            <label class="block text-sm font-medium mb-2">비밀번호 <span class="text-red-500">*</span></label>
+                            <input type="password" name="password" required minlength="8" class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="최소 8자 이상">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="block text-sm font-medium mb-2">비밀번호 확인 <span class="text-red-500">*</span></label>
+                            <input type="password" name="passwordConfirm" required minlength="8" class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="비밀번호를 다시 입력하세요">
+                        </div>
+                        
+                        <p class="text-xs text-blue-600">
+                            <i class="fas fa-key mr-1"></i>
+                            승인 후 이메일과 비밀번호로 로그인하여 계약사례를 등록할 수 있습니다.
+                        </p>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">프로필 사진 (선택)</label>
+                        <input type="file" name="photoFile" accept="image/*" class="w-full border border-gray-300 rounded-lg px-4 py-3" onchange="previewImage(this, 'photo-preview')">
+                        <div id="photo-preview" class="mt-3 hidden">
+                            <img src="" alt="미리보기" class="w-32 h-32 object-cover rounded-lg border-2 border-gray-300">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">이미지 파일을 직접 업로드하세요 (JPG, PNG 등)</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">자기소개 (선택)</label>
+                        <textarea name="introduction" rows="4" class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="고객님께 전하고 싶은 말씀을 작성해주세요"></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">전문 분야 (선택)</label>
+                        <input type="text" name="specialties" class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="실손보험, 암보험, 종신보험 (쉼표로 구분)">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">카카오톡 오픈채팅 링크 (선택)</label>
+                        <input type="url" name="kakaoLink" class="w-full border border-gray-300 rounded-lg px-4 py-3" placeholder="https://open.kakao.com/o/sXXXXXXXX">
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button type="button" onclick="prevStep(1)" class="bg-gray-300 text-gray-700 px-8 py-3 rounded-lg hover:bg-gray-400 font-semibold">이전</button>
+                        <button type="button" onclick="nextStep(3)" class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 font-semibold">다음</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Consent & Submit -->
+                <div id="step3" class="step-content hidden">
+                    <h2 class="text-2xl font-bold mb-6">동의 및 제출</h2>
+
+                    <div class="bg-gray-50 rounded-lg p-6 mb-6 max-h-64 overflow-y-auto">
+                        <h3 class="font-semibold mb-4">개인정보 수집 및 이용 동의</h3>
+                        <p class="text-sm text-gray-700 mb-4">
+                            보험 LOUNGE(이하 '회사')는 보험 신청을 위해 아래와 같이 개인정보를 수집 및 이용합니다.
+                        </p>
+                        <ul class="text-sm text-gray-700 space-y-2 list-disc pl-5">
+                            <li><strong>수집 항목:</strong> 이름, 휴대폰 번호, 이메일, 소속 회사, 사번, 지점</li>
+                            <li><strong>수집 목적:</strong> 보험 신청 검토 및 승인 처리, 전문가 페이지 게시</li>
+                            <li><strong>보유 기간:</strong> 신청 처리 완료 후 3년</li>
+                            <li><strong>거부 권리:</strong> 귀하는 개인정보 제공을 거부할 권리가 있으며, 거부 시 신청이 제한될 수 있습니다.</li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="privacyAgree" required class="w-5 h-5 text-indigo-600">
+                            <span class="ml-3 text-sm">개인정보 수집 및 이용에 동의합니다 <span class="text-red-500">*</span></span>
+                        </label>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button type="button" onclick="prevStep(2)" class="bg-gray-300 text-gray-700 px-8 py-3 rounded-lg hover:bg-gray-400 font-semibold">이전</button>
+                        <button type="submit" class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 font-semibold">신청 완료</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Status Check Link -->
+            <div class="text-center mt-8">
+                <a href="fa-apply-status.html" class="text-indigo-600 hover:text-indigo-700 font-semibold">신청 상태 확인하기 →</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">보험 LOUNGE</h3>
+                    <p class="text-gray-400">신뢰할 수 있는 보험 전문가 플랫폼</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">빠른 링크</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white">홈</a></li>
+                        <li><a href="fa-intro.html" class="text-gray-400 hover:text-white">전문가</a></li>
+                        <li><a href="fa-apply.html" class="text-gray-400 hover:text-white">보험 신청</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">개인정보 처리방침</h4>
+                    <p class="text-sm text-gray-400">보험 신청 시 제공된 정보는 신청 검토 목적으로만 사용됩니다.</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 보험 LOUNGE. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let currentStep = 1;
+
+        function nextStep(step) {
+            // Validate current step
+            const currentStepEl = document.getElementById(`step${currentStep}`);
+            const inputs = currentStepEl.querySelectorAll('input[required], select[required]');
+            let valid = true;
+
+            inputs.forEach(input => {
+                if (!input.value) {
+                    valid = false;
+                    input.classList.add('border-red-500');
+                } else {
+                    input.classList.remove('border-red-500');
+                }
+            });
+
+            if (!valid) {
+                alert('필수 항목을 모두 입력해주세요.');
+                return;
+            }
+
+            // Hide current step
+            document.getElementById(`step${currentStep}`).classList.add('hidden');
+            
+            // Show next step
+            document.getElementById(`step${step}`).classList.remove('hidden');
+            
+            // Update progress
+            updateProgress(step);
+            
+            currentStep = step;
+        }
+
+        function prevStep(step) {
+            document.getElementById(`step${currentStep}`).classList.add('hidden');
+            document.getElementById(`step${step}`).classList.remove('hidden');
+            updateProgress(step);
+            currentStep = step;
+        }
+
+        function updateProgress(step) {
+            // Update circles
+            for (let i = 1; i <= 3; i++) {
+                const circle = document.getElementById(`step${i}-circle`);
+                if (i <= step) {
+                    circle.classList.remove('bg-gray-300', 'text-gray-600');
+                    circle.classList.add('bg-indigo-600', 'text-white');
+                } else {
+                    circle.classList.remove('bg-indigo-600', 'text-white');
+                    circle.classList.add('bg-gray-300', 'text-gray-600');
+                }
+            }
+
+            // Update progress bars
+            if (step >= 2) {
+                document.getElementById('progress1').style.width = '100%';
+            } else {
+                document.getElementById('progress1').style.width = '0%';
+            }
+
+            if (step >= 3) {
+                document.getElementById('progress2').style.width = '100%';
+            } else {
+                document.getElementById('progress2').style.width = '0%';
+            }
+        }
+
+        // Branch data by region
+        const branchData = {
+            "서울": ["강남지점", "강북지점", "강서지점", "강동지점", "송파지점", "마포지점", "영등포지점", "종로지점", "서초지점", "용산지점"],
+            "경기": ["수원지점", "성남지점", "고양지점", "용인지점", "부천지점", "안산지점", "화성지점", "남양주지점", "평택지점", "의정부지점"],
+            "인천": ["부평지점", "남동지점", "연수지점", "계양지점", "서구지점"],
+            "부산": ["해운대지점", "부산진지점", "동래지점", "남구지점", "사상지점", "북구지점"],
+            "대구": ["수성지점", "달서지점", "북구지점", "동구지점", "중구지점"],
+            "대전": ["서구지점", "유성지점", "중구지점", "동구지점", "대덕지점"],
+            "광주": ["광산지점", "서구지점", "남구지점", "북구지점", "동구지점"],
+            "울산": ["남구지점", "북구지점", "중구지점", "울주지점"],
+            "세종": ["세종시지점"],
+            "강원": ["춘천지점", "원주지점", "강릉지점", "동해지점", "속초지점"],
+            "충북": ["청주지점", "충주지점", "제천지점"],
+            "충남": ["천안지점", "아산지점", "당진지점", "서산지점", "보령지점"],
+            "전북": ["전주지점", "익산지점", "군산지점", "정읍지점"],
+            "전남": ["목포지점", "여수지점", "순천지점", "나주지점", "광양지점"],
+            "경북": ["포항지점", "경주지점", "구미지점", "안동지점"],
+            "경남": ["창원지점", "김해지점", "진주지점", "양산지점", "거제지점"],
+            "제주": ["제주시지점", "서귀포지점"]
+        };
+
+        // 이미지 미리보기 함수
+        function previewImage(input, previewId) {
+            const preview = document.getElementById(previewId);
+            const img = preview.querySelector('img');
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    img.src = e.target.result;
+                    preview.classList.remove('hidden');
+                };
+                
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.classList.add('hidden');
+            }
+        }
+
+        function updateBranches() {
+            const region = document.getElementById('region-select').value;
+            const branchSelect = document.getElementById('branch-select');
+            
+            // Clear existing options
+            branchSelect.innerHTML = '<option value="">선택하세요</option>';
+            
+            if (region && branchData[region]) {
+                branchData[region].forEach(branch => {
+                    const option = document.createElement('option');
+                    option.value = branch;
+                    option.textContent = branch;
+                    branchSelect.appendChild(option);
+                });
+            } else {
+                branchSelect.innerHTML = '<option value="">활동 지역을 먼저 선택하세요</option>';
+            }
+        }
+
+        // Form submission
+        document.getElementById('fa-application-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Collect form data
+            const formData = new FormData(e.target);
+            const data = {};
+            
+            // Process text fields
+            formData.forEach((value, key) => {
+                if (key !== 'photoFile') {  // Skip file input
+                    data[key] = value;
+                }
+            });
+
+            // Validate password
+            const password = data.password;
+            const passwordConfirm = data.passwordConfirm;
+            
+            if (password !== passwordConfirm) {
+                alert('비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
+                return;
+            }
+            
+            if (password.length < 8) {
+                alert('비밀번호는 최소 8자 이상이어야 합니다.');
+                return;
+            }
+
+            // Remove passwordConfirm from data (don't save it)
+            delete data.passwordConfirm;
+
+            // Handle photo upload (convert to base64)
+            const photoInput = document.querySelector('input[name="photoFile"]');
+            if (photoInput && photoInput.files && photoInput.files[0]) {
+                const file = photoInput.files[0];
+                const reader = new FileReader();
+                
+                await new Promise((resolve) => {
+                    reader.onload = function(e) {
+                        data.photoUrl = e.target.result;  // base64 string
+                        resolve();
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            // Generate application ID
+            const applicationId = '보험 전문가' + Date.now();
+            data.applicationId = applicationId;
+            data.status = 'PENDING';
+            data.submittedAt = new Date().toISOString();
+
+            // Save application to localStorage
+            let applications = JSON.parse(localStorage.getItem('fa_applications') || '[]');
+            applications.push(data);
+            localStorage.setItem('fa_applications', JSON.stringify(applications));
+
+            // Redirect to status page
+            alert(`신청이 완료되었습니다!\n신청 번호: ${applicationId}\n\n승인 후 이메일(${data.email})과 설정한 비밀번호로 로그인하실 수 있습니다.`);
+            window.location.href = `fa-apply-status.html?id=${applicationId}`;
+        });
+
+        // Mobile menu
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
+
+        });
+    </script>
+</body>
+</html>

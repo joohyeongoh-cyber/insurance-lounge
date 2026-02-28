@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지 - 보험 LOUNGE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <script>
+        // Check if admin is logged in
+        if (!sessionStorage.getItem('admin_logged_in')) {
+            window.location.href = 'admin-login.html';
+        }
+    </script>
+    
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <i class="fas fa-shield-alt text-2xl"></i>
+                    <div class="text-2xl font-bold">관리자 페이지</div>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <span class="text-sm" id="admin-email">관리자님 환영합니다</span>
+                    <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 font-semibold">
+                        <i class="fas fa-sign-out-alt mr-2"></i>로그아웃
+                    </button>
+                    <a href="index.html" class="bg-white text-indigo-600 px-4 py-2 rounded-lg hover:bg-gray-100 font-semibold">사이트로 이동</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- Tabs -->
+        <div class="bg-white rounded-lg shadow-md mb-6">
+            <div class="flex border-b overflow-x-auto">
+                <button onclick="showTab('applications')" id="tab-applications" class="tab-btn flex-1 py-4 px-6 font-semibold border-b-2 border-indigo-600 text-indigo-600 whitespace-nowrap">
+                    <i class="fas fa-user-check mr-2"></i>전문가 신청 관리
+                </button>
+                <button onclick="showTab('experts')" id="tab-experts" class="tab-btn flex-1 py-4 px-6 font-semibold text-gray-600 hover:text-indigo-600 whitespace-nowrap">
+                    <i class="fas fa-users mr-2"></i>등록된 전문가
+                </button>
+                <button onclick="showTab('claims')" id="tab-claims" class="tab-btn flex-1 py-4 px-6 font-semibold text-gray-600 hover:text-indigo-600 whitespace-nowrap">
+                    <i class="fas fa-file-medical mr-2"></i>청구사례 관리
+                </button>
+                <button onclick="showTab('inquiries')" id="tab-inquiries" class="tab-btn flex-1 py-4 px-6 font-semibold text-gray-600 hover:text-indigo-600 whitespace-nowrap">
+                    <i class="fas fa-question-circle mr-2"></i>보험문의 관리
+                </button>
+                <button onclick="showTab('sales-issues')" id="tab-sales-issues" class="tab-btn flex-1 py-4 px-6 font-semibold text-gray-600 hover:text-indigo-600 whitespace-nowrap">
+                    <i class="fas fa-lightbulb mr-2"></i>이달의 영업 이슈
+                </button>
+            </div>
+        </div>
+
+        <!-- Expert Applications Tab -->
+        <div id="content-applications" class="tab-content">
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">보험 전문가 신청 관리</h2>
+                    <div class="text-gray-600">
+                        총 <span id="applications-count" class="font-bold text-indigo-600">0</span>건 
+                        <span class="mx-2">|</span>
+                        <span class="text-yellow-600">대기 <span id="pending-count" class="font-bold">0</span>건</span>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="mb-4 flex gap-4">
+                    <button onclick="filterApplications('ALL')" id="filter-all" class="px-4 py-2 rounded-lg bg-indigo-600 text-white font-semibold">전체</button>
+                    <button onclick="filterApplications('PENDING')" id="filter-pending" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300">대기중</button>
+                    <button onclick="filterApplications('APPROVED')" id="filter-approved" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300">승인됨</button>
+                    <button onclick="filterApplications('REJECTED')" id="filter-rejected" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300">반려됨</button>
+                </div>
+
+                <div id="applications-list" class="space-y-4">
+                    <!-- Applications will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Registered Experts Tab -->
+        <div id="content-experts" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">등록된 보험 전문가 관리</h2>
+                    <div class="text-gray-600">
+                        총 <span id="experts-count" class="font-bold text-indigo-600">0</span>명
+                    </div>
+                </div>
+
+                <div id="experts-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Experts will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Claim Cases Tab -->
+        <div id="content-claims" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">청구사례 관리</h2>
+                    <button onclick="showAddClaimModal()" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 font-semibold">
+                        <i class="fas fa-plus mr-2"></i>새 사례 추가
+                    </button>
+                </div>
+                <div id="claims-list" class="space-y-4">
+                    <!-- Claims will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Inquiries Tab -->
+        <div id="content-inquiries" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">보험문의 관리</h2>
+                    <div class="text-gray-600">
+                        총 <span id="inquiries-count" class="font-bold text-indigo-600">0</span>건
+                    </div>
+                </div>
+                <div id="inquiries-list" class="space-y-4">
+                    <!-- Inquiries will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sales Issues Tab -->
+        <div id="content-sales-issues" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">이달의 영업 이슈 관리</h2>
+                    <button onclick="showAddSalesIssueModal()" class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 font-semibold">
+                        <i class="fas fa-plus mr-2"></i>새 이슈 추가
+                    </button>
+                </div>
+                <div id="sales-issues-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Sales issues will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Claim Modal -->
+    <div id="add-claim-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-6">
+                    <h3 class="text-2xl font-bold">새 청구사례 추가</h3>
+                    <button onclick="closeAddClaimModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                <form id="add-claim-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">보험사 <span class="text-red-500">*</span></label>
+                        <select name="company" required class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                            <option value="">선택하세요</option>
+                            <optgroup label="손해보험사">
+                                <option value="메리츠화재">메리츠화재</option>
+                                <option value="한화손해보험">한화손해보험</option>
+                                <option value="롯데손해보험">롯데손해보험</option>
+                                <option value="MG손해보험">MG손해보험</option>
+                                <option value="흥국화재">흥국화재</option>
+                                <option value="삼성화재">삼성화재</option>
+                                <option value="AIG손보">AIG손보</option>
+                                <option value="현대해상">현대해상</option>
+                                <option value="KB손해보험">KB손해보험</option>
+                                <option value="DB손해보험">DB손해보험</option>
+                                <option value="하나손해보험">하나손해보험</option>
+                                <option value="NH농협손해보험">NH농협손해보험</option>
+                                <option value="라이나손보">라이나손보</option>
+                            </optgroup>
+                            <optgroup label="생명보험사">
+                                <option value="삼성생명">삼성생명</option>
+                                <option value="한화생명">한화생명</option>
+                                <option value="교보생명">교보생명</option>
+                                <option value="KB라이프생명">KB라이프생명</option>
+                                <option value="신한라이프생명">신한라이프생명</option>
+                                <option value="미래에셋생명">미래에셋생명</option>
+                                <option value="하나생명">하나생명</option>
+                                <option value="DGB생명">DGB생명</option>
+                                <option value="오렌지라이프생명">오렌지라이프생명</option>
+                                <option value="DB생명">DB생명</option>
+                                <option value="KDB생명">KDB생명</option>
+                                <option value="ABL생명">ABL생명</option>
+                                <option value="BNP파리바카디프생명">BNP파리바카디프생명</option>
+                                <option value="푸본현대생명">푸본현대생명</option>
+                                <option value="NH농협생명">NH농협생명</option>
+                                <option value="처브라이프생명">처브라이프생명</option>
+                                <option value="메트라이프생명">메트라이프생명</option>
+                                <option value="AIA생명">AIA생명</option>
+                                <option value="푸르덴셜생명">푸르덴셜생명</option>
+                                <option value="라이나생명">라이나생명</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">상품 종류 <span class="text-red-500">*</span></label>
+                        <select name="product" required class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                            <option value="">선택하세요</option>
+                            <option value="실손보험">실손보험</option>
+                            <option value="암보험">암보험</option>
+                            <option value="종신보험">종신보험</option>
+                            <option value="상해보험">상해보험</option>
+                            <option value="건강보험">건강보험</option>
+                            <option value="치아보험">치아보험</option>
+                            <option value="운전자보험">운전자보험</option>
+                            <option value="연금보험">연금보험</option>
+                            <option value="저축보험">저축보험</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">제목 <span class="text-red-500">*</span></label>
+                        <input type="text" name="title" required class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="교통사고 입원 치료">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">청구 금액 (원) <span class="text-red-500">*</span></label>
+                        <input type="number" name="claimAmount" required class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="3500000">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">지급 금액 (원) <span class="text-red-500">*</span></label>
+                        <input type="number" name="paidAmount" required class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="3200000">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">날짜 <span class="text-red-500">*</span></label>
+                        <input type="date" name="date" required class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">간단한 설명 <span class="text-red-500">*</span></label>
+                        <textarea name="description" required rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="교통사고로 인한 골절 수술 및 입원 치료"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">상세 내용 <span class="text-red-500">*</span></label>
+                        <textarea name="details" required rows="4" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="신호 대기 중 추돌 사고로 다리 골절 발생..."></textarea>
+                    </div>
+                    <div class="flex justify-end gap-4">
+                        <button type="button" onclick="closeAddClaimModal()" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 font-semibold">취소</button>
+                        <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 font-semibold">추가</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Sales Issue Modal -->
+    <div id="add-sales-issue-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-6">
+                    <h3 class="text-2xl font-bold">새 영업 이슈 추가</h3>
+                    <button onclick="closeAddSalesIssueModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                <form id="add-sales-issue-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">제목 <span class="text-red-500">*</span></label>
+                        <input type="text" name="title" required class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="어린이집 개강 시즌 대비 독감 플랜">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">설명 <span class="text-red-500">*</span></label>
+                        <textarea name="description" required rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="2월 어린이집 개강을 앞두고 독감 및 호흡기 질환 보험 플랜 제안"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">카드뉴스 이미지 URL <span class="text-red-500">*</span></label>
+                        <input type="url" name="imageUrl" required class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="https://example.com/image.jpg">
+                        <p class="text-xs text-gray-500 mt-1">이미지 URL을 입력하세요 (imgur, Google Drive 등에 업로드 후 링크 복사)</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">적용 월 <span class="text-red-500">*</span></label>
+                        <input type="month" name="month" required class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">타겟 고객층</label>
+                        <input type="text" name="targetCustomer" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="어린이 자녀를 둔 30-40대 부모">
+                    </div>
+                    <div class="flex justify-end gap-4">
+                        <button type="button" onclick="closeAddSalesIssueModal()" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 font-semibold">취소</button>
+                        <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 font-semibold">추가</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Display admin email
+        const adminEmail = sessionStorage.getItem('admin_id');
+        if (adminEmail) {
+            document.getElementById('admin-email').textContent = adminEmail + '님 환영합니다';
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                sessionStorage.clear();
+                window.location.href = 'admin-login.html';
+            }
+        }
+
+        // Tab switching
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-indigo-600', 'text-indigo-600');
+                btn.classList.add('text-gray-600');
+            });
+
+            // Show selected tab
+            document.getElementById(`content-${tabName}`).classList.remove('hidden');
+            const tabBtn = document.getElementById(`tab-${tabName}`);
+            tabBtn.classList.remove('text-gray-600');
+            tabBtn.classList.add('border-indigo-600', 'text-indigo-600');
+
+            // Load data for the tab
+            if (tabName === 'applications') {
+                loadApplications();
+            } else if (tabName === 'experts') {
+                loadExperts();
+            } else if (tabName === 'claims') {
+                loadClaims();
+            } else if (tabName === 'inquiries') {
+                loadInquiries();
+            } else if (tabName === 'sales-issues') {
+                loadSalesIssues();
+            }
+        }
+
+        // Load 보험 전문가 Applications
+        let currentFilter = 'ALL';
+        
+        function loadApplications(filter = currentFilter) {
+            const applications = JSON.parse(localStorage.getItem('fa_applications') || '[]');
+            const listDiv = document.getElementById('applications-list');
+            const countEl = document.getElementById('applications-count');
+            const pendingCountEl = document.getElementById('pending-count');
+
+            // Filter applications
+            let filteredApps = applications;
+            if (filter !== 'ALL') {
+                filteredApps = applications.filter(app => app.status === filter);
+            }
+
+            // Update counts
+            countEl.textContent = applications.length;
+            pendingCountEl.textContent = applications.filter(app => app.status === 'PENDING').length;
+
+            if (filteredApps.length === 0) {
+                listDiv.innerHTML = '<p class="text-center text-gray-500 py-8">신청 내역이 없습니다</p>';
+                return;
+            }
+
+            // Sort by date (newest first)
+            filteredApps.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+
+            listDiv.innerHTML = filteredApps.map(app => {
+                let statusBadge = '';
+                let actionButtons = '';
+
+                if (app.status === 'PENDING') {
+                    statusBadge = '<span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm font-semibold"><i class="fas fa-clock mr-1"></i>대기중</span>';
+                    actionButtons = `
+                        <button onclick="approveApplication('${app.applicationId}')" class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 font-semibold">
+                            <i class="fas fa-check mr-1"></i>승인
+                        </button>
+                        <button onclick="rejectApplication('${app.applicationId}')" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 font-semibold">
+                            <i class="fas fa-times mr-1"></i>반려
+                        </button>
+                    `;
+                } else if (app.status === 'APPROVED') {
+                    statusBadge = '<span class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm font-semibold"><i class="fas fa-check-circle mr-1"></i>승인됨</span>';
+                    actionButtons = `
+                        <span class="text-sm text-gray-500">승인일: ${new Date(app.approvedAt).toLocaleDateString('ko-KR')}</span>
+                        <button onclick="deleteApplication('${app.applicationId}')" class="text-red-600 hover:text-red-700 ml-3">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    `;
+                } else if (app.status === 'REJECTED') {
+                    statusBadge = '<span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-semibold"><i class="fas fa-times-circle mr-1"></i>반려됨</span>';
+                    actionButtons = `
+                        <span class="text-sm text-gray-500">반려일: ${new Date(app.rejectedAt).toLocaleDateString('ko-KR')}</span>
+                        <button onclick="deleteApplication('${app.applicationId}')" class="text-red-600 hover:text-red-700 ml-3">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    `;
+                }
+
+                return `
+                    <div class="border rounded-lg p-6 hover:shadow-md transition ${app.status === 'PENDING' ? 'border-yellow-300 bg-yellow-50' : ''}">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <h3 class="text-xl font-bold">${app.name}</h3>
+                                    ${statusBadge}
+                                </div>
+                                <div class="text-sm text-gray-500 mb-1">신청번호: ${app.applicationId}</div>
+                                <div class="text-sm text-gray-500">신청일: ${new Date(app.submittedAt).toLocaleString('ko-KR')}</div>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <div class="text-sm text-gray-500">휴대폰</div>
+                                <div class="font-medium">${app.phone}</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">이메일</div>
+                                <div class="font-medium">${app.email || '미제공'}</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">소속 회사</div>
+                                <div class="font-medium">${app.company}</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">사번</div>
+                                <div class="font-medium">${app.employeeId}</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">활동 지역</div>
+                                <div class="font-medium">${app.region} ${app.branch ? '- ' + app.branch : ''}</div>
+                            </div>
+                            ${app.specialties ? `
+                            <div>
+                                <div class="text-sm text-gray-500">전문 분야</div>
+                                <div class="font-medium">${app.specialties}</div>
+                            </div>
+                            ` : ''}
+                        </div>
+
+                        ${app.introduction ? `
+                        <div class="mb-4 p-3 bg-gray-50 rounded-lg">
+                            <div class="text-sm text-gray-500 mb-1">자기소개</div>
+                            <div class="text-sm">${app.introduction}</div>
+                        </div>
+                        ` : ''}
+
+                        ${app.kakaoLink ? `
+                        <div class="mb-4">
+                            <a href="${app.kakaoLink}" target="_blank" class="text-cyan-600 hover:text-cyan-700 text-sm">
+                                <i class="fas fa-comment mr-1"></i>카카오톡 오픈채팅
+                            </a>
+                        </div>
+                        ` : ''}
+
+                        <div class="flex gap-3 justify-end pt-4 border-t">
+                            ${actionButtons}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterApplications(filter) {
+            currentFilter = filter;
+            
+            // Update button styles
+            document.querySelectorAll('[id^="filter-"]').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            
+            const activeBtn = document.getElementById(`filter-${filter.toLowerCase()}`);
+            activeBtn.classList.remove('bg-gray-200', 'text-gray-700');
+            activeBtn.classList.add('bg-indigo-600', 'text-white');
+            
+            loadApplications(filter);
+        }
+
+        function approveApplication(applicationId) {
+            if (!confirm('이 신청을 승인하시겠습니까?\n승인 시 보험 전문가로 등록됩니다.')) return;
+
+            let applications = JSON.parse(localStorage.getItem('fa_applications') || '[]');
+            const appIndex = applications.findIndex(app => app.applicationId === applicationId);
+            
+            if (appIndex === -1) return;
+
+            applications[appIndex].status = 'APPROVED';
+            applications[appIndex].approvedAt = new Date().toISOString();
+            localStorage.setItem('fa_applications', JSON.stringify(applications));
+
+            // Add to FA profiles (for display on fa-intro.html)
+            let profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
+            const app = applications[appIndex];
+            
+            console.log('승인할 신청 정보:', app);
+            console.log('비밀번호 확인:', app.password);
+            
+            const newProfile = {
+                id: Date.now(),
+                name: app.name,
+                email: app.email,
+                phone: app.phone,
+                company: app.company,
+                region: app.region,
+                branch: app.branch,
+                introduction: app.introduction,
+                specialties: app.specialties,
+                kakaoLink: app.kakaoLink,
+                photoUrl: app.photoUrl || '',
+                password: app.password,  // 비밀번호 포함!
+                approvedAt: app.approvedAt
+            };
+            
+            console.log('생성된 프로필:', newProfile);
+            
+            profiles.push(newProfile);
+            localStorage.setItem('fa_profiles', JSON.stringify(profiles));
+            
+            console.log('✅ fa_profiles 저장 완료!');
+            console.log('현재 전체 프로필:', JSON.parse(localStorage.getItem('fa_profiles')));
+
+            alert('승인되었습니다!\n\n전문가 소개 페이지(fa-intro.html)에 표시됩니다.');
+            loadApplications();
+        }
+
+        function rejectApplication(applicationId) {
+            const reason = prompt('반려 사유를 입력하세요 (선택):');
+            if (reason === null) return; // Cancelled
+
+            let applications = JSON.parse(localStorage.getItem('fa_applications') || '[]');
+            const appIndex = applications.findIndex(app => app.applicationId === applicationId);
+            
+            if (appIndex === -1) return;
+
+            applications[appIndex].status = 'REJECTED';
+            applications[appIndex].rejectedAt = new Date().toISOString();
+            applications[appIndex].rejectReason = reason;
+            localStorage.setItem('fa_applications', JSON.stringify(applications));
+
+            alert('반려되었습니다.');
+            loadApplications();
+        }
+
+        function deleteApplication(applicationId) {
+            if (!confirm('이 신청 내역을 삭제하시겠습니까?\n삭제된 데이터는 복구할 수 없습니다.')) return;
+
+            let applications = JSON.parse(localStorage.getItem('fa_applications') || '[]');
+            applications = applications.filter(app => app.applicationId !== applicationId);
+            localStorage.setItem('fa_applications', JSON.stringify(applications));
+
+            alert('삭제되었습니다.');
+            loadApplications();
+        }
+
+        // Load Registered Experts
+        function loadExperts() {
+            const profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
+            const listDiv = document.getElementById('experts-list');
+            const countEl = document.getElementById('experts-count');
+
+            countEl.textContent = profiles.length;
+
+            if (profiles.length === 0) {
+                listDiv.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500">등록된 전문가가 없습니다</div>';
+                return;
+            }
+
+            // Sort by approval date (newest first)
+            profiles.sort((a, b) => new Date(b.approvedAt) - new Date(a.approvedAt));
+
+            listDiv.innerHTML = profiles.map(expert => `
+                <div class="bg-white border-2 border-gray-200 rounded-xl p-6 hover:shadow-lg transition">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">${expert.name}</h3>
+                            <div class="text-sm text-gray-600 space-y-1">
+                                <div><i class="fas fa-phone mr-2 text-cyan-600"></i>${expert.phone}</div>
+                                ${expert.email ? `<div><i class="fas fa-envelope mr-2 text-cyan-600"></i>${expert.email}</div>` : ''}
+                                <div><i class="fas fa-building mr-2 text-cyan-600"></i>${expert.company}</div>
+                                <div><i class="fas fa-map-marker-alt mr-2 text-cyan-600"></i>${expert.region}${expert.branch ? ' - ' + expert.branch : ''}</div>
+                            </div>
+                        </div>
+                        <button onclick="deleteExpert(${expert.id})" class="text-red-600 hover:text-red-700 p-2" title="전문가 삭제 (퇴사/활동중단)">
+                            <i class="fas fa-trash text-lg"></i>
+                        </button>
+                    </div>
+                    
+                    ${expert.specialties ? `
+                    <div class="mb-3 p-2 bg-cyan-50 rounded">
+                        <div class="text-xs text-cyan-700 font-semibold mb-1">전문 분야</div>
+                        <div class="text-sm text-gray-700">${expert.specialties}</div>
+                    </div>
+                    ` : ''}
+                    
+                    ${expert.introduction ? `
+                    <div class="mb-3 p-2 bg-gray-50 rounded">
+                        <div class="text-xs text-gray-500 font-semibold mb-1">자기소개</div>
+                        <div class="text-sm text-gray-700">${expert.introduction.substring(0, 100)}${expert.introduction.length > 100 ? '...' : ''}</div>
+                    </div>
+                    ` : ''}
+                    
+                    ${expert.kakaoLink ? `
+                    <a href="${expert.kakaoLink}" target="_blank" class="text-cyan-600 hover:text-cyan-700 text-sm">
+                        <i class="fas fa-comment mr-1"></i>카카오톡 오픈채팅
+                    </a>
+                    ` : ''}
+                    
+                    <div class="mt-3 pt-3 border-t text-xs text-gray-500">
+                        승인일: ${new Date(expert.approvedAt).toLocaleDateString('ko-KR')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteExpert(expertId) {
+            const reason = prompt('전문가를 삭제하는 이유를 입력하세요:\n(예: 퇴사, 활동 중단 등)');
+            if (reason === null) return; // Cancelled
+
+            if (!confirm(`이 전문가를 삭제하시겠습니까?\n사유: ${reason}\n\n삭제 후에는 전문가 소개 페이지에서 보이지 않게 됩니다.`)) return;
+
+            let profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
+            profiles = profiles.filter(p => p.id !== expertId);
+            localStorage.setItem('fa_profiles', JSON.stringify(profiles));
+
+            alert('전문가가 삭제되었습니다.');
+            loadExperts();
+        }
+
+        // Claim Cases Management
+        function loadClaims() {
+            const claims = JSON.parse(localStorage.getItem('claim_cases') || '[]');
+            const listDiv = document.getElementById('claims-list');
+
+            if (claims.length === 0) {
+                listDiv.innerHTML = '<p class="text-center text-gray-500 py-8">청구사례가 없습니다</p>';
+                return;
+            }
+
+            listDiv.innerHTML = claims.map(claim => {
+                const paymentRate = ((claim.paidAmount / claim.claimAmount) * 100).toFixed(1);
+                return `
+                    <div class="border rounded-lg p-4 hover:bg-gray-50">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <div class="flex gap-2 mb-2">
+                                    <span class="bg-indigo-100 text-indigo-600 px-2 py-1 rounded text-sm">${claim.company}</span>
+                                    <span class="bg-emerald-100 text-emerald-600 px-2 py-1 rounded text-sm">${claim.product}</span>
+                                </div>
+                                <h3 class="font-bold mb-1">${claim.title}</h3>
+                                <p class="text-sm text-gray-600 mb-2">${claim.description}</p>
+                                <div class="flex gap-4 text-sm">
+                                    <div><span class="text-gray-500">청구:</span> ${claim.claimAmount.toLocaleString()}원</div>
+                                    <div><span class="text-gray-500">지급:</span> <span class="text-emerald-600 font-semibold">${claim.paidAmount.toLocaleString()}원</span></div>
+                                    <div><span class="text-gray-500">지급률:</span> <span class="font-semibold">${paymentRate}%</span></div>
+                                </div>
+                            </div>
+                            <button onclick="deleteClaim(${claim.id})" class="text-red-600 hover:text-red-700 ml-4">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function showAddClaimModal() {
+            document.getElementById('add-claim-modal').classList.remove('hidden');
+        }
+
+        function closeAddClaimModal() {
+            document.getElementById('add-claim-modal').classList.add('hidden');
+            document.getElementById('add-claim-form').reset();
+        }
+
+        // Add claim form submission
+        document.getElementById('add-claim-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const newClaim = {
+                id: Date.now(),
+                company: formData.get('company'),
+                product: formData.get('product'),
+                title: formData.get('title'),
+                claimAmount: parseInt(formData.get('claimAmount')),
+                paidAmount: parseInt(formData.get('paidAmount')),
+                date: formData.get('date'),
+                description: formData.get('description'),
+                details: formData.get('details')
+            };
+
+            let claims = JSON.parse(localStorage.getItem('claim_cases') || '[]');
+            claims.push(newClaim);
+            localStorage.setItem('claim_cases', JSON.stringify(claims));
+
+            alert('청구사례가 추가되었습니다!');
+            closeAddClaimModal();
+            loadClaims();
+        });
+
+        function deleteClaim(id) {
+            if (!confirm('이 청구사례를 삭제하시겠습니까?')) return;
+
+            let claims = JSON.parse(localStorage.getItem('claim_cases') || '[]');
+            claims = claims.filter(c => c.id !== id);
+            localStorage.setItem('claim_cases', JSON.stringify(claims));
+
+            alert('삭제되었습니다');
+            loadClaims();
+        }
+
+        // Sales Issues Management
+        function loadSalesIssues() {
+            const issues = JSON.parse(localStorage.getItem('sales_issues') || '[]');
+            const listDiv = document.getElementById('sales-issues-list');
+
+            if (issues.length === 0) {
+                listDiv.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500">등록된 영업 이슈가 없습니다</div>';
+                return;
+            }
+
+            listDiv.innerHTML = issues.map(issue => `
+                <div class="bg-white border rounded-lg overflow-hidden hover:shadow-lg transition">
+                    <img src="${issue.imageUrl}" alt="${issue.title}" class="w-full h-48 object-cover" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg">${issue.title}</h3>
+                            <button onclick="deleteSalesIssue(${issue.id})" class="text-red-600 hover:text-red-700">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">${issue.description}</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="bg-indigo-100 text-indigo-600 px-2 py-1 rounded text-xs">${issue.month}</span>
+                            ${issue.targetCustomer ? `<span class="bg-emerald-100 text-emerald-600 px-2 py-1 rounded text-xs">${issue.targetCustomer}</span>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Inquiries Management
+        function loadInquiries() {
+            const inquiries = JSON.parse(localStorage.getItem('inquiries') || '[]');
+            const listDiv = document.getElementById('inquiries-list');
+            const countEl = document.getElementById('inquiries-count');
+            
+            countEl.textContent = inquiries.length;
+
+            if (inquiries.length === 0) {
+                listDiv.innerHTML = '<div class="text-center py-8 text-gray-500">등록된 보험문의가 없습니다</div>';
+                return;
+            }
+
+            listDiv.innerHTML = inquiries.map(inquiry => `
+                <div class="border rounded-lg p-4 hover:shadow-md transition">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="font-bold text-lg">${inquiry.title}</h3>
+                                ${inquiry.visibility === 'private' ? '<span class="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded-full"><i class="fas fa-lock mr-1"></i>비공개</span>' : ''}
+                                ${inquiry.status === 'ANSWERED' ? '<span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full"><i class="fas fa-check mr-1"></i>답변완료</span>' : '<span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full"><i class="fas fa-clock mr-1"></i>대기중</span>'}
+                            </div>
+                            <p class="text-gray-600 text-sm mb-2">${inquiry.content.substring(0, 100)}${inquiry.content.length > 100 ? '...' : ''}</p>
+                            <div class="flex items-center gap-4 text-sm text-gray-500">
+                                <span><i class="fas fa-user mr-1"></i>${inquiry.authorName}</span>
+                                <span><i class="fas fa-phone mr-1"></i>${inquiry.authorPhone}</span>
+                                <span><i class="fas fa-calendar mr-1"></i>${new Date(inquiry.createdAt).toLocaleDateString('ko-KR')}</span>
+                                ${inquiry.replies.length > 0 ? `<span class="text-cyan-600"><i class="fas fa-comment-dots mr-1"></i>답변 ${inquiry.replies.length}개</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <a href="inquiries.html" target="_blank" class="text-cyan-600 hover:text-cyan-700 px-3 py-1 border border-cyan-600 rounded">
+                                <i class="fas fa-eye mr-1"></i>보기
+                            </a>
+                            <button onclick="deleteInquiry(${inquiry.id})" class="text-red-600 hover:text-red-700 px-3 py-1 border border-red-600 rounded">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    ${inquiry.imageUrl ? `<img src="${inquiry.imageUrl}" class="w-32 h-32 object-cover rounded mt-2" />` : ''}
+                </div>
+            `).join('');
+        }
+
+        function deleteInquiry(id) {
+            if (!confirm('이 문의를 삭제하시겠습니까?')) return;
+            
+            let inquiries = JSON.parse(localStorage.getItem('inquiries') || '[]');
+            inquiries = inquiries.filter(i => i.id !== id);
+            localStorage.setItem('inquiries', JSON.stringify(inquiries));
+            loadInquiries();
+        }
+
+        function showAddSalesIssueModal() {
+            // Set current month as default
+            const today = new Date();
+            const monthInput = document.querySelector('#add-sales-issue-form input[name="month"]');
+            monthInput.value = today.toISOString().substring(0, 7);
+            
+            document.getElementById('add-sales-issue-modal').classList.remove('hidden');
+        }
+
+        function closeAddSalesIssueModal() {
+            document.getElementById('add-sales-issue-modal').classList.add('hidden');
+            document.getElementById('add-sales-issue-form').reset();
+        }
+
+        // Add sales issue form submission
+        document.getElementById('add-sales-issue-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const newIssue = {
+                id: Date.now(),
+                title: formData.get('title'),
+                description: formData.get('description'),
+                imageUrl: formData.get('imageUrl'),
+                month: formData.get('month'),
+                targetCustomer: formData.get('targetCustomer') || '',
+                createdAt: new Date().toISOString()
+            };
+
+            let issues = JSON.parse(localStorage.getItem('sales_issues') || '[]');
+            issues.unshift(newIssue); // Add to beginning
+            localStorage.setItem('sales_issues', JSON.stringify(issues));
+
+            alert('영업 이슈가 추가되었습니다!');
+            closeAddSalesIssueModal();
+            loadSalesIssues();
+        });
+
+        function deleteSalesIssue(id) {
+            if (!confirm('이 영업 이슈를 삭제하시겠습니까?')) return;
+
+            let issues = JSON.parse(localStorage.getItem('sales_issues') || '[]');
+            issues = issues.filter(i => i.id !== id);
+            localStorage.setItem('sales_issues', JSON.stringify(issues));
+
+            alert('삭제되었습니다');
+            loadSalesIssues();
+        }
+
+        // Dashboard
+        function loadDashboard() {
+            const applications = JSON.parse(localStorage.getItem('fa_applications') || '[]');
+            const profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
+            const claims = JSON.parse(localStorage.getItem('claim_cases') || '[]');
+
+            document.getElementById('info-applications').textContent = applications.length + '건';
+            document.getElementById('info-profiles').textContent = profiles.length + '건';
+            document.getElementById('info-claims').textContent = claims.length + '건';
+            
+            if (applications.length > 0) {
+                const lastApp = applications[applications.length - 1];
+                document.getElementById('info-updated').textContent = new Date(lastApp.submittedAt).toLocaleString('ko-KR');
+            }
+
+            // Recent activity
+            const activityDiv = document.getElementById('recent-activity');
+            const recentApps = applications.slice(-5).reverse();
+
+            if (recentApps.length === 0) {
+                activityDiv.innerHTML = '<p class="text-gray-500 text-sm">최근 활동이 없습니다</p>';
+            } else {
+                activityDiv.innerHTML = recentApps.map(app => {
+                    let statusColor;
+                    if (app.status === 'APPROVED') statusColor = 'text-emerald-600';
+                    else if (app.status === 'REJECTED') statusColor = 'text-red-600';
+                    else statusColor = 'text-yellow-600';
+
+                    return `
+                        <div class="flex items-center text-sm">
+                            <i class="fas fa-user mr-3 ${statusColor}"></i>
+                            <div class="flex-1">
+                                <span class="font-semibold">${app.name}</span>님이 보험 전문가 신청
+                            </div>
+                            <div class="text-xs text-gray-500">${new Date(app.submittedAt).toLocaleDateString('ko-KR')}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        // Initialize
+        showTab('applications');
+    </script>
+</body>
+</html>
+
