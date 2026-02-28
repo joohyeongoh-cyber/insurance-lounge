@@ -1011,8 +1011,18 @@
                                             <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-bold">
                                                 <i class="fas fa-trophy mr-1"></i>${year}년 수상
                                             </span>
+                                            ${product.gaShare ? `
+                                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-bold">
+                                                    <i class="fas fa-chart-line mr-1"></i>GA 점유율 ${product.gaShare}%
+                                                </span>
+                                            ` : ''}
                                         </div>
                                         <h3 class="text-xl font-bold text-gray-800">${product.company} - ${product.product}</h3>
+                                        ${product.gaShareNote ? `
+                                            <p class="text-xs text-gray-500 mt-1">
+                                                <i class="fas fa-info-circle mr-1"></i>${product.gaShareNote}
+                                            </p>
+                                        ` : ''}
                                     </div>
                                     <i class="fas ${product.icon || 'fa-award'} text-3xl text-${product.color || 'cyan'}-600"></i>
                                 </div>
