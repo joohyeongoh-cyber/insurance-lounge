@@ -75,7 +75,8 @@ export default async function handler(req, res) {
         strengths: ["7년시점 100% 환급", "단기 환급형 구조", "장기 보장 제공", "빠른 납입 완료", "평생 사망보장"],
         salesCardType: "whole_life",
         targetAge: "40~55세",
-        targetCustomer: "고소득 직장인, 빠른 완납 선호"launchMonth: "2024.03"
+        targetCustomer: "고소득 직장인, 빠른 완납 선호",
+        launchMonth: "2024.03"
       },
       {
         company: "푸본현대생명",
@@ -87,7 +88,8 @@ export default async function handler(req, res) {
         strengths: ["5년 후 매년 사망보험금 증액", "금리확정형 안정성", "법인 보험료 손금 처리", "CEO 유고 대비", "경영 리스크 관리"],
         salesCardType: "term_life",
         targetAge: "30~60대",
-        targetCustomer: "사업자, 법인 대표, CEO"launchMonth: "2023.09"
+        targetCustomer: "사업자, 법인 대표, CEO",
+        launchMonth: "2023.09"
       },
       {
         company: "ABL생명",
@@ -99,7 +101,8 @@ export default async function handler(req, res) {
         strengths: ["유병자 특약 선택 가능", "간편심사형/일반심사형", "만15~80세 가입", "질병수술비 세분화", "시니어 특약 신설"],
         salesCardType: "health",
         targetAge: "20~60대",
-        targetCustomer: "건강한 성인, 종합 보장 선호"launchMonth: "2024.01"
+        targetCustomer: "건강한 성인, 종합 보장 선호",
+        launchMonth: "2024.01"
       },
       {
         company: "흥국생명",
@@ -111,7 +114,8 @@ export default async function handler(req, res) {
         strengths: ["보험료 최대 10% 경감", "고혈압·당뇨 고지 항목", "3.10.5.5 고지 구조", "10대암+5수술+5생활비", "성실 관리자 우대"],
         salesCardType: "health",
         targetAge: "50~75세",
-        targetCustomer: "고혈압·당뇨 환자, 간편 가입 선호"launchMonth: "2023.10"
+        targetCustomer: "고혈압·당뇨 환자, 간편 가입 선호",
+        launchMonth: "2023.10"
       },
       {
         company: "KDB생명",
@@ -123,7 +127,8 @@ export default async function handler(req, res) {
         strengths: ["전체 암 보장", "암 종류별 구분(일반·소액·대액)", "재발·전이 반복보장", "장기 치료비 지원"],
         salesCardType: "cancer",
         targetAge: "30~65세",
-        targetCustomer: "가족력 있는 고객, 흡연자, 암 걱정 고객"launchMonth: "2024.02"
+        targetCustomer: "가족력 있는 고객, 흡연자, 암 걱정 고객",
+        launchMonth: "2024.02"
       },
       {
         company: "라이나생명",
@@ -135,7 +140,8 @@ export default async function handler(req, res) {
         strengths: ["10년 후 급여 50% 상승", "체증형 구조", "경도이상치매진단금", "중증치매진단금", "재가·시설급여"],
         salesCardType: "dementia",
         targetAge: "50~75세",
-        targetCustomer: "치매 가족력, 50대 이상 예방 관심 고객"launchMonth: "2023.06"
+        targetCustomer: "치매 가족력, 50대 이상 예방 관심 고객",
+        launchMonth: "2023.06"
       },
       {
         company: "한화생명",
@@ -147,7 +153,8 @@ export default async function handler(req, res) {
         strengths: ["AI 자산배분 자동화", "연금 수령 다양화", "수익률 최적화", "세액공제 혜택"],
         salesCardType: "annuity",
         targetAge: "30~50대",
-        targetCustomer: "노후 준비, 변액연금 관심 고객"launchMonth: "2024.04"
+        targetCustomer: "노후 준비, 변액연금 관심 고객",
+        launchMonth: "2024.04"
       },
       {
         company: "삼성생명",
@@ -159,7 +166,8 @@ export default async function handler(req, res) {
         strengths: ["최저 보증 기능", "원금 보호", "수익 추구", "연금 안정성"],
         salesCardType: "annuity",
         targetAge: "40~60대",
-        targetCustomer: "안정적 노후, 원금 보호 선호"launchMonth: "2023.12"
+        targetCustomer: "안정적 노후, 원금 보호 선호",
+        launchMonth: "2023.12"
       },
       {
         company: "교보생명",
@@ -171,7 +179,8 @@ export default async function handler(req, res) {
         strengths: ["3단계 연금 증액", "장수 리스크 대비", "생활비 상승 반영", "평생 연금 수령"],
         salesCardType: "annuity",
         targetAge: "40~60대",
-        targetCustomer: "노후 장수 대비 고객"launchMonth: "2024.01"
+        targetCustomer: "노후 장수 대비 고객",
+        launchMonth: "2024.01"
       },
       {
         company: "AIA생명",
@@ -183,7 +192,8 @@ export default async function handler(req, res) {
         strengths: ["암·뇌·심장 통합", "수술비 세밀화", "입원비 실손", "표준체 보험료"],
         salesCardType: "health",
         targetAge: "20~60대",
-        targetCustomer: "건강한 성인, 종합 보장 선호"launchMonth: "2023.07"
+        targetCustomer: "건강한 성인, 종합 보장 선호",
+        launchMonth: "2023.07"
       },
       {
         company: "KB손해보험",
@@ -195,7 +205,8 @@ export default async function handler(req, res) {
         strengths: ["5문항 간편 고지", "10대암 보장", "10수술 보장", "실속형 보험료"],
         salesCardType: "health",
         targetAge: "30~70세",
-        targetCustomer: "간편 가입 선호, 실속 보장"launchMonth: "2023.11"
+        targetCustomer: "간편 가입 선호, 실속 보장",
+        launchMonth: "2023.11"
       },
       {
         company: "현대해상",
@@ -207,7 +218,8 @@ export default async function handler(req, res) {
         strengths: ["3.5문항 초간편", "고혈압·당뇨 가입 가능", "암·수술·입원 보장", "표준 나이 확대"],
         salesCardType: "health",
         targetAge: "40~80세",
-        targetCustomer: "기저질환 고객, 초간편 가입 선호"launchMonth: "2024.02"
+        targetCustomer: "기저질환 고객, 초간편 가입 선호",
+        launchMonth: "2024.02"
       },
       {
         company: "롯데손해보험",
@@ -219,7 +231,8 @@ export default async function handler(req, res) {
         strengths: ["초경증 간편(3문항)", "6대암+5수술+5생활비", "100세까지 보장", "저렴한 보험료"],
         salesCardType: "health",
         targetAge: "50~85세",
-        targetCustomer: "고령층, 초간편 가입 선호"launchMonth: "2023.09"
+        targetCustomer: "고령층, 초간편 가입 선호",
+        launchMonth: "2023.09"
       },
       {
         company: "메리츠화재",
@@ -231,7 +244,8 @@ export default async function handler(req, res) {
         strengths: ["재발·전이 반복보장", "2년 후 추가 지급", "3문항 간편고지", "암 병력자 가입 가능"],
         salesCardType: "cancer_recurrence",
         targetAge: "40~75세",
-        targetCustomer: "암 병력 고객, 재발 걱정 고객"launchMonth: "2024.01"
+        targetCustomer: "암 병력 고객, 재발 걱정 고객",
+        launchMonth: "2024.01"
       },
       {
         company: "삼성화재",
@@ -243,7 +257,8 @@ export default async function handler(req, res) {
         strengths: ["어린이 맞춤 보장", "암·질병·상해 통합", "교육자금 지원", "부모 안심"],
         salesCardType: "child",
         targetAge: "0~20세",
-        targetCustomer: "자녀 둔 부모, 어린이 보험 가입 고객"launchMonth: "2023.08"
+        targetCustomer: "자녀 둔 부모, 어린이 보험 가입 고객",
+        launchMonth: "2023.08"
       },
       {
         company: "DB손해보험",
@@ -255,7 +270,8 @@ export default async function handler(req, res) {
         strengths: ["MZ 맞춤 보장", "16~40세 타겟", "저렴한 보험료", "실속 보장"],
         salesCardType: "youth",
         targetAge: "16~40세",
-        targetCustomer: "MZ 세대, 청년층, 사회초년생"launchMonth: "2024.03"
+        targetCustomer: "MZ 세대, 청년층, 사회초년생",
+        launchMonth: "2024.03"
       },
       {
         company: "흥국화재",
@@ -267,7 +283,8 @@ export default async function handler(req, res) {
         strengths: ["여성 맞춤 보장", "유방암·자궁암·난소암", "출산 지원", "여성 질환 특화"],
         salesCardType: "women",
         targetAge: "20~60대",
-        targetCustomer: "여성 고객, 출산 계획 고객"launchMonth: "2023.10"
+        targetCustomer: "여성 고객, 출산 계획 고객",
+        launchMonth: "2023.10"
       },
       {
         company: "NH농협손해보험",
@@ -279,7 +296,8 @@ export default async function handler(req, res) {
         strengths: ["레켐비 약제비 최대 2천만원", "갱신 없는 평생 보험료", "장기요양 1~4등급 월 100만원", "주간보호센터 월 50만원"],
         salesCardType: "dementia",
         targetAge: "40~80세",
-        targetCustomer: "시니어, 치매 간병 대비 고객"launchMonth: "2024.05"
+        targetCustomer: "시니어, 치매 간병 대비 고객",
+        launchMonth: "2024.05"
       },
       {
         company: "하나손해보험",
@@ -291,7 +309,8 @@ export default async function handler(req, res) {
         strengths: ["교통사고 벌금 보장", "변호사 비용 지원", "자동차사고 부상 치료", "운전자 맞춤"],
         salesCardType: "driver",
         targetAge: "20~70세",
-        targetCustomer: "모든 운전자, 특히 영업직·장거리 출퇴근"launchMonth: "2023.12"
+        targetCustomer: "모든 운전자, 특히 영업직·장거리 출퇴근",
+        launchMonth: "2023.12"
       },
       {
         company: "KB손해보험",
