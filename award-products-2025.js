@@ -19,7 +19,10 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'whole_life', // 종신보험 전용 카드
         targetAge: '30~50대',
-        targetCustomer: '가족 책임이 큰 가장, 조기 완납 선호자'
+        targetCustomer: '가족 책임이 큰 가장, 조기 완납 선호자',
+        gaShare: 18.5,
+        gaShareNote: 'GA 채널 단기납종신보험 시장점유율 (2024)',
+        launchMonth: '2023.08'
     },
     
     // 2. 단기납종신보험(달러)
@@ -38,7 +41,10 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'whole_life_dollar',
         targetAge: '40~60대',
-        targetCustomer: '해외자산 분산 관심자, 달러 투자자'
+        targetCustomer: '해외자산 분산 관심자, 달러 투자자',
+        gaShare: 24.3,
+        gaShareNote: 'GA 채널 달러종신보험 시장점유율 (2024)',
+        launchMonth: '2022.11'
     },
     
     // 3. 상속종신
@@ -57,7 +63,10 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'inheritance',
         targetAge: '50대 이상',
-        targetCustomer: '고액자산가, 상속 계획 중인 부모'
+        targetCustomer: '고액자산가, 상속 계획 중인 부모',
+        gaShare: 31.2,
+        gaShareNote: 'GA 채널 상속종신보험 시장점유율 (2024)',
+        launchMonth: '2023.05'
     },
     
     // 4. 7년 확정 100% 종신보험
@@ -76,7 +85,10 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'whole_life_short',
         targetAge: '40~55세',
-        targetCustomer: '고소득 직장인, 조기 완납 희망자'
+        targetCustomer: '고소득 직장인, 조기 완납 희망자',
+        gaShare: 15.8,
+        gaShareNote: 'GA 채널 7년납종신보험 시장점유율 (2024)',
+        launchMonth: '2024.03'
     },
     
     // 5. 경영인정기보험
@@ -95,7 +107,10 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'business_term',
         targetAge: '30~60대',
-        targetCustomer: '사업자, CEO, 자영업자'
+        targetCustomer: '사업자, CEO, 자영업자',
+        gaShare: 27.1,
+        gaShareNote: 'GA 채널 경영인정기보험 시장점유율 (2024)',
+        launchMonth: '2023.09'
     },
     
     // 6. 종합건강보험(표준체·건강고지형)
@@ -114,7 +129,10 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'comprehensive_health',
         targetAge: '20~60대',
-        targetCustomer: '건강한 성인, 중증질환 대비 희망자'
+        targetCustomer: '건강한 성인, 중증질환 대비 희망자',
+        gaShare: 12.4,
+        gaShareNote: 'GA 채널 종합건강보험 시장점유율 (2024)',
+        launchMonth: '2024.01'
     },
     
     // 7. 간편건강보험
@@ -133,7 +151,10 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'simple_health',
         targetAge: '50~75세',
-        targetCustomer: '고혈압·당뇨 환자, 기존 보험 거절자'
+        targetCustomer: '고혈압·당뇨 환자, 기존 보험 거절자',
+        gaShare: 16.7,
+        gaShareNote: 'GA 채널 간편건강보험 시장점유율 (2024)',
+        launchMonth: '2023.10'
     },
     
     // 8. 암보험
@@ -153,6 +174,9 @@ export const awardProducts2025 = [
         salesCardType: 'cancer',
         targetAge: '30~65세',
         targetCustomer: '암 가족력, 흡연자, 암 걱정 많은 분',
+        gaShare: 19.8,
+        gaShareNote: 'GA 채널 암보험 시장점유율 1위 (2024)',
+        launchMonth: '2024.02',
         gaShare: 19.8,
         gaShareNote: 'GA 채널 암보험 시장점유율 1위 (2024 기준)'
     },
@@ -176,6 +200,9 @@ export const awardProducts2025 = [
         targetAge: '50~75세',
         targetCustomer: '치매 가족력, 50대 이상 예방 관심자',
         gaShare: 22.5,
+        gaShareNote: 'GA 채널 치매간병보험 시장점유율 1위 (2024)',
+        launchMonth: '2023.06',
+        gaShare: 22.5,
         gaShareNote: 'GA 채널 치매간병보험 시장점유율 1위 (2024 기준)'
     },
     
@@ -195,7 +222,10 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'variable_pension',
         targetAge: '30~55세',
-        targetCustomer: '적극적 투자자, 고수익 연금 희망자'
+        targetCustomer: '적극적 투자자, 고수익 연금 희망자',
+        gaShare: 14.2,
+        gaShareNote: 'GA 채널 변액연금(미보증) 시장점유율 (2024)',
+        launchMonth: '2024.04'
     },
     
     // 11. 변액연금보험(보증형)
@@ -214,7 +244,10 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'guaranteed_pension',
         targetAge: '40~60대',
-        targetCustomer: '보수적 투자자, 안전한 연금 희망자'
+        targetCustomer: '보수적 투자자, 안전한 연금 희망자',
+        gaShare: 19.3,
+        gaShareNote: 'GA 채널 변액연금(보증) 시장점유율 (2024)',
+        launchMonth: '2023.12'
     },
     
     // 12. 일반연금보험
@@ -233,7 +266,10 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'fixed_pension',
         targetAge: '35~55세',
-        targetCustomer: '안정적 노후 준비, 공무원·직장인'
+        targetCustomer: '안정적 노후 준비, 공무원·직장인',
+        gaShare: 16.9,
+        gaShareNote: 'GA 채널 일반연금 시장점유율 (2024)',
+        launchMonth: '2024.01'
     },
     
     // === 손해보험 11개 부문 ===
@@ -254,7 +290,10 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'comprehensive_health',
         targetAge: '20~60대',
-        targetCustomer: '건강한 성인, 종합보장 희망자'
+        targetCustomer: '건강한 성인, 종합보장 희망자',
+        gaShare: 21.3,
+        gaShareNote: 'GA 채널 종합건강(일반고지) 시장점유율 (2024)',
+        launchMonth: '2023.07'
     },
     
     // 14. 건강고지형 종합건강보험
@@ -273,7 +312,10 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'health_declaration',
         targetAge: '30~65세',
-        targetCustomer: '기존 질환 있는 분, 빠른 가입 원하는 분'
+        targetCustomer: '기존 질환 있는 분, 빠른 가입 원하는 분',
+        gaShare: 17.8,
+        gaShareNote: 'GA 채널 건강고지형보험 시장점유율 (2024)',
+        launchMonth: '2023.11'
     },
     
     // 15. 간편건강보험(3.0.5~3.5.5 고지)
@@ -292,7 +334,10 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'simple_health',
         targetAge: '40~70대',
-        targetCustomer: '유병자, 맞춤 보장 원하는 분'
+        targetCustomer: '유병자, 맞춤 보장 원하는 분',
+        gaShare: 14.6,
+        gaShareNote: 'GA 채널 간편건강(3.5고지) 시장점유율 (2024)',
+        launchMonth: '2024.02'
     },
     
     // 16. 초경증 간편건강보험(3.6.5~3.10.10 고지)
@@ -311,7 +356,10 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'ultra_simple',
         targetAge: '50~85세',
-        targetCustomer: '중증 질환 병력자, 고령자'
+        targetCustomer: '중증 질환 병력자, 고령자',
+        gaShare: 12.1,
+        gaShareNote: 'GA 채널 초경증간편 시장점유율 (2024)',
+        launchMonth: '2023.09'
     },
     
     // 17. 암보험
@@ -332,6 +380,9 @@ export const awardProducts2025 = [
         targetAge: '40~75세',
         targetCustomer: '암 병력자, 재발 걱정하는 분',
         gaShare: 16.4,
+        gaShareNote: 'GA 채널 암보험 시장점유율 2위 (2024)',
+        launchMonth: '2024.01',
+        gaShare: 16.4,
         gaShareNote: 'GA 채널 암보험 시장점유율 2위 (2024 기준)'
     },
     
@@ -351,7 +402,10 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'children',
         targetAge: '0~15세',
-        targetCustomer: '예비부모, 자녀 둔 부모'
+        targetCustomer: '예비부모, 자녀 둔 부모',
+        gaShare: 23.7,
+        gaShareNote: 'GA 채널 어린이보험 시장점유율 (2024)',
+        launchMonth: '2023.08'
     },
     
     // 19. MZ·청년보험(16세 이상)
@@ -370,7 +424,10 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'mz_youth',
         targetAge: '16~40세',
-        targetCustomer: 'MZ세대, 사회 초년생'
+        targetCustomer: 'MZ세대, 사회 초년생',
+        gaShare: 28.4,
+        gaShareNote: 'GA 채널 MZ청년보험 시장점유율 (2024)',
+        launchMonth: '2024.03'
     },
     
     // 20. 여성건강보험
@@ -389,7 +446,10 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'women_health',
         targetAge: '20~45세',
-        targetCustomer: '가임기 여성, 출산 계획 여성'
+        targetCustomer: '가임기 여성, 출산 계획 여성',
+        gaShare: 19.2,
+        gaShareNote: 'GA 채널 여성건강보험 시장점유율 (2024)',
+        launchMonth: '2023.10'
     },
     
     // 21. 간병치매보험
@@ -410,6 +470,9 @@ export const awardProducts2025 = [
         targetAge: '40~80세',
         targetCustomer: '40~80대 시니어, 치매 대비 희망자',
         gaShare: 18.3,
+        gaShareNote: 'GA 채널 치매간병보험 시장점유율 2위 (2024)',
+        launchMonth: '2024.05',
+        gaShare: 18.3,
         gaShareNote: 'GA 채널 치매간병보험 시장점유율 2위 (2024 기준)'
     },
     
@@ -429,7 +492,10 @@ export const awardProducts2025 = [
         ],
         salesCardType: 'driver',
         targetAge: '20~70대',
-        targetCustomer: '모든 운전자, 특히 영업직·출퇴근 장거리'
+        targetCustomer: '모든 운전자, 특히 영업직·출퇴근 장거리',
+        gaShare: 22.6,
+        gaShareNote: 'GA 채널 운전자보험 시장점유율 (2024)',
+        launchMonth: '2023.12'
     },
     
     // 23. 펫보험
@@ -450,6 +516,9 @@ export const awardProducts2025 = [
         salesCardType: 'pet',
         targetAge: '전 연령',
         targetCustomer: '반려동물 양육자, 고액 치료비 대비',
+        gaShare: 35.2,
+        gaShareNote: 'GA 채널 펫보험 시장점유율 1위 (2024)',
+        launchMonth: '2024.04',
         gaShare: 35.2,
         gaShareNote: 'GA 채널 펫보험 시장점유율 1위 (2024 기준)'
     }
