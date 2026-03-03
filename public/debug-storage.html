@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storage 디버그</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6">LocalStorage 디버그 도구</h1>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-bold mb-4">FA 신청 현황</h2>
+                <div id="applications-debug" class="text-sm"></div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-bold mb-4">FA 프로필 현황</h2>
+                <div id="profiles-debug" class="text-sm"></div>
+            </div>
+        </div>
+        
+        <div class="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+            <h3 class="text-lg font-bold mb-4">문제 해결 방법</h3>
+            <div class="space-y-4">
+                <div>
+                    <button onclick="syncData()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                        승인된 신청을 프로필로 동기화
+                    </button>
+                    <p class="text-sm text-gray-600 mt-2">승인된 신청이 프로필에 없으면 자동으로 추가합니다</p>
+                </div>
+                
+                <div>
+                    <button onclick="clearAll()" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700">
+                        ⚠️ 모든 데이터 초기화
+                    </button>
+                    <p class="text-sm text-gray-600 mt-2">주의: 모든 신청/프로필 데이터가 삭제됩니다</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function loadDebugInfo() {
+            const applications = JSON.parse(localStorage.getItem('fa_applications') || '[]');
+            const profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
+            
+            const approvedApps = applications.filter(a => a.status === 'APPROVED');
+            const pendingApps = applications.filter(a => a.status === 'PENDING');
+            const rejectedApps = applications.filter(a => a.status === 'REJECTED');
+            
+            document.getElementById('applications-debug').innerHTML = `
+                <div class="space-y-2">
+                    <p><strong>총 신청 수:</strong> ${applications.length}개</p>
+                    <p><strong>승인됨:</strong> ${approvedApps.length}개</p>
+                    <p><strong>대기중:</strong> ${pendingApps.length}개</p>
+                    <p><strong>반려됨:</strong> ${rejectedApps.length}개</p>
+                    <hr class="my-4">
+                    <div class="max-h-96 overflow-y-auto">
+                        ${applications.map(app => `
+                            <div class="p-2 mb-2 border rounded ${app.status === 'APPROVED' ? 'bg-green-50' : app.status === 'PENDING' ? 'bg-yellow-50' : 'bg-red-50'}">
+                                <p><strong>${app.name}</strong> (${app.email})</p>
+                                <p class="text-xs">상태: ${app.status}</p>
+                                <p class="text-xs">신청 ID: ${app.applicationId}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('profiles-debug').innerHTML = `
+                <div class="space-y-2">
+                    <p><strong>총 프로필 수:</strong> ${profiles.length}개</p>
+                    <hr class="my-4">
+                    <div class="max-h-96 overflow-y-auto">
+                        ${profiles.length > 0 ? profiles.map(profile => `
+                            <div class="p-2 mb-2 border rounded bg-blue-50">
+                                <p><strong>${profile.name}</strong> (${profile.email})</p>
+                                <p class="text-xs">프로필 ID: ${profile.id}</p>
+                                <p class="text-xs">회사: ${profile.company || 'N/A'}</p>
+                            </div>
+                        `).join('') : '<p class="text-gray-500">등록된 프로필이 없습니다</p>'}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function syncData() {
+            const applications = JSON.parse(localStorage.getItem('fa_applications') || '[]');
+            let profiles = JSON.parse(localStorage.getItem('fa_profiles') || '[]');
+            
+            const approvedApps = applications.filter(a => a.status === 'APPROVED');
+            let addedCount = 0;
+            
+            approvedApps.forEach(app => {
+                // Check if profile already exists
+                const existingProfile = profiles.find(p => p.email === app.email);
+                
+                if (!existingProfile) {
+                    console.log('프로필 추가:', app.name);
+                    profiles.push({
+                        id: Date.now() + addedCount,
+                        name: app.name,
+                        email: app.email,
+                        phone: app.phone,
+                        company: app.company,
+                        region: app.region,
+                        branch: app.branch,
+                        introduction: app.introduction,
+                        specialties: app.specialties,
+                        kakaoLink: app.kakaoLink,
+                        photoUrl: app.photoUrl || '',
+                        password: app.password,
+                        approvedAt: app.approvedAt
+                    });
+                    addedCount++;
+                }
+            });
+            
+            if (addedCount > 0) {
+                localStorage.setItem('fa_profiles', JSON.stringify(profiles));
+                alert(`${addedCount}개의 프로필이 추가되었습니다!`);
+                loadDebugInfo();
+            } else {
+                alert('동기화할 프로필이 없습니다. 모든 승인된 신청이 이미 프로필에 있습니다.');
+            }
+        }
+        
+        function clearAll() {
+            if (confirm('정말로 모든 데이터를 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다!')) {
+                localStorage.removeItem('fa_applications');
+                localStorage.removeItem('fa_profiles');
+                localStorage.removeItem('fa_reviews');
+                localStorage.removeItem('contract_cases');
+                alert('모든 데이터가 삭제되었습니다.');
+                loadDebugInfo();
+            }
+        }
+        
+        // Load on page load
+        loadDebugInfo();
+        
+        // Auto-refresh every 5 seconds
+        setInterval(loadDebugInfo, 5000);
+    </script>
+</body>
+</html>
